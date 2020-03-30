@@ -1,0 +1,4 @@
+JDBC_DRIVER = org.mysql.jdbc.Driver
+SDB_URL = jdbc:mysql://localhost:3306/SWRE
+SDB_USERNAME = root
+SDB_PASSWORD = parth@123

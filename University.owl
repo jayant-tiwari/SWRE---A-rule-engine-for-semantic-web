@@ -1,0 +1,358 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://people.brunel.ac.uk/~csstnns/university.owl#"
+     xml:base="http://people.brunel.ac.uk/~csstnns/university.owl"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:university="http://people.brunel.ac.uk/~csstnns/university.owl#">
+    <owl:Ontology rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#studies -->
+
+    <owl:ObjectProperty rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#studies">
+        <rdfs:domain rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Student"/>
+        <rdfs:range rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Module"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#teaches -->
+
+    <owl:ObjectProperty rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#teaches">
+        <rdfs:domain rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer"/>
+        <rdfs:range rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Module"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#first_name -->
+
+    <owl:DatatypeProperty rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#first_name">
+        <rdfs:domain rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#last_name -->
+
+    <owl:DatatypeProperty rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#last_name">
+        <rdfs:domain rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#staffID -->
+
+    <owl:DatatypeProperty rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#staffID">
+        <rdfs:domain rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#studentID -->
+
+    <owl:DatatypeProperty rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#studentID">
+        <rdfs:domain rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Student"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#CSModule -->
+
+    <owl:Class rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#CSModule">
+        <rdfs:subClassOf rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Module"/>
+    </owl:Class>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer -->
+
+    <owl:Class rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer">
+        <rdfs:subClassOf rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Person"/>
+    </owl:Class>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#MathModule -->
+
+    <owl:Class rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#MathModule">
+        <rdfs:subClassOf rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Module"/>
+    </owl:Class>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Module -->
+
+    <owl:Class rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Module"/>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Person -->
+
+    <owl:Class rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Person"/>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Student -->
+
+    <owl:Class rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Student">
+        <rdfs:subClassOf rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Person"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#CS101 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#CS101">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CSModule"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#CS103 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#CS103">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CSModule"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#CS816 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#CS816">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CSModule"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#DS603 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#DS603">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CSModule"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#DS817 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#DS817">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CSModule"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#DS823 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#DS823">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CSModule"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Jayant -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Jayant">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Student"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CS816"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS603"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS817"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS823"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer1 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer1">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer"/>
+        <teaches rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CS103"/>
+        <teaches rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#M201"/>
+        <first_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Larisa</first_name>
+        <last_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Soldatova</last_name>
+        <staffID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">417686</staffID>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer2 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer2">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#M201 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#M201">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#MathModule"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#M204 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#M204">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#MathModule"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Mohit -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Mohit">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Student"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CS816"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS603"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS817"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS823"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Parth -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Parth">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Student"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CS816"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS603"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS823"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#RamSir -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#RamSir">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer"/>
+        <teaches rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS823"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#RcSir -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#RcSir">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer"/>
+        <teaches rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#DS603"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Student1 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Student1">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Student"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CS101"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#M201"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#M204"/>
+        <first_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Josef</first_name>
+        <last_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Baker</last_name>
+        <studentID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">266814</studentID>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Student2 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Student2">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Student"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#M204"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#Student3 -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Student3">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Student"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CS103"/>
+        <studies rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#M201"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://people.brunel.ac.uk/~csstnns/university.owl#ThangarajuSir -->
+
+    <owl:NamedIndividual rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#ThangarajuSir">
+        <rdf:type rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer"/>
+        <teaches rdf:resource="http://people.brunel.ac.uk/~csstnns/university.owl#CS816"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#CSModule"/>
+            <rdf:Description rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Lecturer"/>
+            <rdf:Description rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#MathModule"/>
+            <rdf:Description rdf:about="http://people.brunel.ac.uk/~csstnns/university.owl#Student"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

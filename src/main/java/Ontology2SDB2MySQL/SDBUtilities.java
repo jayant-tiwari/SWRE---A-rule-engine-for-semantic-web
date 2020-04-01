@@ -12,6 +12,7 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
 import org.apache.jena.sdb.SDBFactory;
 import org.apache.jena.sdb.Store;
 import org.apache.jena.sdb.StoreDesc;
@@ -81,7 +82,6 @@ public class SDBUtilities {
 		store.getTableFormatter().create();
 		// These models are provided by Jena. Use GraphDB if you want to store graphical data in relational format
 		Model model = SDBFactory.connectDefaultModel(store);
-		
 		model.setNsPrefix(namespace,rdfprefix);
 		model.read(filename);
 		model.commit();
@@ -120,6 +120,29 @@ public class SDBUtilities {
             ResultSetFormatter.out(rs) ;
         }
 		return rs;
+	}
+	public static String Inserttriples(String filename, String namespace, String rdfprefix,String sub,String pred,String obj) {
+
+		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
+		JDBC.loadDriverMySQL();
+		// Connecting SDB to JDBC
+		SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
+		// Each table/database in SDB is considered as a store
+		Store store = SDBFactory.connectStore(connection, storeDesc);
+		// These models are provided by Jena. Use GraphDB if you want to store graphical data in relational format
+		Model model = SDBFactory.connectDefaultModel(store);
+		model.setNsPrefix(namespace,rdfprefix);
+		model.read(filename);
+		//create new triples
+		org.apache.jena.rdf.model.Resource subject = model.createResource(rdfprefix+sub);
+		Property predicate = model.createProperty(rdfprefix+pred);
+		org.apache.jena.rdf.model.Resource object = model.createResource(rdfprefix+obj);
+		//add triples in data base
+		model.add(subject,predicate,object);
+		model.commit();
+		store.close();
+		connection.close();
+		return "done";
 	}
 
 	public static String getJdbcDriver() {

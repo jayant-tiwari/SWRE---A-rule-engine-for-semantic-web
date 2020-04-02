@@ -121,6 +121,10 @@ public class SDBUtilities {
         }
 		return rs;
 	}
+	
+	/*
+	 * This method, creates a new resource for the predicate if the predicate is missing and if not, inserts the triple into the database
+	 */
 	public static String Inserttriples(String filename, String namespace, String rdfprefix,String sub,String pred,String obj) {
 
 		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
@@ -142,7 +146,7 @@ public class SDBUtilities {
 		model.commit();
 		store.close();
 		connection.close();
-		return "done";
+		return "success";
 	}
 
 	public static String getJdbcDriver() {

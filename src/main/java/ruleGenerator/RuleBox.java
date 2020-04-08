@@ -176,7 +176,9 @@ public class RuleBox {
         
         for( int itr = 0; itr < len; itr++) {
         	
-        	ArrayList<String> rule = new ArrayList<>();
+        	ArrayList<String> rule = new ArrayList<String>();
+        	
+        	rule.add("If:");
         	
         	Node nNode = nList.item(itr);
         	Element nElement = (Element) nNode;
@@ -214,6 +216,7 @@ public class RuleBox {
     	    		loop++;
     	    	}
     	    }
+    	    rule.add("Then:");
     	    rule.add(cElement.getElementsByTagName("Subject").item(0).getTextContent());
     	    rule.add(cElement.getElementsByTagName("Predicate").item(0).getTextContent());
     	    rule.add(cElement.getElementsByTagName("Object").item(0).getTextContent());

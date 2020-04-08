@@ -23,10 +23,12 @@ public class WebappController {
         ArrayList<String> existingRule = new ArrayList<>();
         int rulesLen = Rules.size();
         for(int i = 0; i < rulesLen; i++){
-            String tempRule = "";
+            String tempRule = "If: ";
             ArrayList<String> Rule = Rules.get(i);
             int ruleLen = Rule.size();
             for(int j = 0; j < ruleLen; j++){
+                if(j == ruleLen-3)
+                    tempRule = tempRule + "Then: ";
                 tempRule = tempRule + Rule.get(j) + " ";
             }
             existingRule.add(tempRule);

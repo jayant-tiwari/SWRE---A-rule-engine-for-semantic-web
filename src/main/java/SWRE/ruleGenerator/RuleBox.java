@@ -169,8 +169,6 @@ public class RuleBox {
         	
         	ArrayList<String> rule = new ArrayList<String>();
         	
-        	rule.add("If:");
-        	
         	Node nNode = nList.item(itr);
         	Element nElement = (Element) nNode;
         	
@@ -193,21 +191,20 @@ public class RuleBox {
 
     	    int loop = 0;
     	    while(loop<tempLength) {
-    	    	
-    	    	if(nNode.getNodeType() == Node.ELEMENT_NODE) {
-    	    		
-    	    		rule.add(eElement.getElementsByTagName("Subject").item(loop).getTextContent());
-    	    		
-    	    		if(loop < predicateLength)
-    	    			rule.add(eElement.getElementsByTagName("Predicate").item(loop).getTextContent());
-    	    		if(loop< objectLength)
-    	    			rule.add(eElement.getElementsByTagName("Object").item(loop).getTextContent());
-    	    		if(loop<connectorLength)
-    	    			rule.add(eElement.getElementsByTagName("Connector").item(loop).getTextContent());
-    	    		loop++;
-    	    	}
-    	    }
-    	    rule.add("Then:");
+
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                    rule.add(eElement.getElementsByTagName("Subject").item(loop).getTextContent());
+
+                    if (loop < predicateLength)
+                        rule.add(eElement.getElementsByTagName("Predicate").item(loop).getTextContent());
+                    if (loop < objectLength)
+                        rule.add(eElement.getElementsByTagName("Object").item(loop).getTextContent());
+                    if (loop < connectorLength)
+                        rule.add(eElement.getElementsByTagName("Connector").item(loop).getTextContent());
+                    loop++;
+                }
+            }
     	    rule.add(cElement.getElementsByTagName("Subject").item(0).getTextContent());
     	    rule.add(cElement.getElementsByTagName("Predicate").item(0).getTextContent());
     	    rule.add(cElement.getElementsByTagName("Object").item(0).getTextContent());

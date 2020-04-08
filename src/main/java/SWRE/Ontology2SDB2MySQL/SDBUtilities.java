@@ -45,8 +45,8 @@ public class SDBUtilities {
 	}
 	
 	// Reads the configuration file and updates JDBC variables 
-	public void JDBCinit() throws Exception{
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dbconfig.properties");
+	public static void JDBCinit() throws Exception{
+		InputStream inputStream = SDBUtilities.class.getClassLoader().getResourceAsStream("dbconfig.properties");
 		Properties property = new Properties();
 		property.load(inputStream);
 		jdbcURL = (String)property.get("SDB_URL");

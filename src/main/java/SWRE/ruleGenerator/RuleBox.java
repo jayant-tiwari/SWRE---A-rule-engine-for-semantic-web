@@ -1,10 +1,6 @@
-package ruleGenerator;
+package SWRE.ruleGenerator;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -26,7 +22,6 @@ import org.xml.sax.SAXException;
 
 
 /*
- * 
  * INSTEAD OF SIMPLE RULES AND RULE NODE IN XML, MENTION A PREFIX IN CONFIG
  * AND APPEND THAT HERE IN FRONT OF ALL THE NODE NAMES
  */
@@ -35,7 +30,7 @@ public class RuleBox {
 
 	private static String xmlFilename;
 	private static File xmlFile;
-	
+
 	public RuleBox() {
 		xmlFilename = null;
 		xmlFile = null;
@@ -44,22 +39,18 @@ public class RuleBox {
 	public void init() throws Exception {
 		
 		// Reading rules file of XML from dbconfig
-		FileInputStream fis = null;
-		try {
-		 fis = new FileInputStream("dbconfig.prop");
-		} catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		}
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dbconfig.properties");
 		Properties property = new Properties();
-		property.load(fis);
+		property.load(inputStream);
 		xmlFilename = (String)property.get("RULE_STORE");
-		
+		System.out.println(xmlFilename);
 		try {
 			xmlFile = new File(xmlFilename);
-			if(xmlFile.createNewFile()) {
+			boolean flag = xmlFile.createNewFile();
+			System.out.println(flag);
+			if(flag) {
 				FileWriter initXML = new FileWriter(xmlFilename);
-				initXML.write("<Rules>\n</Rules>");
+				initXML.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Rules>\n</Rules>");
 				initXML.close();
 			}
 			else {
@@ -73,7 +64,7 @@ public class RuleBox {
 	
 	
 	public void addRule(String Antecedent[], String Consequent[]) throws SAXException, IOException, TransformerConfigurationException {
-		
+
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = null;
 		try {
@@ -199,7 +190,7 @@ public class RuleBox {
     	    int objectLength = object.getLength();
     	    int connectorLength = connector.getLength();
     	    int tempLength = subjectLength;
-    	    
+
     	    int loop = 0;
     	    while(loop<tempLength) {
     	    	

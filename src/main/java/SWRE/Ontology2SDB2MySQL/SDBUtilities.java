@@ -1,7 +1,8 @@
-package Ontology2SDB2MySQL;
+package SWRE.Ontology2SDB2MySQL;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.jena.query.Dataset;
@@ -44,16 +45,10 @@ public class SDBUtilities {
 	}
 	
 	// Reads the configuration file and updates JDBC variables 
-	public static void JDBCinit() throws Exception{
-		FileInputStream fis = null;
-		try {
-			 fis = new FileInputStream("dbconfig.prop");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void JDBCinit() throws Exception{
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dbconfig.properties");
 		Properties property = new Properties();
-		property.load(fis);
+		property.load(inputStream);
 		jdbcURL = (String)property.get("SDB_URL");
 		dbusername = (String)property.get("SDB_USERNAME");
 		dbpassword = (String)property.get("SDB_PASSWORD");

@@ -1,6 +1,6 @@
 import org.apache.jena.query.ResultSet;
 
-import Ontology2SDB2MySQL.*;
+import SWRE.Ontology2SDB2MySQL.*;
 public class InsertTriples {
 	public static void main(String args[]) throws Exception {
 		String filename = "/home/mohit/git/SWRE---A-rule-engine-for-semantic-web/University.owl";

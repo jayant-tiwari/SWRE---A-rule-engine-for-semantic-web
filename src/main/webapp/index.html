@@ -1,5 +1,7 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+	  <meta charset="utf-8">
     <title>XYZ</title>
     <meta content="">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
@@ -12,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    
+	  <script type="text/javascript" src="js/ruleList.js"></script>
     <style>
     	.hide{display:none}
     </style>
@@ -32,10 +34,10 @@
 					</div>
 					<div class="col-lg-4"></div>
 					<div class="col-lg-2">
-					<button class="btn btn-info w-100" onclick="createRule()">Create New Rule</button>
+					<button class="btn btn-info w-100" <!--onclick="createRule()"-->>Create New Rule</button>
 					</div>
 					<div class="col-lg-2">
-					<button class="btn btn-primary w-100" onclick="submitE()">Submit</button>
+					<button class="btn btn-primary w-100" <!--onclick="submitE()"-->>Submit</button>
 					</div>					
 					<div class="col-lg-4"></div>
 				</div>
@@ -147,89 +149,4 @@
 		</div>
 	</div>
   </body>
-  <script>
-  var if_rules=[];
-  var existing_rules=[];
-  var then_rules={subject:"",predicate:"",object:""};
-  var existingrules=["Rule 1","Rule 2", "Rule 3","Rule 4"];
-  
-  function createRule(){
-  	 $('#existSection').hide();
-	  $('#ifSection').show();
-}
-  function existingRules(){
-	var str="";
-	for(var i=0;i<existingrules.length;i++){
-		str+=`
-			<div class="form-group">
-				<label class="form-check-label">
-					<input type="checkbox" class="form-check-input existing" value="${existingrules[i]}">${existingrules[i]}
-				</label>
-			</div>
-		`;
-	}
-	$('#existingrules').html(str);
-  }
-  existingRules();
-function addRule(){
-	var str="";
-	str+=`<div class="row mt-1">
-	<div class="col-lg-3 text-center">
-	<select class="form-control subject">
-	<option value="A">A</option>
-	<option value="B">B</option>
-	<option value="C">C</option>
-	</select>
-	</div>
-	<div class="col-lg-3 text-center">
-	<select class="form-control predicate">
-	<option value="A">A</option>
-	<option value="B">B</option>
-	<option value="C">C</option>
-	</select>
-	</div>
-	<div class="col-lg-3 text-center">
-	<select class="form-control object">
-	<option value="A">A</option>
-	<option value="B">B</option>
-	</select>
-	</div>
-	<div class="col-lg-3 text-center">
-	<select class="form-control and">
-	<option value="AND">AND</option>
-	<option value="OR">OR</option>
-	</select>
-	</div>
-	</div>`;
-	$('#ifrules').append(str);
-}
-
-function done(){
-	$('#thenSection').show();
-	var subject=$('.subject');
-	var predicate=$('.predicate');
-	var object=$('.object');
-	var and=$('.and');
-	console.log(subject);
-	for(var i=0;i<subject.length;i++){
-		var temp={subject:subject[i].value,predicate:predicate[i].value,object:object[i].value,and:and[i].value};
-		if_rules.push(temp);
-	}
-	console.log(rules);
-}
-function submitE(){
-	var existing=$('.existing');
-	for(var i=0;i<existing.length;i++){
-		if(existing[i].checked==true)
-		existing_rules.push(existing[i].value);
-	}
-	console.log(existing_rules);
-}
-function submit(){
-	then_rules.subject=$('#then_subject').val();
-	then_rules.predicate=$('#then_predicate').val();
-	then_rules.object=$('#then_object').val();
-	console.log(then_rules);
-}
-  </script>
 </html>

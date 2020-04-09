@@ -8,17 +8,7 @@ import SWRE.ruleGenerator.RuleBox;
 
 public class Test {
 	public static void main(String args[]) throws Exception {
-//		String filename = "University.owl";
-//		String namespace = "SWRE";
-//		String prefix = "http://www.iiitb.org/university#";
-////
-//		SDBUtilities.JDBCinit();
-////		// Create Database
-//		SDBUtilities.ont2SDB2SQL(filename, namespace, prefix);
-//		String query =  "PREFIX foo:<http://www.iiitb.org/university#>" +
-//						"SELECT *  WHERE{?s foo:studies foo:PS202}";
-//		ResultSet rs = SDBUtilities.SDBQuery(query);
-//		System.out.print(rs);
+
 		RuleBox obj = new RuleBox();
 		obj.init();
 
@@ -26,13 +16,13 @@ public class Test {
 		String[] ant = new String[7];
 		String[] con = new String[3];
 
-		ant[0]="teacher";
+		ant[0]="?teacher";
 		ant[1]="teaches";
-		ant[2]="course";
+		ant[2]="?course";
 		ant[3]="AND";
-		ant[4]="student";
-		ant[5]="enrolledIn";
-		ant[6]="course";
+		ant[4]="?student";
+		ant[5]="studies";
+		ant[6]="?course";
 
 		con[0]="student";
 		con[1]="isStudentOf";
@@ -56,8 +46,7 @@ public class Test {
 
 		SDBUtilities sdbUtilities = new SDBUtilities();
 		sdbUtilities.DBinit();
-		String query = "Select ?student ?teacher { ?teacher <http://www.iiitb.org/university#teaches> ?course . " +
-				"?student <http://www.iiitb.org/university#studies> ?course }";
+		String query = "Select ?student ?teacher { ?student <http://www.iiitb.org/university#isStudentOf> ?teacher}";
 		ResultSet rs = sdbUtilities.SDBQuery(query);
 		System.out.println(rs);
 

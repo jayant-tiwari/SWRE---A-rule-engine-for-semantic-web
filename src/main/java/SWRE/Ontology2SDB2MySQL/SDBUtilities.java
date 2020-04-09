@@ -104,7 +104,7 @@ public class SDBUtilities {
 		store.close();
 		connection.close();
 	}
-	
+
 	/*
 	 * Takes a SPARQL Query in the input and returns the respective output
 	 */
@@ -145,11 +145,7 @@ public class SDBUtilities {
 			temp.add(q.get(consequentSubject).toString());
 			temp.add(q.get(consequentObject).toString());
 			triple.add(temp);
-    			//System.out.println(q.get("p"));
-    			//System.out.println(rs["p"]);
-    			//System.out.println("Bansal");
 			}
-            //ResultSetFormatter.out(rs) ;
 		}
 		store.close();
 		connection.close();

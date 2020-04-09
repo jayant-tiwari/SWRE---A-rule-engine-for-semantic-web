@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 
 import org.apache.jena.query.ResultSet;
 
@@ -45,4 +45,31 @@ public class Test {
 //		}
 		System.out.println("Done");
 	}
+}*/
+
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
+import java.util.*;
+import Ontology2SDB2MySQL.*;
+public class Test {
+	//public static void main(String args[]) throws Exception {
+	    public static void forwardChaining(String query,String predicate,String then_subject,String then_object) throws Exception{
+		String filename = "/home/jayant/Desktop/University.owl";
+		String namespace = "MUNI";
+		String prefix = "http://www.iiitb.org/university#";
+		List<String> list = new ArrayList<String>();
+		SDBUtilities.JDBCinit();
+		// Create Database
+		// SDBUtilities.ont2SDB2SQL(filename, namespace, prefix);
+		ArrayList<ArrayList<String> > data = new ArrayList<ArrayList<String> >();
+		data = SDBUtilities.SDBQuery(query,then_subject,then_object);
+	            for(int i=0;i<data.size();i++)
+	            {
+	            	//System.out.println(data.get(i).get(0)+" "+data.get(i).get(1));
+	            	String rs =SDBUtilities.Inserttriples(filename,namespace,prefix,data.get(i).get(0),predicate,data.get(i).get(1));
+	            }
+		System.out.println("Done");
+	}
 }
+
+

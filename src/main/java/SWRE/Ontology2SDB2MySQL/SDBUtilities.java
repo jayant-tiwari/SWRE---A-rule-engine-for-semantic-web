@@ -109,7 +109,7 @@ public class SDBUtilities {
 	 * Takes a SPARQL Query in the input and returns the respective output
 	 */
 	
-	/*public static ResultSet SDBQuery(String queryString) {
+	public static ResultSet SDBQuery(String queryString) {
 		
 		ResultSet rs = null;
 		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
@@ -123,7 +123,7 @@ public class SDBUtilities {
             ResultSetFormatter.out(rs) ;
         }
 		return rs;
-	}*/
+	}
 	
 	public static ArrayList<ArrayList<String>> SDBQuery(String queryString, String consequentSubject, String consequentObject) {
 		
@@ -133,25 +133,26 @@ public class SDBUtilities {
 	SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
 	Store store = SDBFactory.connectStore(connection, storeDesc);
 	Dataset dataset = DatasetStore.create(store);
-        Query query = QueryFactory.create(queryString) ;
-        ArrayList<ArrayList<String> > triple = new ArrayList<ArrayList<String> >();
-        try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
-            rs = qe.execSelect() ;
+	Query query = QueryFactory.create(queryString) ;
+	ArrayList<ArrayList<String> > triple = new ArrayList<ArrayList<String> >();
+	try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
+		rs = qe.execSelect() ;
             
-            while(rs.hasNext()) {
-            	ArrayList<String> temp = new ArrayList<String>();
-    			QuerySolution q = rs.next();
+		while(rs.hasNext()) {
+			ArrayList<String> temp = new ArrayList<String>();
+			QuerySolution q = rs.next();
     			
-    			temp.add(q.get(consequentSubject).toString());
-    			temp.add(q.get(consequentObject).toString());
-    			triple.add(temp);
+			temp.add(q.get(consequentSubject).toString());
+			temp.add(q.get(consequentObject).toString());
+			triple.add(temp);
     			//System.out.println(q.get("p"));
     			//System.out.println(rs["p"]);
     			//System.out.println("Bansal");
-    		}
-
+			}
             //ResultSetFormatter.out(rs) ;
-        }
+		}
+		store.close();
+		connection.close();
 		return triple;
 	}
 	

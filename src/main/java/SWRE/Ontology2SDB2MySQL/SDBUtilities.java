@@ -3,15 +3,10 @@ package SWRE.Ontology2SDB2MySQL;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
-import org.apache.jena.query.Dataset;
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.query.ResultSetFormatter;
+import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.sdb.SDBFactory;
@@ -35,17 +30,27 @@ import org.apache.jena.sdb.store.LayoutType;
 public class SDBUtilities {
 	
 	// JDBC Configuration Variables
-	private static String jdbcURL = null;
-	private static String dbusername = null;
-	private static String dbpassword = null;
-	private static String jdbcDriver = null;
+	private static String jdbcURL;
+	private static String dbusername;
+	private static String dbpassword;
+	private static String jdbcDriver;
+	private static String ontology;
+	private static String ontologyPrefix;
+	private static String ontologyNamespace;
 	
 	public SDBUtilities() {
 		// TODO Auto-generated constructor stub
+		jdbcURL = null;
+		dbusername = null;
+		dbpassword = null;
+		jdbcDriver = null;
+		ontology = null;
+		ontologyPrefix = null;
+		ontologyNamespace = null;
 	}
 	
 	// Reads the configuration file and updates JDBC variables 
-	public static void JDBCinit() throws Exception{
+	public static void DBinit() throws Exception{
 		InputStream inputStream = SDBUtilities.class.getClassLoader().getResourceAsStream("dbconfig.properties");
 		Properties property = new Properties();
 		property.load(inputStream);
@@ -53,14 +58,17 @@ public class SDBUtilities {
 		dbusername = (String)property.get("SDB_USERNAME");
 		dbpassword = (String)property.get("SDB_PASSWORD");
 		setJdbcDriver((String)property.get("JDBC_DRIVER"));
+		ontology = property.getProperty("ONTOLOGY");
+		ontologyPrefix = property.getProperty("ONTOLOGY_PREFIX");
+		ontologyNamespace = property.getProperty("ONTOLOGY_NAMESPACE");
 	}
-	
+
 	/*
 	 * Function takes in an OWL RDF/XML file, a namespace and the main prefix
 	 * If connects the database for the first time, creates necessary changes in the database i.e. tables
 	 * Creates a SDB Store and parses the OWL into relational model 
 	 */
-	public static void ont2SDB2SQL(String filename, String namespace, String rdfprefix) {
+	public static void ont2SDB2SQL() {
 		
 		/* Creates a storage description for the MySQL Database, here TripleNodeHash means that each node in the RDF/XML file
 		 * will be provided a hash and the triples table will consists all the hashes.
@@ -77,8 +85,8 @@ public class SDBUtilities {
 		store.getTableFormatter().create();
 		// These models are provided by Jena. Use GraphDB if you want to store graphical data in relational format
 		Model model = SDBFactory.connectDefaultModel(store);
-		model.setNsPrefix(namespace,rdfprefix);
-		model.read(filename);
+		model.setNsPrefix(ontologyNamespace,ontologyPrefix);
+		model.read(ontology);
 		model.commit();
 		store.close();
 		connection.close();
@@ -117,7 +125,7 @@ public class SDBUtilities {
 		return rs;
 	}*/
 	
-	public static ArrayList<ArrayList<String> > SDBQuery(String queryString,String then_subject,String then_object) {
+	public static ArrayList<ArrayList<String>> SDBQuery(String queryString, String consequentSubject, String consequentObject) {
 		
 	ResultSet rs = null;
 	StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
@@ -126,18 +134,17 @@ public class SDBUtilities {
 	Store store = SDBFactory.connectStore(connection, storeDesc);
 	Dataset dataset = DatasetStore.create(store);
         Query query = QueryFactory.create(queryString) ;
-        ArrayList<ArrayList<String> > s = new ArrayList<ArrayList<String> >();
+        ArrayList<ArrayList<String> > triple = new ArrayList<ArrayList<String> >();
         try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
             rs = qe.execSelect() ;
             
-            while(rs.hasNext())
-    		{
+            while(rs.hasNext()) {
             	ArrayList<String> temp = new ArrayList<String>();
     			QuerySolution q = rs.next();
     			
-    			temp.add(q.get(then_subject).toString());
-    			temp.add(q.get(then_object).toString());
-    			s.add(temp);
+    			temp.add(q.get(consequentSubject).toString());
+    			temp.add(q.get(consequentObject).toString());
+    			triple.add(temp);
     			//System.out.println(q.get("p"));
     			//System.out.println(rs["p"]);
     			//System.out.println("Bansal");
@@ -145,13 +152,13 @@ public class SDBUtilities {
 
             //ResultSetFormatter.out(rs) ;
         }
-		return s;
+		return triple;
 	}
 	
 	/*
 	 * This method, creates a new resource for the predicate if the predicate is missing and if not, inserts the triple into the database
 	 */
-	public static String Inserttriples(String filename, String namespace, String rdfprefix,String sub,String pred,String obj) {
+	public static String insertTriples(String subject,String predicate,String object) {
 
 		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
 		JDBC.loadDriverMySQL();
@@ -161,12 +168,12 @@ public class SDBUtilities {
 		Store store = SDBFactory.connectStore(connection, storeDesc);
 		// These models are provided by Jena. Use GraphDB if you want to store graphical data in relational format
 		Model model = SDBFactory.connectDefaultModel(store);
-		model.setNsPrefix(namespace,rdfprefix);
-		model.read(filename);
+		model.setNsPrefix(ontologyNamespace,ontologyPrefix);
+		model.read(ontology);
 		//create new triples
-		org.apache.jena.rdf.model.Resource subject = model.createResource(rdfprefix+sub);
-		Property predicate = model.createProperty(rdfprefix+pred);
-		org.apache.jena.rdf.model.Resource object = model.createResource(rdfprefix+obj);
+		org.apache.jena.rdf.model.Resource subject = model.createResource( + subject);
+		Property predicate = model.createProperty(rdfprefix + predicate);
+		org.apache.jena.rdf.model.Resource object = model.createResource(rdfprefix + object);
 		//add triples in data base
 		model.add(subject,predicate,object);
 		model.commit();
@@ -182,4 +189,8 @@ public class SDBUtilities {
 	public static void setJdbcDriver(String jdbcDriver) {
 		SDBUtilities.jdbcDriver = jdbcDriver;
 	}
+
+	public static String getOntologyPrefix(){ return ontologyPrefix; }
+	public static String getOntologyNamespace () { return ontologyNamespace; }
+	public static String getOntology(){ return ontology; }
 }

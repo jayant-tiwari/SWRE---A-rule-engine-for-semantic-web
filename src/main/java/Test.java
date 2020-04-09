@@ -50,7 +50,7 @@ public class Test {
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import java.util.*;
-import Ontology2SDB2MySQL.*;
+import SWRE.Ontology2SDB2MySQL.*;
 public class Test {
 	//public static void main(String args[]) throws Exception {
 	    public static void forwardChaining(String query,String predicate,String then_subject,String then_object) throws Exception{
@@ -61,7 +61,7 @@ public class Test {
 		SDBUtilities.JDBCinit();
 		// Create Database
 		// SDBUtilities.ont2SDB2SQL(filename, namespace, prefix);
-		ArrayList<ArrayList<String> > data = new ArrayList<ArrayList<String> >();
+		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String> >();
 		data = SDBUtilities.SDBQuery(query,then_subject,then_object);
 	            for(int i=0;i<data.size();i++)
 	            {

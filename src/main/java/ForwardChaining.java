@@ -10,7 +10,7 @@ public class ForwardChaining{
 		foo = foo+"<http://www.iiitb.org/university#";
 		List<String> queries = new ArrayList<String>();
 		ArrayList<String> x = new ArrayList<String>();
-	        ArrayList<String> y = new ArrayList<String>();
+		ArrayList<String> y = new ArrayList<String>();
 		rule.add(new ArrayList<String>());
 		rule.get(0).add(0,"teacher");
 		rule.get(0).add(1,"teaches");

@@ -16,8 +16,21 @@ public class Chaining {
     public static String createQuery(ArrayList<String> Rule, String prefix){
 
         String query = "";
+	//Next 5 lines to be made generic and removed from here 
+	String filename = "/home/jayant/Desktop/University.owl";
+	String namespace = "MUNI";
+	String prefix="http://www.iiitb.org/university#";
+	String rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+	String owl="http://www.w3.org/2002/07/owl#";
         int len = Rule.size();
-
+	//To initiate database connection
+	SDBUtilities.JDBCinit();
+	/*
+	 *Calls overloaded Inserttriples method ,
+	 *this method is to insert into the database that the predicate in the then part of a new rule is also a object property
+	 */
+	String status = SDBUtilities.Inserttriples(filename, namespace, prefix, rdf, owl, rule.get(i).get(len-2),"type", "ObjectProperty");
+	System.out.println(status);
         // ONLY AND CONNECTOR
         if(len>6 && (Rule.get(3)).equals("AND")) {
 

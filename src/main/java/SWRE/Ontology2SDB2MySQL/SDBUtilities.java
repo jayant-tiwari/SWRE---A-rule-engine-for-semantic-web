@@ -178,7 +178,119 @@ public class SDBUtilities {
 		connection.close();
 		return "success";
 	}
+	
+	//This is the start point of Mechanism For Classes And Object Property retrieval commit
+	
+	//This method is to insert into the database that the predicate in the then part of a new rule is also a object property
+	public static String Inserttriples(String filename, String namespace, String prefix,String rdf,String owl,String sub,String pred,String obj) {
 
+		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
+		JDBC.loadDriverMySQL();
+		// Connecting SDB to JDBC
+		SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
+		// Each table/database in SDB is considered as a store
+		Store store = SDBFactory.connectStore(connection, storeDesc);
+		// These models are provided by Jena. Use GraphDB if you want to store graphical data in relational format
+		Model model = SDBFactory.connectDefaultModel(store);
+		model.setNsPrefix(namespace,prefix);
+		model.read(filename);
+		//create new triples
+		org.apache.jena.rdf.model.Resource subject = model.createResource(prefix+sub);
+		Property predicate = model.createProperty(rdf+pred);
+		org.apache.jena.rdf.model.Resource object = model.createResource(owl+obj);
+		//add triples in data base
+		model.add(subject,predicate,object);
+		model.commit();
+		store.close();
+		connection.close();
+		return "success";
+	}
+	
+	//This method returns name of all the classes
+	public static ArrayList<String> getClasses() {
+	int i,j;
+	String temp ="";
+	ResultSet rs = null;
+	StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
+	JDBC.loadDriverMySQL();
+	SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
+	Store store = SDBFactory.connectStore(connection, storeDesc);
+	Dataset dataset = DatasetStore.create(store);
+	String queryString = "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>" +
+			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+			"PREFIX owl:<http://www.w3.org/2002/07/owl#>"+
+			"SELECT ?x  WHERE { ?x rdf:type owl:Class}";
+	String output_column_header = "x";
+   	Query query = QueryFactory.create(queryString) ;
+    	ArrayList<String> s = new ArrayList<String>();
+    
+    	try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
+        rs = qe.execSelect() ;
+        
+        while(rs.hasNext())
+		{
+        	temp="";
+			QuerySolution q = rs.next();
+			//s.add(q.get(output_column_header).toString());
+			temp=q.get(output_column_header).toString();
+			for(i=0;i<temp.length();i++)
+			{
+				if(temp.charAt(i)=='#')
+				{
+					break;
+				}
+			}
+			temp=temp.substring(i+1,temp.length());
+			s.add(temp);
+		}
+        
+    	}
+	return s;
+	}	 
+
+	//This method returns names of all object properties
+	public static ArrayList<String> getObjectProperties() {
+	int i,j;
+	String temp ="";
+	ResultSet rs = null;
+	StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
+	JDBC.loadDriverMySQL();
+	SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
+	Store store = SDBFactory.connectStore(connection, storeDesc);
+	Dataset dataset = DatasetStore.create(store);
+	String queryString = "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>" +
+			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+			"PREFIX owl:<http://www.w3.org/2002/07/owl#>"+
+			"SELECT distinct ?p WHERE { ?x ?p ?q . ?p rdf:type owl:ObjectProperty .}";
+	String output_column_header = "p";
+    	Query query = QueryFactory.create(queryString) ;
+    	ArrayList<String> s = new ArrayList<String>();
+    
+    	try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
+        rs = qe.execSelect() ;
+        
+        while(rs.hasNext())
+		{
+        	temp="";
+			QuerySolution q = rs.next();
+			//s.add(q.get(output_column_header).toString());
+			temp=q.get(output_column_header).toString();
+			for(i=0;i<temp.length();i++)
+			{
+				if(temp.charAt(i)=='#')
+				{
+					break;
+				}
+			}
+			temp=temp.substring(i+1,temp.length());
+			s.add(temp);
+		}
+        
+    	}
+	return s;
+	} 
+	//This is the end point of the commit
+	
 	public static String getJdbcDriver() {
 		return jdbcDriver;
 	}

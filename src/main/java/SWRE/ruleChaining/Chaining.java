@@ -1,6 +1,7 @@
 package SWRE.ruleChaining;
 
 import SWRE.Ontology2SDB2MySQL.SDBUtilities;
+import org.apache.jena.base.Sys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,11 +71,28 @@ public class Chaining {
             // Obtaing triples due to the above query
             int ruleLength = Rule.size();
             String subject = Rule.get(ruleLength-3);
+            String predicate = Rule.get(ruleLength-2);
             String object = Rule.get(ruleLength-1);
             ArrayList<ArrayList<String>> triples = sdbUtilities.SDBQuery(query,subject,object);
-            // Update the fact table for triples obtained from the above query
 
+            int l = triples.size();
+            for(int i=0;i<l;i++){
+                int l1 = triples.get(i).size();
+                for(int j=0;j<l1;j++){
+                    System.out.print(triples.get(i).get(j)+" ");
+                }
+                System.out.println();
+            }
+
+            // Update the fact table for triples obtained from the above query
+            int tripleLength = triples.size();
+            String status = "";
+            for(int loop1 = 0; loop1 < tripleLength; loop1++){
+                subject = triples.get(loop1).get(0);
+                object = triples.get(loop1).get(1);
+                status = sdbUtilities.insertTriples(subject,predicate,object);
+            }
+            System.out.println(status);
         }
     }
 }
-Test.forwardChaining(temp,rule.get(i).get(len-2),rule.get(i).get(len-3),rule.get(i).get(len-1));

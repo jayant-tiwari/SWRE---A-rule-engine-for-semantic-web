@@ -171,11 +171,11 @@ public class SDBUtilities {
 		model.setNsPrefix(ontologyNamespace,ontologyPrefix);
 		model.read(ontology);
 		//create new triples
-		org.apache.jena.rdf.model.Resource subject = model.createResource( + subject);
-		Property predicate = model.createProperty(rdfprefix + predicate);
-		org.apache.jena.rdf.model.Resource object = model.createResource(rdfprefix + object);
+		org.apache.jena.rdf.model.Resource Subject = model.createResource(ontologyPrefix + subject);
+		Property Predicate = model.createProperty(ontologyPrefix + predicate);
+		org.apache.jena.rdf.model.Resource Object = model.createResource(ontologyPrefix + object);
 		//add triples in data base
-		model.add(subject,predicate,object);
+		model.add(Subject,Predicate,Object);
 		model.commit();
 		store.close();
 		connection.close();

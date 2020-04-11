@@ -91,5 +91,6 @@
     <orderEntry type="library" name="Maven: org.apache.jena:jena-cmds:3.14.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.7.26" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:1.0-SNAPSHOT" level="project" />
   </component>
 </module>

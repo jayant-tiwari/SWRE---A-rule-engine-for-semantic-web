@@ -1,130 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-	  <meta charset="utf-8">
-    <title>SWRE</title>
-    <meta content="">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- Popper.JS -->
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-	  <script type="text/javascript" src="js/ruleList.js"></script>
-    <style>
-    	.hide{display:none}
-    </style>
-  </head>
-  <body>
-	<div class="container mt-3">
-		<div class="row">
-			<div class="col-lg-12 border p-3" id="existSection">
-				<div class="row">
-					<div class="col-lg-12 text-center">
-						<h3>Existing Rules</h3>
-					</div>
-					<div class="col-lg-12 pl-5 pr-5">
-						<div id="existingrules">
-							
-						</div>
-					</div>
-					<div class="col-lg-4"></div>
-					<div class="col-lg-2">
-					<button class="btn btn-info w-100" <!--onclick="createRule()"-->>Create New Rule</button>
-					</div>
-					<div class="col-lg-2">
-					<button class="btn btn-primary w-100" <!--onclick="submitE()"-->>Submit</button>
-					</div>					
-					<div class="col-lg-4"></div>
+<head>
+	<meta charset="utf-8">
+	<title>SWRE</title>
+	<meta content="">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Popper.JS -->
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/ruleList.js"></script>
+	<style>
+		.hide{display:none}
+	</style>
+</head>
+<body>
+<div class="container mt-3">
+	<div class="row">
+		<div class="col-lg-12 border p-3" id="existSection">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<h3>Existing Rules</h3>
 				</div>
+				<div class="col-lg-12 pl-5 pr-5">
+					<div id="existingrules">
+
+					</div>
+				</div>
+				<div class="col-lg-4"></div>
+				<div class="col-lg-2">
+					<button class="btn btn-info w-100" onclick="createRule()">Create New Rule</button>
+				</div>
+				<div class="col-lg-2">
+					<button class="btn btn-primary w-100" onclick="submitE()">Submit</button>
+				</div>
+				<div class="col-lg-4"></div>
 			</div>
 		</div>
-		<div class="row mt-2 hide" id="ifSection">
-			<div class="col-lg-12 border p-3">
-				<div class="row">
-					<div class="col-lg-12 text-center">
-						<h3>If Rules</h3>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-3">
-						<h5>Subject</h5>
-					</div>
-					<div class="col-lg-3">
-						<h5>Predicate</h5>
-					</div>
-					<div class="col-lg-3">
-						<h5>Object</h5>
-					</div>
-					<div class="col-lg-3">
-						<h5>AND/OR</h5>
-					</div>
-				</div>
-				<div id="ifrules" class="mb-2">
-				<div class="row mt-1">
-					<div class="col-lg-3 text-center">
-						<select class="form-control subject">
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-						</select>
-					</div>
-					<div class="col-lg-3 text-center">
-						<select class="form-control predicate">
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-						</select>
-					</div>
-					<div class="col-lg-3 text-center">
-						<select class="form-control object">
-							<option value="A">A</option>
-							<option value="B">B</option>
-						</select>
-					</div>
-					<div class="col-lg-3 text-center">
-						<select class="form-control and">
-							<option value="AND">AND</option>
-							<option value="OR">OR</option>
-						</select>
-					</div>
-				</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-4"></div>
-					<div class="col-lg-2">
-						<button class="btn btn-info w-100" onclick="addRule()">Add</button>
-					</div>
-					<div class="col-lg-2">
-						<button class="btn btn-primary w-100" onclick="done()">Done</button>
-					</div>					
-					<div class="col-lg-4"></div>
+	</div>
+	<div class="row mt-2 hide" id="ifSection">
+		<div class="col-lg-12 border p-3">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<h3>If Rules</h3>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-lg-3">
+					<h5>Subject</h5>
+				</div>
+				<div class="col-lg-3">
+					<h5>Predicate</h5>
+				</div>
+				<div class="col-lg-3">
+					<h5>Object</h5>
+				</div>
+				<div class="col-lg-3">
+					<h5>AND/OR</h5>
+				</div>
+			</div>
+			<div id="ifrules" class="mb-2">
+
+			</div>
+			<div class="row">
+				<div class="col-lg-4"></div>
+				<div class="col-lg-2">
+					<button class="btn btn-info w-100" onclick="addRule()">Add</button>
+				</div>
+				<div class="col-lg-2">
+					<button class="btn btn-primary w-100" onclick="done()">Done</button>
+				</div>
+				<div class="col-lg-4"></div>
+			</div>
 		</div>
-		<div class="row mt-2 hide" id="thenSection">
-			<div class="col-lg-12 border p-3">
-				<div class="row">
-					<div class="col-lg-12 text-center">
-						<h3>Then Rules</h3>
-					</div>
+	</div>
+	<div class="row mt-2 hide" id="thenSection">
+		<div class="col-lg-12 border p-3">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<h3>Then Rules</h3>
 				</div>
-				<div class="row">
-					<div class="col-lg-4">
-						<h5>Subject</h5>
-					</div>
-					<div class="col-lg-4">
-						<h5>Predicate</h5>
-					</div>
-					<div class="col-lg-4">
-						<h5>Object</h5>
-					</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					<h5>Subject</h5>
 				</div>
-				<div id="ifrules" class="mb-2">
+				<div class="col-lg-4">
+					<h5>Predicate</h5>
+				</div>
+				<div class="col-lg-4">
+					<h5>Object</h5>
+				</div>
+			</div>
+			<div id="thenrules" class="mb-2">
 				<div class="row">
 					<div class="col-lg-4 text-center">
 						<input type="text" id="then_subject" placeholder="Enter Value" class="form-control">
@@ -135,18 +108,18 @@
 					<div class="col-lg-4 text-center">
 						<input type="text" id="then_object" placeholder="Enter Value" class="form-control">
 					</div>
-					
+
 				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-5"></div>
+				<div class="col-lg-2">
+					<button class="btn btn-success w-100" onclick="submit()">Submit</button>
 				</div>
-				<div class="row">
-					<div class="col-lg-5"></div>
-					<div class="col-lg-2">
-						<button class="btn btn-success w-100" onclick="submit()">Submit</button>
-					</div>
-					<div class="col-lg-5"></div>
-				</div>
+				<div class="col-lg-5"></div>
 			</div>
 		</div>
 	</div>
-  </body>
+</div>
+</body>
 </html>

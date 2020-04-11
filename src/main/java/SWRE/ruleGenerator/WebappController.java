@@ -1,10 +1,11 @@
 package SWRE.ruleGenerator;
 
+import SWRE.Ontology2SDB2MySQL.OWLUtilities;
+import SWRE.Ontology2SDB2MySQL.SDBUtilities;
+import SWRE.RuleJson;
 import SWRE.ruleGenerator.RuleBox;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -34,5 +35,39 @@ public class WebappController {
             existingRule.add(tempRule);
         }
         return Response.ok().entity(existingRule).build();
+    }
+
+
+    @POST
+    @Path("/userule")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.TEXT_PLAIN})
+    public String updateDetails(RuleJson re){
+        System.out.println("Aya");
+        for(int i=0;i<re.getRules().size();i++){
+            System.out.println(re.getRules().get(i));
+        }
+        return "done";
+    }
+
+
+    @Path("/getNode")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response fetchClasses() throws Exception {
+        System.out.println("hello");
+        SDBUtilities sdbUtilities = new SDBUtilities();
+        sdbUtilities.DBinit();
+        OWLUtilities owlUtilities = new OWLUtilities(sdbUtilities);
+        ArrayList<String>classname= owlUtilities.getNode();
+        ArrayList<String>properties= owlUtilities.getObjectProperties();
+        ArrayList<ArrayList<String>>create= new ArrayList<ArrayList<String>>();
+
+        for (String s : classname) System.out.println(s);
+        for (String s : properties) System.out.println(s);
+
+        create.add(classname);
+        create.add(properties);
+        return Response.ok().entity(create).build();
     }
 }

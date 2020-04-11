@@ -1,21 +1,14 @@
 package SWRE.Ontology2SDB2MySQL;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Properties;
-
-import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Property;
 import org.apache.jena.sdb.SDBFactory;
 import org.apache.jena.sdb.Store;
 import org.apache.jena.sdb.StoreDesc;
 import org.apache.jena.sdb.sql.JDBC;
 import org.apache.jena.sdb.sql.SDBConnection;
 import org.apache.jena.sdb.store.DatabaseType;
-import org.apache.jena.sdb.store.DatasetStore;
 import org.apache.jena.sdb.store.LayoutType;
 
 /*
@@ -37,6 +30,9 @@ public class SDBUtilities {
 	private static String ontology;
 	private static String ontologyPrefix;
 	private static String ontologyNamespace;
+	private static StoreDesc storeDesc;
+	private static SDBConnection sdbconnection;
+	private static Store store;
 	
 	public SDBUtilities() {
 		// TODO Auto-generated constructor stub
@@ -47,8 +43,24 @@ public class SDBUtilities {
 		ontology = null;
 		ontologyPrefix = null;
 		ontologyNamespace = null;
+		storeDesc = null;
+		sdbconnection = null;
+		store = null;
 	}
-	
+
+	public static String getJdbcDriver() {
+		return jdbcDriver;
+	}
+	public static void setJdbcDriver(String jdbcDriver) {
+		SDBUtilities.jdbcDriver = jdbcDriver;
+	}
+	public static String getOntologyPrefix(){ return ontologyPrefix; }
+	public static String getOntologyNamespace () { return ontologyNamespace; }
+	public static String getOntology(){ return ontology; }
+	public static StoreDesc getStoreDesc(){ return storeDesc; }
+	public static SDBConnection getSdbconnection() { return sdbconnection; }
+	public static Store getStore() { return store; }
+
 	// Reads the configuration file and updates JDBC variables 
 	public static void DBinit() throws Exception{
 		InputStream inputStream = SDBUtilities.class.getClassLoader().getResourceAsStream("dbconfig.properties");
@@ -61,6 +73,25 @@ public class SDBUtilities {
 		ontology = property.getProperty("ONTOLOGY");
 		ontologyPrefix = property.getProperty("ONTOLOGY_PREFIX");
 		ontologyNamespace = property.getProperty("ONTOLOGY_NAMESPACE");
+		/* Creates a storage description for the MySQL Database, here TripleNodeHash means that each node in the RDF/XML file
+		 * will be provided a hash and the triples table will consists all the hashes.
+		 * The specified database is MySQL
+		 */
+		storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
+		JDBC.loadDriverMySQL();
+		// Connecting SDB to JDBC
+		sdbconnection = new SDBConnection(jdbcURL, dbusername, dbpassword);
+		// Each table/database in SDB is considered as a store
+		store = SDBFactory.connectStore(sdbconnection, storeDesc);
+	}
+
+	/*
+	 * For better handling of database, minimise loose ends
+	 */
+
+	public static void DBclose(){
+		store.close();
+		sdbconnection.close();
 	}
 
 	/*
@@ -69,18 +100,7 @@ public class SDBUtilities {
 	 * Creates a SDB Store and parses the OWL into relational model 
 	 */
 	public static void ont2SDB2SQL() {
-		
-		/* Creates a storage description for the MySQL Database, here TripleNodeHash means that each node in the RDF/XML file
-		 * will be provided a hash and the triples table will consists all the hashes.
-		 * The specified database is MySQL
-		 */
-		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
-		
-		JDBC.loadDriverMySQL();
-		// Connecting SDB to JDBC
-		SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
-		// Each table/database in SDB is considered as a store
-		Store store = SDBFactory.connectStore(connection, storeDesc);
+
 		// One time operation. Formats the tables in database namely, Nodes, Triples, Prefix and Quads
 		store.getTableFormatter().create();
 		// These models are provided by Jena. Use GraphDB if you want to store graphical data in relational format
@@ -88,218 +108,13 @@ public class SDBUtilities {
 		model.setNsPrefix(ontologyNamespace,ontologyPrefix);
 		model.read(ontology);
 		model.commit();
-		store.close();
-		connection.close();
 	}
 	
 	/*
-	 * Kills the database in MySQL 
+	 * Kills the database in MySQL and re-arranges the database
 	 */
 	public static void dbstoreKill() {
-		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
-		JDBC.loadDriverMySQL();
-		SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
-		Store store = SDBFactory.connectStore(connection, storeDesc);
+
 		store.getTableFormatter().truncate();
-		store.close();
-		connection.close();
 	}
-
-	/*
-	 * Takes a SPARQL Query in the input and returns the respective output
-	 */
-	
-	public static ResultSet SDBQuery(String queryString) {
-		
-		ResultSet rs = null;
-		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
-		JDBC.loadDriverMySQL();
-		SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
-		Store store = SDBFactory.connectStore(connection, storeDesc);
-		Dataset dataset = DatasetStore.create(store);
-        Query query = QueryFactory.create(queryString) ;
-        try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
-            rs = qe.execSelect() ;
-            ResultSetFormatter.out(rs) ;
-        }
-		return rs;
-	}
-	
-	public static ArrayList<ArrayList<String>> SDBQuery(String queryString, String consequentSubject, String consequentObject) {
-		
-	ResultSet rs = null;
-	StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
-	JDBC.loadDriverMySQL();
-	SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
-	Store store = SDBFactory.connectStore(connection, storeDesc);
-	Dataset dataset = DatasetStore.create(store);
-	Query query = QueryFactory.create(queryString) ;
-	ArrayList<ArrayList<String> > triple = new ArrayList<ArrayList<String> >();
-	try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
-		rs = qe.execSelect() ;
-            
-		while(rs.hasNext()) {
-			ArrayList<String> temp = new ArrayList<String>();
-			QuerySolution q = rs.next();
-    			
-			temp.add(q.get(consequentSubject).toString());
-			temp.add(q.get(consequentObject).toString());
-			triple.add(temp);
-			}
-		}
-		store.close();
-		connection.close();
-		return triple;
-	}
-	
-	/*
-	 * This method, creates a new resource for the predicate if the predicate is missing and if not, inserts the triple into the database
-	 */
-	public static String insertTriples(String subject,String predicate,String object) {
-
-		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
-		JDBC.loadDriverMySQL();
-		// Connecting SDB to JDBC
-		SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
-		// Each table/database in SDB is considered as a store
-		Store store = SDBFactory.connectStore(connection, storeDesc);
-		// These models are provided by Jena. Use GraphDB if you want to store graphical data in relational format
-		Model model = SDBFactory.connectDefaultModel(store);
-		model.setNsPrefix(ontologyNamespace,ontologyPrefix);
-		model.read(ontology);
-		//create new triples
-		org.apache.jena.rdf.model.Resource Subject = model.createResource(ontologyPrefix + subject);
-		Property Predicate = model.createProperty(ontologyPrefix + predicate);
-		org.apache.jena.rdf.model.Resource Object = model.createResource(ontologyPrefix + object);
-		//add triples in data base
-		model.add(Subject,Predicate,Object);
-		model.commit();
-		store.close();
-		connection.close();
-		return "success";
-	}
-	
-	//This is the start point of Mechanism For Classes And Object Property retrieval commit
-	
-	//This method is to insert into the database that the predicate in the then part of a new rule is also a object property
-	public static String Inserttriples(String filename, String namespace, String prefix,String rdf,String owl,String sub,String pred,String obj) {
-
-		StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
-		JDBC.loadDriverMySQL();
-		// Connecting SDB to JDBC
-		SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
-		// Each table/database in SDB is considered as a store
-		Store store = SDBFactory.connectStore(connection, storeDesc);
-		// These models are provided by Jena. Use GraphDB if you want to store graphical data in relational format
-		Model model = SDBFactory.connectDefaultModel(store);
-		model.setNsPrefix(namespace,prefix);
-		model.read(filename);
-		//create new triples
-		org.apache.jena.rdf.model.Resource subject = model.createResource(prefix+sub);
-		Property predicate = model.createProperty(rdf+pred);
-		org.apache.jena.rdf.model.Resource object = model.createResource(owl+obj);
-		//add triples in data base
-		model.add(subject,predicate,object);
-		model.commit();
-		store.close();
-		connection.close();
-		return "success";
-	}
-	
-	//This method returns name of all the classes
-	public static ArrayList<String> getClasses() {
-	int i,j;
-	String temp ="";
-	ResultSet rs = null;
-	StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
-	JDBC.loadDriverMySQL();
-	SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
-	Store store = SDBFactory.connectStore(connection, storeDesc);
-	Dataset dataset = DatasetStore.create(store);
-	String queryString = "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>" +
-			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
-			"PREFIX owl:<http://www.w3.org/2002/07/owl#>"+
-			"SELECT ?x  WHERE { ?x rdf:type owl:Class}";
-	String output_column_header = "x";
-   	Query query = QueryFactory.create(queryString) ;
-    	ArrayList<String> s = new ArrayList<String>();
-    
-    	try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
-        rs = qe.execSelect() ;
-        
-        while(rs.hasNext())
-		{
-        	temp="";
-			QuerySolution q = rs.next();
-			//s.add(q.get(output_column_header).toString());
-			temp=q.get(output_column_header).toString();
-			for(i=0;i<temp.length();i++)
-			{
-				if(temp.charAt(i)=='#')
-				{
-					break;
-				}
-			}
-			temp=temp.substring(i+1,temp.length());
-			s.add(temp);
-		}
-        
-    	}
-	return s;
-	}	 
-
-	//This method returns names of all object properties
-	public static ArrayList<String> getObjectProperties() {
-	int i,j;
-	String temp ="";
-	ResultSet rs = null;
-	StoreDesc storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
-	JDBC.loadDriverMySQL();
-	SDBConnection connection = new SDBConnection(jdbcURL, dbusername, dbpassword);
-	Store store = SDBFactory.connectStore(connection, storeDesc);
-	Dataset dataset = DatasetStore.create(store);
-	String queryString = "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>" +
-			"PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
-			"PREFIX owl:<http://www.w3.org/2002/07/owl#>"+
-			"SELECT distinct ?p WHERE { ?x ?p ?q . ?p rdf:type owl:ObjectProperty .}";
-	String output_column_header = "p";
-    	Query query = QueryFactory.create(queryString) ;
-    	ArrayList<String> s = new ArrayList<String>();
-    
-    	try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
-        rs = qe.execSelect() ;
-        
-        while(rs.hasNext())
-		{
-        	temp="";
-			QuerySolution q = rs.next();
-			//s.add(q.get(output_column_header).toString());
-			temp=q.get(output_column_header).toString();
-			for(i=0;i<temp.length();i++)
-			{
-				if(temp.charAt(i)=='#')
-				{
-					break;
-				}
-			}
-			temp=temp.substring(i+1,temp.length());
-			s.add(temp);
-		}
-        
-    	}
-	return s;
-	} 
-	//This is the end point of the commit
-	
-	public static String getJdbcDriver() {
-		return jdbcDriver;
-	}
-
-	public static void setJdbcDriver(String jdbcDriver) {
-		SDBUtilities.jdbcDriver = jdbcDriver;
-	}
-
-	public static String getOntologyPrefix(){ return ontologyPrefix; }
-	public static String getOntologyNamespace () { return ontologyNamespace; }
-	public static String getOntology(){ return ontology; }
 }

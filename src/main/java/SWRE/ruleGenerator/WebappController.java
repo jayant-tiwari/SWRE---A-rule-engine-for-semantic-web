@@ -2,8 +2,6 @@ package SWRE.ruleGenerator;
 
 import SWRE.Ontology2SDB2MySQL.OWLUtilities;
 import SWRE.Ontology2SDB2MySQL.SDBUtilities;
-import SWRE.RuleJson;
-import SWRE.ruleGenerator.RuleBox;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -37,16 +35,23 @@ public class WebappController {
         return Response.ok().entity(existingRule).build();
     }
 
-
+    /*
+     * Supposing the rules will be given in RuleJson class format and completing the function
+     *                                                                                  - Parth
+     */
     @POST
     @Path("/userule")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.TEXT_PLAIN})
-    public String updateDetails(RuleJson re){
+    public String updateDetails(RuleJson re) throws Exception {
         System.out.println("Aya");
         for(int i=0;i<re.getRules().size();i++){
             System.out.println(re.getRules().get(i));
         }
+        String[] antecedent = new String[0], consequent = new String[0];
+        RuleBox ruleBox = new RuleBox();
+        ruleBox.init();
+        ruleBox.addRule(antecedent,consequent);
         return "done";
     }
 

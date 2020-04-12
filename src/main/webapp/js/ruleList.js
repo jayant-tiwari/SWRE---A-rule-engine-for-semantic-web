@@ -41,7 +41,7 @@ function createRule(){
     });
     $('#existSection').hide();
     $('#ifSection').show();
-    //addRule();
+    addRule();
 }
 function addRule(){
 

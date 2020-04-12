@@ -18,6 +18,7 @@ $.get(api,function(rule,status){
         $('#existingrules').html(str);
     }
 });
+
 // toggle to create rule page
 function createRule(){
     var api = "webapi/Rule/getNode";
@@ -107,17 +108,22 @@ function done(){
     console.log(if_rules);
 
 }
-//function for submit exitsiting rule and send to server
-function submitE(){
-    var existing=$('.existing');
-    for(var i=0;i<existing.length;i++){
+/*
+ * Converts all the user-defined existing rules into an array of indeces
+ */
+function existingRuleSubmit(){
+    var existing = $('.existing');
+    var len = existing.length;
+
+    for(var i=0;i<len;i++){
         if(existing[i].checked==true)
             existing_rules.push(existing[i].value);
     }
+
     console.log(JSON.stringify(existing_rules));
     var data=JSON.stringify({rules:existing_rules});
     $.ajax({
-        url: 'webapi/Rule/userule',
+        url: 'webapi/Rule/existingRules',
         type: "POST",
         data: data,
         //enctype:'multipart/form-data',
@@ -144,7 +150,7 @@ function submit(){
     var data=JSON.stringify({antecedent:if_rules,consequent:then_rules});
     console.log(data);
     $.ajax({
-        url: 'webapi/Rule/createrule',
+        url: 'webapi/Rule/newRule',
         type: "POST",
         data: data,
         processData: false,
@@ -156,7 +162,7 @@ function submit(){
             //location.reload(true);
             $('#existSection').hide();
             $('#ifSection').show();
-            alert(rule);
+            alert("done");
         }
     });
 }

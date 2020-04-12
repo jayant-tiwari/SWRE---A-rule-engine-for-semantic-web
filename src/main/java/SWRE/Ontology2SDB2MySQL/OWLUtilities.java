@@ -41,7 +41,8 @@ public class OWLUtilities {
     }
 
     /*
-     * @ JAYANT, ADD METHOD DESCRIPTION
+     * For each new predicate(object property), some data-properties are tagged with them. Thus, a triple needs to be
+     * inserted for each of the new predicate
      */
 
     public static String insertTriples(String rdf, String owl ,String subject , String predicate, String object) {
@@ -131,8 +132,7 @@ public class OWLUtilities {
                 QuerySolution querySolution = rs.next();
                 String tempNode = querySolution.get(outputColumnHeader).toString();
                 String[] Node = tempNode.split("#",0);
-                node.add(Node[Node.length-1]);
-                System.out.println(Node[Node.length-1]);
+                node.add("?" + Node[Node.length-1]);
             }
         }
         return node;
@@ -162,7 +162,6 @@ public class OWLUtilities {
                 String tempObjectProperty = querySolution.get(outputColumnHeader).toString();
                 String[] trimmedObjectProperty = tempObjectProperty.split("#",0);
                 objectProperty.add(trimmedObjectProperty[trimmedObjectProperty.length-1]);
-                System.out.println(trimmedObjectProperty[trimmedObjectProperty.length-1]);
             }
         }
         return objectProperty;

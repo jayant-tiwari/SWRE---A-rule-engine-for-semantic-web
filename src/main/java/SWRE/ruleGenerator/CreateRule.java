@@ -10,7 +10,7 @@ public class CreateRule {
 
     public CreateRule(List<String> antecedent,List<String> consequent) {
         this.antecedent = antecedent;
-       this. consequent = consequent;
+        this. consequent = consequent;
     }
 
     public List<String> getAntecedent() {

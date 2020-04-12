@@ -2,8 +2,10 @@ var if_rules=[];
 var existing_rules=[];
 var classes=[];
 var propertis=[];
-var then_rules={subject:"",predicate:"",object:""};
+var then_rules=[];
+var count=1;
 var api = "webapi/Rule";
+//Ajax function for fetch rules from server
 $.get(api,function(rule,status){
 
     if(status === "success"){
@@ -11,75 +13,101 @@ $.get(api,function(rule,status){
         alert(rule);
         var l = rule.length;
         for(var i=0;i<l;i++){
-
-            str+=`
-			<div class="form-group">
-				<label class="form-check-label">
-					<input type="checkbox" class="form-check-input existing" value="${i}">${rule[i]}
-				</label>
-			</div>
-		`;
+            str+=`<div class="form-group"><label class="form-check-label"><input type="checkbox" class="form-check-input existing" value="${i}">${rule[i]}</label></div>`;
         }
         $('#existingrules').html(str);
     }
 });
-
+// toggle to create rule page
 function createRule(){
     var api = "webapi/Rule/getNode";
     $.get(api,function(create,status) {
         if (status === "success") {
            alert(create);
-            alert(create.length);
-                for (var i = 0; i<create[0].length; i++)
-                    classes.push(create[0][i]);
-                //console.log(classes);
-                for (var j = 0; j< create[1].length; j++)
-                    propertis.push(create[1][j]);
+            for (var i = 0; i<create[0].length; i++)
+                classes.push(create[0][i]);
+            for (var j = 0; j< create[1].length; j++)
+                propertis.push(create[1][j]);
         }
         else
             alert("fail");
     });
     $('#existSection').hide();
     $('#ifSection').show();
-    addRule();
+    //addRule();
 }
+//function for adding new row in if rule
 function addRule(){
+    var str="";
+    str+=`<div class="row mt-1"> <div class="col-lg-3 text-center"><select class="form-control subject" onchange="checkValues(this.value,`+count+`)">`;
+    for(var i=0;i<classes.length;i++){
+        str+=`<option value="`+classes[i]+`">`+classes[i]+`</option>`;
+    }
+    str+=`<option value="other">Other</option></select><input type="text" id="s`+count+`" placeholder="Enter Subject" class="form-control hide"></div><div class="col-lg-3 text-center"><select class="form-control predicate">`;
+    for(var i=0;i<propertis.length;i++){
+        str+=`<option value="`+propertis[i]+`">`+propertis[i]+`</option>`;
+    }
+    str+=`</select></div><div class="col-lg-3 text-center"><select class="form-control object" onchange="checkValueo(this.value,`+count+`)">`;
 
-            var str="";
-            str+=`<div class="row mt-1">
-            <div class="col-lg-3 text-center">
-            <select class="form-control subject">`;
-            for(var i=0;i<classes.length;i++){
-                str+=` <option value="`+classes[i]+`">`+classes[i]+`</option>`;
-            }
-            str+=`</select></div> <div class="col-lg-3 text-center"><select class="form-control predicate">`;
-            for(var i=0;i<propertis.length;i++){
-                str+=` <option value="`+propertis[i]+`">`+propertis[i]+`</option>`;
-            }
-            str+=`</select> </div> <div class="col-lg-3 text-center"><select class="form-control object">`;
-
-            for(var i=0;i<classes.length;i++){
-                str+=` <option value="`+classes[i]+`">`+classes[i]+`</option>`;
-            }
-            str+=`</select> </div> <div class="col-lg-3 text-center"><select class="form-control and"><option value="AND">AND</option>
-            <option value="OR">OR</option> </select></div></div>`;
-
-            $('#ifrules').append(str);
+    for(var i=0;i<classes.length;i++){
+        str+=`<option value="`+classes[i]+`">`+classes[i]+`</option>`;
+    }
+    str+=`<option value="other">Other</option></select><input type="text" id="o`+count+`" placeholder="Enter Object" class="form-control hide"></div><div class="col-lg-3 text-center"><select class="form-control and"><option value="AND">AND</option><option value="OR">OR</option> </select></div></div>`;
+    $('#ifrules').append(str);
+    count++;
 }
-
+// function for done if rule and get then rule div....
 function done(){
     $('#thenSection').show();
+    if_rules=[];
     var subject=$('.subject');
     var predicate=$('.predicate');
     var object=$('.object');
     var and=$('.and');
-    console.log(subject);
+    var s=[];
+    var o=[];
+    //storing if rules value into array of string;
     for(var i=0;i<subject.length;i++){
-        var temp={subject:subject[i].value,predicate:predicate[i].value,object:object[i].value,and:and[i].value};
-        if_rules.push(temp);
+        if(subject[i].value==="other") {
+            if_rules.push($("#s" + (i + 1)).val());
+            s.push($("#s" + (i + 1)).val());
+        }
+        else {
+            if_rules.push(subject[i].value);
+            s.push(subject[i].value);
+        }
+
+        if_rules.push(predicate[i].value);
+
+        if(object[i].value==="other") {
+            if_rules.push($("#o" + (i + 1)).val());
+            o.push($("#o" + (i + 1)).val());
+        }
+        else {
+            if_rules.push(object[i].value);
+            o.push(object[i].value);
+        }
+
+        if(i<subject.length-1)
+        if_rules.push(and[i].value);
     }
-    console.log(rules);
+    var union= [...new Set([...s, ...o])];
+    var str="";
+    str+=`<div class="row"><div class="col-lg-4 text-center"><select class="form-control" id="then_subject">`;
+    for(var i=0;i<union.length;i++){
+        str+=`<option value="`+union[i]+`">`+union[i]+`</option>`;
+    }
+    str+=`</select></div><div class="col-lg-4 text-center"><input type="text" id="then_predicate" placeholder="Enter Value" class="form-control"></div> <div class="col-lg-4 text-center"><select class="form-control" id="then_object">`;
+    for(var i=0;i<union.length;i++){
+        str+=`<option value="`+union[i]+`">`+union[i]+`</option>`;
+    }
+    str+=`</select></div> </div>`;
+    $('#thenrules').html(str);
+
+    console.log(if_rules);
+
 }
+//function for submit exitsiting rule and send to server
 function submitE(){
     var existing=$('.existing');
     for(var i=0;i<existing.length;i++){
@@ -87,9 +115,6 @@ function submitE(){
             existing_rules.push(existing[i].value);
     }
     console.log(JSON.stringify(existing_rules));
-    // var data = new FormData();
-    // for(var i=0;i<existing_rules.length;i++)
-    // data.append("rules",existing_rules[i]);
     var data=JSON.stringify({rules:existing_rules});
     $.ajax({
         url: 'webapi/Rule/userule',
@@ -108,9 +133,47 @@ function submitE(){
 
     });
 }
+//submit new rule and send to server
 function submit(){
-    then_rules.subject=$('#then_subject').val();
-    then_rules.predicate=$('#then_predicate').val();
-    then_rules.object=$('#then_object').val();
+    then_rules=[];
+
+    then_rules.push($('#then_subject').val());
+    then_rules.push($('#then_predicate').val());
+    then_rules.push($('#then_object').val());
     console.log(then_rules);
+    var data=JSON.stringify({antecedent:if_rules,consequent:then_rules});
+    console.log(data);
+    $.ajax({
+        url: 'webapi/Rule/createrule',
+        type: "POST",
+        data: data,
+        processData: false,
+        contentType: 'application/json',
+        cache: false,
+        async: true,
+        timeout: 60000,
+        success: function (rule,status) {
+            //location.reload(true);
+            $('#existSection').hide();
+            $('#ifSection').show();
+            alert(rule);
+        }
+    });
 }
+//function for show input field for other option
+function checkValues(val,id) {
+    console.log(id);
+    if(val==="other"){
+        $("#s"+id).show();
+    }
+    else
+        $("#s"+id).hide();
+}
+function checkValueo(val,id) {
+    if(val==="other"){
+        $("#o"+id).show();
+    }
+    else
+        $("#o"+id).hide();
+}
+

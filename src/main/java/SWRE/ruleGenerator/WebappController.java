@@ -32,6 +32,7 @@ public class WebappController {
             }
             existingRule.add(tempRule);
         }
+        for(String s:existingRule)System.out.println(s);
         return Response.ok().entity(existingRule).build();
     }
 
@@ -74,5 +75,21 @@ public class WebappController {
         create.add(classname);
         create.add(properties);
         return Response.ok().entity(create).build();
+    }
+
+    @POST
+    @Path("/createrule")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.TEXT_PLAIN})
+    public String creatNewrule(CreateRule re) throws Exception {
+        System.out.println("Aya");
+        for(int i=0;i<re.getAntecedent().size();i++){
+            System.out.println(re.getAntecedent().get(i));
+        }
+        for(int i=0;i<re.getConsequent().size();i++){
+            System.out.println(re.getConsequent().get(i));
+        }
+
+        return "done";
     }
 }

@@ -29,12 +29,12 @@ public class Chaining {
         // ONLY AND CONNECTOR
         if(len>6 && (Rule.get(3)).equals("AND")) {
 
-            query = query + "SELECT ?" + Rule.get(len-3)+" ?" + Rule.get(len-1)+" { ";
+            query = query + "SELECT " + Rule.get(len-3)+" " + Rule.get(len-1)+" { ";
             for(int loop = 0; loop < len-3; loop = loop+3) {
 
-                query = query + "?" + (Rule.get(loop))+" ";
+                query = query +  Rule.get(loop)+" ";
                 query = query + "<"+ prefix + (Rule.get(loop+1)) + "> ";
-                query = query + "?" + Rule.get(loop+2) + " ";
+                query = query +  Rule.get(loop+2) + " ";
 
                 // For AND connector
                 if(loop+3<len-3) {
@@ -46,11 +46,11 @@ public class Chaining {
         }
         // ONLY OR CONNECTOR
         else if(len>6 && (Rule.get(3)).equals("OR")) {
-            query = query + "SELECT ?" + Rule.get(len - 3) + " ?" + Rule.get(len - 1) + " { ";
+            query = query + "SELECT " + Rule.get(len - 3) + " " + Rule.get(len - 1) + " { ";
             for (int loop = 0; loop < len - 3; loop = loop + 3) {
-                query = query + "{ ?" + (Rule.get(loop)) + " ";
+                query = query + "{ " + (Rule.get(loop)) + " ";
                 query = query + "<" + prefix + (Rule.get(loop + 1)) + "> ";
-                query = query + "?" + Rule.get(loop + 2) + " } ";
+                query = query + Rule.get(loop + 2) + " } ";
                 if (loop + 3 < len - 3) {
                     query = query + "UNION ";
                     loop++;
@@ -60,10 +60,10 @@ public class Chaining {
         }
         else if(len==6){
 
-            query = query + "SELECT ?" + Rule.get(len - 3) + " ?" + Rule.get(len - 1) + " { ";
-            query = query + "?" + (Rule.get(0)) + " ";
+            query = query + "SELECT " + Rule.get(len - 3) + " " + Rule.get(len - 1) + " { ";
+            query = query + (Rule.get(0)) + " ";
             query = query + "<" + prefix + (Rule.get(1)) + "> ";
-            query = query + "?" + (Rule.get(2)) + " }";
+            query = query + (Rule.get(2)) + " }";
         }
         return query;
     }

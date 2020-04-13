@@ -15,29 +15,45 @@ public class Chaining {
 
     public static String createQuery(ArrayList<String> Rule, OWLUtilities owlUtilities, String prefix) throws Exception {
 
-	int index,loop=0;
-    	String left="";
-    	String right="";
-        String query = "";
+	    int index,loop=0;
+    	    String left="";
+    	    String right="";
+            String query = "";
 	    String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	    String owl = "http://www.w3.org/2002/07/owl#";
-        int len = Rule.size();
+            int len = Rule.size();
 	    /*
 	     *   Calls overloaded Inserttriples method ,
 	     *   this method is to insert into the database that the predicate in the then part of a new rule is also a object property
 	     */
 	    String status = owlUtilities.insertTriples(rdf, owl, Rule.get(len-2),"type", "ObjectProperty");
 	    System.out.println(status);
-        // ONLY AND CONNECTOR
-        query=query + "SELECT " + Rule.get(len-3) + " " + Rule.get(len-1) + " { ";
-	    left=Rule.get(0) + " <" + prefix + Rule.get(1) + "> " + Rule.get(2) + " ";
+        
+       	    query=query + "SELECT " + Rule.get(len-3) + " " + Rule.get(len-1) + " { ";
+	    if(Rule.get(0).charAt(0)=='?')
+	    left=Rule.get(0);
+	    else
+	    left = " <" + prefix + Rule.get(0) +"> ";
+	    left = left + " <" + prefix + Rule.get(1) + "> " ;
+	    if(Rule.get(2).charAt(0)=='?')
+	    left = left + Rule.get(2) + " ";
+	    else
+	    left = left + "<" + prefix + Rule.get(2) + "> ";
 	    //index refer to the index of connector being considered currently
 	    index=(3*(loop+1))+loop;
-	    while(index<len)
+	    while(index<len-3)
 	    {
 	    	loop++;
 	    	//right holds the subject,predicate,object present immediately after the connector 
-	    	right = Rule.get(index+1) + " <" + prefix + Rule.get(index+2) + "> " + Rule.get(index+3) + " ";
+	    	if(Rule.get(index+1).charAt(0)=='?')
+	    	right = Rule.get(index+1) ;
+	    	else
+	    	right = " <" + prefix + Rule.get(index+1) + "> " ;
+	    	right = right + " <" + prefix + Rule.get(index+2) + "> " ;
+	    	if(Rule.get(index+3).charAt(0)=='?')
+	    	right = right + Rule.get(index+3) + " ";
+	    	else
+	    	right = right + "<" + prefix + Rule.get(index+3) + "> ";
 	    	
 	    	//left holds entire query before the present connector
 	    	
@@ -54,6 +70,7 @@ public class Chaining {
 	    	index=(3*(loop+1))+loop;
 	    }
 	    query = query + left + " }";
+
         return query;
     }
 

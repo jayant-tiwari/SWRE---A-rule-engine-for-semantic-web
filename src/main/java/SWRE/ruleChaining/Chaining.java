@@ -15,6 +15,9 @@ public class Chaining {
 
     public static String createQuery(ArrayList<String> Rule, OWLUtilities owlUtilities, String prefix) throws Exception {
 
+	int index,loop=0;
+    	String left="";
+    	String right="";
         String query = "";
 	    String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	    String owl = "http://www.w3.org/2002/07/owl#";
@@ -26,44 +29,31 @@ public class Chaining {
 	    String status = owlUtilities.insertTriples(rdf, owl, Rule.get(len-2),"type", "ObjectProperty");
 	    System.out.println(status);
         // ONLY AND CONNECTOR
-        if(len>6 && (Rule.get(3)).equals("AND")) {
-
-            query = query + "SELECT " + Rule.get(len-3)+" " + Rule.get(len-1)+" { ";
-            for(int loop = 0; loop < len-3; loop = loop+3) {
-
-                query = query +  Rule.get(loop)+" ";
-                query = query + "<"+ prefix + (Rule.get(loop+1)) + "> ";
-                query = query +  Rule.get(loop+2) + " ";
-
-                // For AND connector
-                if(loop+3<len-3) {
-                    query = query + ". ";
-                    loop++;
-                }
-            }
-            query  = query + "}";
-        }
-        // ONLY OR CONNECTOR
-        else if(len>6 && (Rule.get(3)).equals("OR")) {
-            query = query + "SELECT " + Rule.get(len - 3) + " " + Rule.get(len - 1) + " { ";
-            for (int loop = 0; loop < len - 3; loop = loop + 3) {
-                query = query + "{ " + (Rule.get(loop)) + " ";
-                query = query + "<" + prefix + (Rule.get(loop + 1)) + "> ";
-                query = query + Rule.get(loop + 2) + " } ";
-                if (loop + 3 < len - 3) {
-                    query = query + "UNION ";
-                    loop++;
-                }
-            }
-            query = query + "}";
-        }
-        else if(len==6){
-
-            query = query + "SELECT " + Rule.get(len - 3) + " " + Rule.get(len - 1) + " { ";
-            query = query + (Rule.get(0)) + " ";
-            query = query + "<" + prefix + (Rule.get(1)) + "> ";
-            query = query + (Rule.get(2)) + " }";
-        }
+        query=query + "SELECT " + Rule.get(len-3) + " " + Rule.get(len-1) + " { ";
+	    left=Rule.get(0) + " <" + prefix + Rule.get(1) + "> " + Rule.get(2) + " ";
+	    //index refer to the index of connector being considered currently
+	    index=(3*(loop+1))+loop;
+	    while(index<len)
+	    {
+	    	loop++;
+	    	//right holds the subject,predicate,object present immediately after the connector 
+	    	right = Rule.get(index+1) + " <" + prefix + Rule.get(index+2) + "> " + Rule.get(index+3) + " ";
+	    	
+	    	//left holds entire query before the present connector
+	    	
+	    	
+	    	if((Rule.get(index)).equals("OR"))
+	    	{
+	    		left = "{ " + left + " }" + " UNION " + "{ " + right + " }";
+	    	}
+	    	else if((Rule.get(index)).equals("AND"))
+	    	{
+	    		left = left + " . " + right;
+	    	}
+	    	//updating index to get to next connector
+	    	index=(3*(loop+1))+loop;
+	    }
+	    query = query + left + " }";
         return query;
     }
 

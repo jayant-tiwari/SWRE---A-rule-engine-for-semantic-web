@@ -23,7 +23,7 @@ public class WebappController {
     public static Response showRules() throws Exception {
 
         RuleBox obj = new RuleBox();
-        obj.init();
+        obj.init(true);
         ArrayList<ArrayList<String>> Rules = obj.getRules();
         if(Rules == null)   return Response.noContent().build();
         ArrayList<String> existingRule = new ArrayList<>();
@@ -39,9 +39,6 @@ public class WebappController {
             }
             existingRule.add(tempRule);
         }
-        // REMOVE THIS LINE##########################################
-        for(String s:existingRule)System.out.println(s);
-
         return Response.ok().entity(existingRule).build();
     }
 
@@ -54,20 +51,25 @@ public class WebappController {
     @Produces({MediaType.TEXT_PLAIN})
     public String updateDetails(RuleJson ruleIndex) throws Exception {
 
-        System.out.println("Enter existing rules");
+        System.out.println("Existing Rules");
         int len = ruleIndex.getRules().size();
         ruleCache = new ArrayList<>();
 
         RuleBox ruleBox = new RuleBox();
-        ruleBox.init();
+        ruleBox.init(true);
         ArrayList<ArrayList<String>> rules = ruleBox.getRules();
 
         for(int i=0;i<len;i++){
             int idx = Integer.parseInt(ruleIndex.getRules().get(i));
             ruleCache.add(rules.get(idx));
         }
+        System.out.println("\t\t\t*****************FORWARD CHAINING*****************");
         Chaining.ForwardChaining(ruleCache);
-        System.out.println("Exit existing rules");
+        System.out.println("\t\t\t######Selected Explicit Rules Parsed######");
+        ruleBox.init(false);
+        ruleCache = ruleBox.getRules();
+        Chaining.ForwardChaining(ruleCache);
+        System.out.println("\t\t\t######Implicit Rules Parsed######");
         return "done";
     }
 
@@ -75,7 +77,7 @@ public class WebappController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response fetchClasses() throws Exception {
-        System.out.println("hello");
+        System.out.println("Fetching Class and ObjectProperty");
         OWLUtilities owlUtilities = new OWLUtilities();
         ArrayList<String>classname= owlUtilities.getNode();
         ArrayList<String>properties= owlUtilities.getObjectProperties();
@@ -104,18 +106,9 @@ public class WebappController {
         for(int i=0;i<3;i++){
             consequent[i] = re.getConsequent().get(i);
         }
-
         RuleBox ruleBox = new RuleBox();
-        ruleBox.init();
+        ruleBox.init(true);
         ruleBox.addRule(antecedent,consequent);
-        System.out.println("Rule Added");
-        ArrayList<ArrayList<String>> rule = ruleBox.getRules();
-        for(int i=0;i<rule.size();i++){
-            for(int j=0;j<rule.get(i).size();j++){
-                System.out.print(rule.get(i).get(j)+" ");
-            }
-            System.out.println();
-        }
         return "done";
     }
 }

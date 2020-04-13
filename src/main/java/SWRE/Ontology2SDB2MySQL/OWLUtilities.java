@@ -29,7 +29,7 @@ public class OWLUtilities {
     /*
      * This method, creates a new resource for the predicate if the predicate is missing and if not, inserts the triple into the database
      */
-    public static String insertTriples(String subject,String predicate,String object) {
+    public static void insertTriples(String subject,String predicate,String object) {
 
         Model model = SDBFactory.connectDefaultModel(sdbUtilities.getStore());
         model.setNsPrefix(sdbUtilities.getOntologyNamespace(),sdbUtilities.getOntologyPrefix());
@@ -41,8 +41,6 @@ public class OWLUtilities {
         //add triples in data base
         model.add(Subject,Predicate,Object);
         model.commit();
-
-        return "success";
     }
 
     /*
@@ -50,7 +48,7 @@ public class OWLUtilities {
      * inserted for each of the new predicate
      */
 
-    public static String insertTriples(String rdf, String owl ,String subject , String predicate, String object) {
+    public static void insertTriples(String rdf, String owl ,String subject , String predicate, String object) {
 
         Model model = SDBFactory.connectDefaultModel(sdbUtilities.getStore());
         model.setNsPrefix(sdbUtilities.getOntologyNamespace(),sdbUtilities.getOntologyPrefix());
@@ -62,8 +60,6 @@ public class OWLUtilities {
         //add triples in data base
         model.add(Subject, Predicate, Object);
         model.commit();
-
-        return "success";
     }
 
     /*

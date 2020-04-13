@@ -22,8 +22,10 @@ import org.xml.sax.SAXException;
 
 
 /*
- * INSTEAD OF SIMPLE RULES AND RULE NODE IN XML, MENTION A PREFIX IN CONFIG
- * AND APPEND THAT HERE IN FRONT OF ALL THE NODE NAMES
+ * This class deals with
+ * 1. Initializing XML files for both implicit and explicit rules
+ * 2. Adding a new rule to the respective implicit or explicit rule file
+ * 3. Retrieving all the rules from the respective implicit or explicit rule file
  */
 
 public class RuleBox {
@@ -35,26 +37,39 @@ public class RuleBox {
 		xmlFilename = null;
 		xmlFile = null;
 	}
-	
-	public void init() throws Exception {
+
+	/*
+	 * Initializes the XML Rule files i.e. the explicit (user given) and implicit (present in OWL Ontology) rules
+	 */
+	public void init(boolean isExplicit) throws Exception {
 		
 		// Reading rules file of XML from dbconfig
 		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dbconfig.properties");
 		Properties property = new Properties();
 		property.load(inputStream);
-		xmlFilename = (String)property.get("RULE_STORE");
+
+		/*
+		 * isExplicit = True when the object is to be initialised with explicit rule xml file
+		 * isExplicit = False when the object is to be initialised with implicit rule xml file (Rules existing in the ontology)
+		 */
+		if(isExplicit == true)
+			xmlFilename = (String)property.get("EXPLICIT_RULE_STORE");
+		else
+			xmlFilename = (String)property.get("IMPLICIT_RULE_STORE");
 		System.out.println(xmlFilename);
+
 		try {
 			xmlFile = new File(xmlFilename);
 			boolean flag = xmlFile.createNewFile();
-			System.out.println(flag);
 			if(flag) {
 				FileWriter initXML = new FileWriter(xmlFilename);
 				initXML.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Rules>\n</Rules>");
 				initXML.close();
+				if(isExplicit == false)
+						ImplicitRule.createImplicitRule();
 			}
 			else {
-				System.out.print("File Exists");
+				System.out.println("In RuleBox init, Rule Exists");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -62,7 +77,9 @@ public class RuleBox {
 		}
 	}
 	
-	
+	/*
+	 * This method takes an array of antecedents and consequent and pushes them into the relative XML file
+	 */
 	public void addRule(String Antecedent[], String Consequent[]) throws SAXException, IOException, TransformerConfigurationException {
 
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -91,7 +108,9 @@ public class RuleBox {
 		rootElement.appendChild(rule);
 		Element antecedent = document.createElement("Antecendent");
 		Element consequent = document.createElement("Consequent");
-	    
+
+		// Generating the antecedent part
+
 	    for(int i = 0; i < antecedentLength; i++) {
 	    	
 	    	switch(type) {
@@ -121,7 +140,9 @@ public class RuleBox {
 	    			break;
 	    	}
 	    }
-	    
+
+	    // Generating the consequent part
+
 	    Element subject = document.createElement("Subject");
 		subject.appendChild(document.createTextNode(Consequent[0]));
 		consequent.appendChild(subject);
@@ -146,7 +167,13 @@ public class RuleBox {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/*
+	 * This method parses the complete XML file and reads all the rules present in the file to generate a 2D rule matrix
+	 * This rule matrix is of size  N x (4M+2)
+	 * where N is the number of different rules
+	 */
+
 	public ArrayList<ArrayList<String>> getRules() throws SAXException, IOException{
 		
 		ArrayList<ArrayList<String>> ruleList = new ArrayList<ArrayList<String>>();

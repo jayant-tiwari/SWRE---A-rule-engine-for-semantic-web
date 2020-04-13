@@ -26,10 +26,9 @@ public class Chaining {
 	     *   Calls overloaded Inserttriples method ,
 	     *   this method is to insert into the database that the predicate in the then part of a new rule is also a object property
 	     */
-	    String status = owlUtilities.insertTriples(rdf, owl, Rule.get(len-2),"type", "ObjectProperty");
-	    System.out.println(status);
-        
-       	    query=query + "SELECT " + Rule.get(len-3) + " " + Rule.get(len-1) + " { ";
+	    owlUtilities.insertTriples(rdf, owl, Rule.get(len-2),"type", "ObjectProperty");
+
+	    query=query + "SELECT " + Rule.get(len-3) + " " + Rule.get(len-1) + " { ";
 	    if(Rule.get(0).charAt(0)=='?')
 	    left=Rule.get(0);
 	    else
@@ -119,33 +118,23 @@ public class Chaining {
 
                 int numberOfTriplesGenerated = triples.size();
 
-                System.out.println(numberOfTriplesGenerated);
-
-                if(previousNumberOfTriples[loop] == -1)
+                if(previousNumberOfTriples[loop] == -1) {
                     previousNumberOfTriples[loop] = numberOfTriplesGenerated;
+                    System.out.println("Iteration " + pass + " Rule " + loop + " yeilded " + numberOfTriplesGenerated + " new triples");
+                }
                 else if(previousNumberOfTriples[loop] == numberOfTriplesGenerated)
                     noNewTripleForRuleCount++;
                 else {
                     previousNumberOfTriples[loop] = numberOfTriplesGenerated;
-                    System.out.println("Iteration " + pass + " Rule " + loop + "yeilded new triples");
+                    System.out.println("Iteration " + pass + " Rule " + loop + " yeilded " + numberOfTriplesGenerated + " new triples");
                 }
-
-//                int l = triples.size();
-//                for (int i = 0; i < l; i++) {
-//                    int l1 = triples.get(i).size();
-//                    for (int j = 0; j < l1; j++) {
-//                        System.out.print(triples.get(i).get(j) + " ");
-//                    }
-//                    System.out.println();
-//                }
 
                 // Update the fact table for triples obtained from the above query
                 int tripleLength = triples.size();
-                String status = "";
                 for (int loop1 = 0; loop1 < tripleLength; loop1++) {
                     subject = triples.get(loop1).get(0);
                     object = triples.get(loop1).get(1);
-                    status = owlUtilities.insertTriples(subject, predicate, object);
+                    owlUtilities.insertTriples(subject, predicate, object);
                 }
             }
             // No new triple generated for the iteration

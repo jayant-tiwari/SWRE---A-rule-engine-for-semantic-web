@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import SWRE.ruleChaining.Chaining;
+import SWRE.ruleGenerator.ImplicitRule;
 import org.apache.jena.query.ResultSet;
 
 import SWRE.Ontology2SDB2MySQL.*;
@@ -14,22 +15,23 @@ public class Test {
 //		System.out.println(status);
 
 
-		//String query = "SELECT ?Student ?Faculty { ?Faculty <http://www.iiitb.org/university#teaches> ?Course . ?Student <http://www.iiitb.org/university#opts> ?Course }";
-		String query = "SELECT ?Student1 ?Student2 { ?Student1 <http://www.iiitb.org/university#isFriendOf> ?Student2} order by ?Student1";
-		OWLUtilities owlUtilities = new OWLUtilities();
-		ResultSet rs = OWLUtilities.SDBQuery(query);
-		System.out.println(rs);
+		//ImplicitRule.createImplicitRule();
 
-		/*
+		//String query = "SELECT ?Student ?Faculty { ?Faculty <http://www.iiitb.org/university#teaches> ?Course . ?Student <http://www.iiitb.org/university#opts> ?Course }";
+//		String query = "SELECT ?Student1 ?Student2 { ?Student1 <http://www.iiitb.org/university#isFriendOf> ?Student2} order by ?Student1";
+//		OWLUtilities owlUtilities = new OWLUtilities();
+//		ResultSet rs = OWLUtilities.SDBQuery(query);
+//		System.out.println(rs);
+
+
 		RuleBox ruleBox = new RuleBox();
-		ruleBox.init();
+		ruleBox.init(true);
 		ArrayList<ArrayList<String>> ruleList = ruleBox.getRules();
 		ArrayList<ArrayList<String>> rule = new ArrayList<>();
-		for(String a:ruleList.get(1))
+		for(String a:ruleList.get(0))
 			System.out.print(a + " ");
 		System.out.println();
-		rule.add(ruleList.get(1));
-		Chaining.ForwardChaining(rule); */
+		Chaining.ForwardChaining(ruleList);
 
 //		RuleBox obj = new RuleBox();
 //		obj.init();

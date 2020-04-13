@@ -99,7 +99,7 @@ public class SDBUtilities {
 	 * If connects the database for the first time, creates necessary changes in the database i.e. tables
 	 * Creates a SDB Store and parses the OWL into relational model 
 	 */
-	public static void ont2SDB2SQL() {
+	public static String ont2SDB2SQL() {
 
 		// One time operation. Formats the tables in database namely, Nodes, Triples, Prefix and Quads
 		store.getTableFormatter().create();
@@ -108,6 +108,8 @@ public class SDBUtilities {
 		model.setNsPrefix(ontologyNamespace,ontologyPrefix);
 		model.read(ontology);
 		model.commit();
+
+		return "success";
 	}
 	
 	/*

@@ -2,6 +2,7 @@ package SWRE.ruleGenerator;
 
 import SWRE.Ontology2SDB2MySQL.OWLUtilities;
 import SWRE.Ontology2SDB2MySQL.SDBUtilities;
+import SWRE.ruleChaining.Chaining;
 import org.apache.jena.base.Sys;
 
 import javax.ws.rs.*;
@@ -15,7 +16,7 @@ public class WebappController {
     /*
      * For each run, certain rules get stored in the cache i.e. rules selected by the user for one run
      */
-    ArrayList<ArrayList<String> > ruleCache = null;
+    static private ArrayList<ArrayList<String> > ruleCache = null;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,6 +54,7 @@ public class WebappController {
     @Produces({MediaType.TEXT_PLAIN})
     public String updateDetails(RuleJson ruleIndex) throws Exception {
 
+        System.out.println("Enter existing rules");
         int len = ruleIndex.getRules().size();
         ruleCache = new ArrayList<>();
 
@@ -64,7 +66,8 @@ public class WebappController {
             int idx = Integer.parseInt(ruleIndex.getRules().get(i));
             ruleCache.add(rules.get(idx));
         }
-
+        Chaining.ForwardChaining(ruleCache);
+        System.out.println("Exit existing rules");
         return "done";
     }
 
@@ -73,9 +76,7 @@ public class WebappController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response fetchClasses() throws Exception {
         System.out.println("hello");
-        SDBUtilities sdbUtilities = new SDBUtilities();
-        sdbUtilities.DBinit();
-        OWLUtilities owlUtilities = new OWLUtilities(sdbUtilities);
+        OWLUtilities owlUtilities = new OWLUtilities();
         ArrayList<String>classname= owlUtilities.getNode();
         ArrayList<String>properties= owlUtilities.getObjectProperties();
         ArrayList<ArrayList<String>>create= new ArrayList<ArrayList<String>>();

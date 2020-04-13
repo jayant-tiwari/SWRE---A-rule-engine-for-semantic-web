@@ -8,6 +8,28 @@ import SWRE.ruleGenerator.RuleBox;
 
 public class Test {
 	public static void main(String args[]) throws Exception {
+//		SDBUtilities sdbUtilities = new SDBUtilities();
+//		sdbUtilities.DBinit();
+//		String status = sdbUtilities.ont2SDB2SQL();
+//		System.out.println(status);
+
+
+		//String query = "SELECT ?Student ?Faculty { ?Faculty <http://www.iiitb.org/university#teaches> ?Course . ?Student <http://www.iiitb.org/university#opts> ?Course }";
+		String query = "SELECT ?Student1 ?Student2 { ?Student1 <http://www.iiitb.org/university#isFriendOf> ?Student2} order by ?Student1";
+		OWLUtilities owlUtilities = new OWLUtilities();
+		ResultSet rs = OWLUtilities.SDBQuery(query);
+		System.out.println(rs);
+
+		/*
+		RuleBox ruleBox = new RuleBox();
+		ruleBox.init();
+		ArrayList<ArrayList<String>> ruleList = ruleBox.getRules();
+		ArrayList<ArrayList<String>> rule = new ArrayList<>();
+		for(String a:ruleList.get(1))
+			System.out.print(a + " ");
+		System.out.println();
+		rule.add(ruleList.get(1));
+		Chaining.ForwardChaining(rule); */
 
 //		RuleBox obj = new RuleBox();
 //		obj.init();

@@ -159,10 +159,11 @@ function submit(){
         async: true,
         timeout: 60000,
         success: function (rule,status) {
-            //location.reload(true);
-            $('#existSection').hide();
-            $('#ifSection').show();
-            alert("done");
+            // //location.reload(true);
+            // $('#existSection').hide();
+            // $('#ifSection').show();
+            // alert("done");
+            location.reload(true);
         }
     });
 }

@@ -17,6 +17,11 @@ public class OWLUtilities {
 
     private static SDBUtilities sdbUtilities = null;
 
+    public OWLUtilities() throws Exception {
+        sdbUtilities = new SDBUtilities();
+        sdbUtilities.DBinit();
+    }
+
     public OWLUtilities(SDBUtilities sdbUtilities){
         this.sdbUtilities = sdbUtilities;
     }
@@ -30,9 +35,9 @@ public class OWLUtilities {
         model.setNsPrefix(sdbUtilities.getOntologyNamespace(),sdbUtilities.getOntologyPrefix());
         model.read(sdbUtilities.getOntology());
         //create new triples
-        org.apache.jena.rdf.model.Resource Subject = model.createResource(sdbUtilities.getOntologyPrefix() + subject);
+        org.apache.jena.rdf.model.Resource Subject = model.createResource( subject);
         Property Predicate = model.createProperty(sdbUtilities.getOntologyPrefix() + predicate);
-        org.apache.jena.rdf.model.Resource Object = model.createResource(sdbUtilities.getOntologyPrefix() + object);
+        org.apache.jena.rdf.model.Resource Object = model.createResource( object);
         //add triples in data base
         model.add(Subject,Predicate,Object);
         model.commit();

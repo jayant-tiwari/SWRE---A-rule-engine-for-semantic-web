@@ -80,7 +80,6 @@
           <element id="library" level="project" name="Maven: org.apache.jena:jena-cmds:3.14.0" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.7.26" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
-          <element id="library" level="project" name="Maven: org.jetbrains:annotations:1.0-SNAPSHOT" />
         </element>
       </element>
       <element id="directory" name="META-INF">

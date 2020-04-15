@@ -3,16 +3,20 @@ package SWRE.ruleGenerator;
 import SWRE.Ontology2SDB2MySQL.OWLUtilities;
 import SWRE.Ontology2SDB2MySQL.SDBUtilities;
 import SWRE.ruleChaining.Chaining;
-import org.apache.jena.base.Sys;
-
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 @Path("/Rule")
 public class WebappController {
-
     /*
      * For each run, certain rules get stored in the cache i.e. rules selected by the user for one run
      */
@@ -111,4 +115,50 @@ public class WebappController {
         ruleBox.addRule(antecedent,consequent);
         return "done";
     }
+
+    /*
+    *  get query function
+    */
+    @POST
+    @Path("/getQuery")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.TEXT_PLAIN})
+    public String getQuery( RuleJson re) throws Exception {
+        System.out.println("Aya");
+        for(int i=0;i<re.getRules().size();i++){
+            System.out.println(re.getRules().get(i));
+        }
+      return "done";
+    }
+
+    /*
+    * ontology upload file
+     */
+    @POST
+    @Path("/fileUpload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces({MediaType.TEXT_PLAIN})
+    public String uploadFile(
+            @FormDataParam("file") InputStream uploadedInputStream,
+            @FormDataParam("file") FormDataContentDisposition fileDetail) {
+
+        String fileLocation = "/home/mohit/Music/SWRE---A-rule-engine-for-semantic-web/" + fileDetail.getFileName();
+        //saving file
+        System.out.println(fileLocation);
+        try {
+            FileOutputStream out ;
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            out = new FileOutputStream(new File(fileLocation));
+            while ((read = uploadedInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            out.flush();
+            out.close();
+        } catch (IOException e) {e.printStackTrace();}
+        String output = "File successfully uploaded to : " + fileLocation;
+        System.out.println(output);
+        return output;
+    }
 }
+

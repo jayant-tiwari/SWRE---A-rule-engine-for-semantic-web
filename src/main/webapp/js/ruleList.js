@@ -16,11 +16,14 @@ $.get(api,function(rule,status){
             str+=`<div class="form-group"><label class="form-check-label"><input type="checkbox" class="form-check-input existing" value="${i}">${rule[i]}</label></div>`;
         }
         $('#existingrules').html(str);
+        $('.loader').hide();
+
     }
 });
-
 // toggle to create rule page
 function createRule(){
+    $('#existSection').hide();
+    $('.loader').show();
     var api = "webapi/Rule/getNode";
     $.get(api,function(create,status) {
         if (status === "success") {
@@ -29,11 +32,12 @@ function createRule(){
                 classes.push(create[0][i]);
             for (var j = 0; j< create[1].length; j++)
                 propertis.push(create[1][j]);
+            $('.loader').hide();
         }
         else
             alert("fail");
     });
-    $('#existSection').hide();
+
     $('#ifSection').show();
     //addRule();
 }
@@ -108,18 +112,14 @@ function done(){
     console.log(if_rules);
 
 }
-/*
- * Converts all the user-defined existing rules into an array of indeces
- */
-function existingRuleSubmit(){
-    var existing = $('.existing');
-    var len = existing.length;
-
-    for(var i=0;i<len;i++){
+//function for submit exitsiting rule and send to server
+function submitE(){
+    var existing=$('.existing');
+    $('.loader').show();
+    for(var i=0;i<existing.length;i++){
         if(existing[i].checked==true)
             existing_rules.push(existing[i].value);
     }
-
     console.log(JSON.stringify(existing_rules));
     var data=JSON.stringify({rules:existing_rules});
     $.ajax({
@@ -134,6 +134,7 @@ function existingRuleSubmit(){
         timeout: 60000,
         success: function (rule,status) {
             alert(rule);
+            $('.loader').hide();
             location.reload(true);
         }
 
@@ -142,7 +143,7 @@ function existingRuleSubmit(){
 //submit new rule and send to server
 function submit(){
     then_rules=[];
-
+    $('.loader').show();
     then_rules.push($('#then_subject').val());
     then_rules.push($('#then_predicate').val());
     then_rules.push($('#then_object').val());
@@ -159,11 +160,10 @@ function submit(){
         async: true,
         timeout: 60000,
         success: function (rule,status) {
-            // //location.reload(true);
-            // $('#existSection').hide();
-            // $('#ifSection').show();
-            // alert("done");
+            $('.loader').hide();
             location.reload(true);
+           
+            alert(rule);
         }
     });
 }

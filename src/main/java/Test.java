@@ -9,10 +9,10 @@ import SWRE.ruleGenerator.RuleBox;
 
 public class Test {
 	public static void main(String args[]) throws Exception {
-//		SDBUtilities sdbUtilities = new SDBUtilities();
-//		sdbUtilities.DBinit();
-//		String status = sdbUtilities.ont2SDB2SQL();
-//		System.out.println(status);
+		SDBUtilities sdbUtilities = new SDBUtilities();
+		sdbUtilities.DBinit();
+		String status = sdbUtilities.ont2SDB2SQL();
+		System.out.println(status);
 
 
 		//ImplicitRule.createImplicitRule();
@@ -23,15 +23,15 @@ public class Test {
 //		ResultSet rs = OWLUtilities.SDBQuery(query);
 //		System.out.println(rs);
 
-
-		RuleBox ruleBox = new RuleBox();
-		ruleBox.init(true);
-		ArrayList<ArrayList<String>> ruleList = ruleBox.getRules();
-		ArrayList<ArrayList<String>> rule = new ArrayList<>();
-		for(String a:ruleList.get(0))
-			System.out.print(a + " ");
-		System.out.println();
-		Chaining.ForwardChaining(ruleList);
+//
+//		RuleBox ruleBox = new RuleBox();
+//		ruleBox.init(true);
+//		ArrayList<ArrayList<String>> ruleList = ruleBox.getRules();
+//		ArrayList<ArrayList<String>> rule = new ArrayList<>();
+//		for(String a:ruleList.get(0))
+//			System.out.print(a + " ");
+//		System.out.println();
+//		Chaining.ForwardChaining(ruleList);
 
 //		RuleBox obj = new RuleBox();
 //		obj.init();

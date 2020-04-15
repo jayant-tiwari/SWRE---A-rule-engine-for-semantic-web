@@ -13,8 +13,9 @@ function uploadfile() {
         cache: false,
         async: true,
         timeout: 60000,
-        success: function () {
-            alert("hogya");
+        success: function (ontology) {
+            document.getElementById("ontologyfile").reset();
+            alert(ontology);
         }
     });
 }

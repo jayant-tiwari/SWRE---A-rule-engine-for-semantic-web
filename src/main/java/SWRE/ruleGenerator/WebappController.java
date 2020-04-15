@@ -162,7 +162,7 @@ public class WebappController {
         } catch (IOException e) {e.printStackTrace();}
         String output = "File successfully uploaded to : " + fileLocation;
         System.out.println(output);
-        return Response.ok().build();
+        return Response.ok().entity(output).build();
     }
 }
 

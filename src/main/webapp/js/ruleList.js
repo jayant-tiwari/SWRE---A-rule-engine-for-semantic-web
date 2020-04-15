@@ -135,7 +135,7 @@ function submitE(){
         success: function (rule,status) {
             alert(rule);
             $('.loader').hide();
-            location.reload(true);
+            window.location.assign("/SWRE_war_exploded/workon.html");
         }
 
     });

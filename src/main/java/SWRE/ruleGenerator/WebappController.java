@@ -52,8 +52,8 @@ public class WebappController {
     @POST
     @Path("/existingRules")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.TEXT_PLAIN})
-    public String updateDetails(RuleJson ruleIndex) throws Exception {
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public Response updateDetails(RuleJson ruleIndex) throws Exception {
 
         System.out.println("Existing Rules");
         int len = ruleIndex.getRules().size();
@@ -74,7 +74,7 @@ public class WebappController {
         ruleCache = ruleBox.getRules();
         Chaining.ForwardChaining(ruleCache);
         System.out.println("\t\t\t######Implicit Rules Parsed######");
-        return "done";
+        return Response.ok().build();
     }
 
     @Path("/getNode")
@@ -137,13 +137,17 @@ public class WebappController {
     @POST
     @Path("/fileUpload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces({MediaType.TEXT_PLAIN})
-    public String uploadFile(
+    //@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    public Response uploadFile(
+            @FormDataParam("dbname") String database,
+            @FormDataParam("prefixname") String prefix,
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail) {
-
+    System.out.println("chacga");
         String fileLocation = "/home/mohit/Music/SWRE---A-rule-engine-for-semantic-web/" + fileDetail.getFileName();
-        //saving file
+       //saving file
+       System.out.println(database);
+        System.out.println(prefix);
         System.out.println(fileLocation);
         try {
             FileOutputStream out ;
@@ -158,7 +162,7 @@ public class WebappController {
         } catch (IOException e) {e.printStackTrace();}
         String output = "File successfully uploaded to : " + fileLocation;
         System.out.println(output);
-        return output;
+        return Response.ok().build();
     }
 }
 

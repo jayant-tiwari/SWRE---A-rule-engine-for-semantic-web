@@ -132,17 +132,23 @@ public class WebappController {
         String subject = re.getRules().get(0);
         String predicate = re.getRules().get(1);
         String object = re.getRules().get(2);
-        String query = "SELECT " + subject + " " + object + "{ " + subject + " <http://www.iiitb.org/university#" + predicate + "> " + object + "}";
-
+        String query="";
         OWLUtilities owlUtilities = new OWLUtilities();
-        ArrayList<ArrayList<String>> result = owlUtilities.SDBQuery(query,subject,object);
-        for(int i=0;i<result.size();i++){
-            for(int j=0;j<result.get(i).size();j++){
-                System.out.print(result.get(i).get(j) + " ");
-            }
-            System.out.println();
+        if(subject.charAt(0)!='?') {
+            query = "SELECT " +  object + "{ <http://www.iiitb.org/university#" + subject + "><http://www.iiitb.org/university#" + predicate + "> " + object + "}";
+            ArrayList<String>result = owlUtilities.SDBQuery(query,object);
+            return Response.ok().entity(result).build();
         }
-        return Response.ok().entity(result).build();
+        else if(object.charAt(0)!='?'){
+            query = "SELECT " + subject + "{ " + subject + " <http://www.iiitb.org/university#" + predicate + "> <http://www.iiitb.org/university#" + object + ">}";
+            ArrayList<String> result = owlUtilities.SDBQuery(query,subject);
+            return Response.ok().entity(result).build();
+        }
+        else{
+            query = "SELECT " + subject + " " + object + "{ " + subject + " <http://www.iiitb.org/university#" + predicate + "> " + object + "}";
+            ArrayList<ArrayList<String>> result = owlUtilities.SDBQuery(query,subject,object);
+            return Response.ok().entity(result).build();
+        }
     }
 
     /*

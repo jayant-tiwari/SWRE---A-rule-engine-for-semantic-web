@@ -27,6 +27,10 @@ public class ImplicitRule {
                        "PREFIX owl:<http://www.w3.org/2002/07/owl#>" +
                        "SELECT distinct ?property1 ?property2 {{?property1 rdf:type owl:TransitiveProperty} UNION " +
                                                              "{?property1 rdf:type owl:SymmetricProperty} UNION " +
+                                                             "{?property1 rdf:type owl:FunctionalProperty} UNION "+
+                                                             "{?property1 rdf:type owl:IrreflexiveProperty} UNION "+
+                                                             "{?property1 rdf:type owl:AsymmetricProperty} UNION "+
+                                                             "{?property1 rdf:type owl:InverseFunctionalProperty} UNION "+
                                                              "{?property1 rdf:type owl:ReflexiveProperty} . ?property1 rdf:type ?property2 } " +
                                                              "order by ?property1";
 

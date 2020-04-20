@@ -2,7 +2,7 @@
 var classes=[];
 var propertis=[];
 var query=[];
-var result=[["mohit","studies","ds603"],["parth","teaches","ds603"]];
+// var result=[["mohit","studies","ds603"],["parth","teaches","ds603"]];
 var api = "webapi/Rule/getNode";
 $.get(api,function(create,status) {
     if (status === "success") {
@@ -37,6 +37,7 @@ function node() {
 }
 
 function go(){
+    query = [];
     $('.loader').show();
     var subject,predicate,object;
     if($('#subject').val()=== "other"){
@@ -50,7 +51,7 @@ function go(){
     }
     else
         object=$('#object').val();
-    query.push(subject);query.push(predicate);query.push(object)
+    query.push(subject);query.push(predicate);query.push(object);
     var data=JSON.stringify({rules:query});
     $.ajax({
         url: 'webapi/Rule/getQuery',
@@ -62,20 +63,20 @@ function go(){
         cache: false,
         async: true,
         timeout: 60000,
-        success: function (rule,status) {
-            alert(rule);
-            showResult(result);
+        success: function (result,status) {
+            alert(result);
+            showResult(result,predicate);
         }
 
     });
 }
 
-function showResult(result){
+function showResult(result,predicate){
     $("#result").show();
    var str="";
    for(var i=0;i<result.length;i++) {
-       str += `<div class="row mt-1"><div class="col-lg-4"><p>`+result[i][0]+`</p></div><div class="col-lg-4"><p>`+result[i][1]+`</p></div><div class="col-lg-4">
-                            <p>`+result[i][2]+`</p></div></div>`;
+       str += `<div class="row mt-1"><div class="col-lg-4"><p>`+result[i][0]+`</p></div><div class="col-lg-4"><p>`+predicate+`</p></div><div class="col-lg-4">
+                            <p>`+result[i][1]+`</p></div></div>`;
    }
     $('.loader').hide();
    $("#showresult").html(str);

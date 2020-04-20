@@ -158,7 +158,7 @@ function submit(){
         contentType: 'application/json',
         cache: false,
         async: true,
-        timeout: 60000,
+        timeout: 600000,
         success: function (rule,status) {
             $('.loader').hide();
             location.reload(true);

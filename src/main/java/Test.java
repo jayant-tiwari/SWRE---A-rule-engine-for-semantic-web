@@ -9,13 +9,17 @@ import SWRE.ruleGenerator.RuleBox;
 
 public class Test {
 	public static void main(String args[]) throws Exception {
-		SDBUtilities sdbUtilities = new SDBUtilities();
-		sdbUtilities.DBinit();
-		String status = sdbUtilities.ont2SDB2SQL();
-		System.out.println(status);
+//		SDBUtilities sdbUtilities = new SDBUtilities();
+//		sdbUtilities.DBinit();
+//		String status = sdbUtilities.ont2SDB2SQL();
+//		System.out.println(status);
 
+//		ImplicitRule.createImplicitRule();
 
-		//ImplicitRule.createImplicitRule();
+//		RuleBox ruleBox = new RuleBox();
+//		ruleBox.init(false);
+//		ArrayList<ArrayList<String>> ruleList = ruleBox.getRules();
+//		Chaining.ForwardChaining(ruleList);
 
 		//String query = "SELECT ?Student ?Faculty { ?Faculty <http://www.iiitb.org/university#teaches> ?Course . ?Student <http://www.iiitb.org/university#opts> ?Course }";
 //		String query = "SELECT ?Student1 ?Student2 { ?Student1 <http://www.iiitb.org/university#isFriendOf> ?Student2} order by ?Student1";

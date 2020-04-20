@@ -1,8 +1,12 @@
-package SWRE.ruleGenerator;
+package SWRE.WebApplication;
 
 import SWRE.Ontology2SDB2MySQL.OWLUtilities;
 import SWRE.Ontology2SDB2MySQL.SDBUtilities;
 import SWRE.ruleChaining.Chaining;
+import SWRE.ruleGenerator.CreateRule;
+import SWRE.ruleGenerator.RuleBox;
+import SWRE.ruleGenerator.RuleJson;
+import org.apache.jena.base.Sys;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.*;
@@ -122,13 +126,23 @@ public class WebappController {
     @POST
     @Path("/getQuery")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.TEXT_PLAIN})
-    public String getQuery( RuleJson re) throws Exception {
-        System.out.println("Aya");
-        for(int i=0;i<re.getRules().size();i++){
-            System.out.println(re.getRules().get(i));
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getQuery( RuleJson re) throws Exception {
+
+        String subject = re.getRules().get(0);
+        String predicate = re.getRules().get(1);
+        String object = re.getRules().get(2);
+        String query = "SELECT " + subject + " " + object + "{ " + subject + " <http://www.iiitb.org/university#" + predicate + "> " + object + "}";
+
+        OWLUtilities owlUtilities = new OWLUtilities();
+        ArrayList<ArrayList<String>> result = owlUtilities.SDBQuery(query,subject,object);
+        for(int i=0;i<result.size();i++){
+            for(int j=0;j<result.get(i).size();j++){
+                System.out.print(result.get(i).get(j) + " ");
+            }
+            System.out.println();
         }
-      return "done";
+        return Response.ok().entity(result).build();
     }
 
     /*

@@ -118,23 +118,19 @@ public class Chaining {
 
                 int numberOfTriplesGenerated = triples.size();
 
-                if(previousNumberOfTriples[loop] == -1) {
-                    previousNumberOfTriples[loop] = numberOfTriplesGenerated;
-                    System.out.println("Iteration " + pass + " Rule " + loop + " yeilded " + numberOfTriplesGenerated + " new triples");
-                }
-                else if(previousNumberOfTriples[loop] == numberOfTriplesGenerated)
+                if(previousNumberOfTriples[loop] == numberOfTriplesGenerated) {
                     noNewTripleForRuleCount++;
-                else {
+                }
+                else{
                     previousNumberOfTriples[loop] = numberOfTriplesGenerated;
                     System.out.println("Iteration " + pass + " Rule " + loop + " yeilded " + numberOfTriplesGenerated + " new triples");
-                }
-
-                // Update the fact table for triples obtained from the above query
-                int tripleLength = triples.size();
-                for (int loop1 = 0; loop1 < tripleLength; loop1++) {
-                    subject = triples.get(loop1).get(0);
-                    object = triples.get(loop1).get(1);
-                    owlUtilities.insertTriples(subject, predicate, object);
+                    // Update the fact table for triples obtained from the above query
+                    int tripleLength = triples.size();
+                    for (int loop1 = 0; loop1 < tripleLength; loop1++) {
+                        subject = triples.get(loop1).get(0);
+                        object = triples.get(loop1).get(1);
+                        owlUtilities.insertTriples(subject, predicate, object);
+                    }
                 }
             }
             // No new triple generated for the iteration

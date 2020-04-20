@@ -11,4 +11,8 @@ The readme mostly explains the content of the project and how the internal conne
 
 ## Architecture
 
-Semantic Web was an attempt by Sir Tim Berners Lee to view the World Wide Web as a big database i.e. the content on each website can be queried and inferences can be evaluated from the same. 
+Semantic Web was an attempt by Sir Tim Berners Lee to view the World Wide Web as a big database i.e. the content on each website can be queried and inferences can be evaluated from the same. The following project revolved around the architecture shown in the figure below.
+
+![architecture](dumps/Image/ReadMeImage_1.png "Architecture Design")
+
+***Brief walk through:*** With reference to the design stated above, SWRE is 

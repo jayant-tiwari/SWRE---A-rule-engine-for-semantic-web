@@ -19,8 +19,48 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+/*
+ * This class deals with all the web-application based operations. All the methods declared and defined are in
+ * order of the chronology from which they are being called from the web-application.
+ * Methods:
+ * 1. selectOntology
+ * 2.
+ */
+
 @Path("/Rule")
 public class WebappController {
+
+    /*
+     * Method to load ontology via uploading a file
+     */
+    @POST
+    @Path("/fileUpload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadFile(
+            @FormDataParam("dbname") String database,
+            @FormDataParam("prefixname") String prefix,
+            @FormDataParam("file") InputStream uploadedInputStream,
+            @FormDataParam("file") FormDataContentDisposition fileDetail) {
+        
+        String fileLocation = "/home/mohit/Music/SWRE---A-rule-engine-for-semantic-web/" + fileDetail.getFileName();
+        System.out.println(database);
+        System.out.println(prefix);
+        System.out.println(fileLocation);
+        try {
+            FileOutputStream out ;
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            out = new FileOutputStream(new File(fileLocation));
+            while ((read = uploadedInputStream.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            out.flush();
+            out.close();
+        } catch (IOException e) {e.printStackTrace();}
+        String output = "File successfully uploaded to : " + fileLocation;
+        System.out.println(output);
+        return Response.ok().entity(output).build();
+    }
     /*
      * For each run, certain rules get stored in the cache i.e. rules selected by the user for one run
      */
@@ -145,38 +185,6 @@ public class WebappController {
         return Response.ok().entity(result).build();
     }
 
-    /*
-    * ontology upload file
-     */
-    @POST
-    @Path("/fileUpload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    //@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public Response uploadFile(
-            @FormDataParam("dbname") String database,
-            @FormDataParam("prefixname") String prefix,
-            @FormDataParam("file") InputStream uploadedInputStream,
-            @FormDataParam("file") FormDataContentDisposition fileDetail) {
-    System.out.println("chacga");
-        String fileLocation = "/home/mohit/Music/SWRE---A-rule-engine-for-semantic-web/" + fileDetail.getFileName();
-       //saving file
-       System.out.println(database);
-        System.out.println(prefix);
-        System.out.println(fileLocation);
-        try {
-            FileOutputStream out ;
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            out = new FileOutputStream(new File(fileLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            out.flush();
-            out.close();
-        } catch (IOException e) {e.printStackTrace();}
-        String output = "File successfully uploaded to : " + fileLocation;
-        System.out.println(output);
-        return Response.ok().entity(output).build();
-    }
+
 }
 

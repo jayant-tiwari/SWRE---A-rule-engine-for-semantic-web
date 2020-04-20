@@ -108,7 +108,25 @@ public class OWLUtilities {
         }
         return triple;
     }
+    /*
+    * THis method take a SPARQL string query, a plausible consequent and it is used for literals query.
+     */
+    public static ArrayList<String> SDBQuery(String queryString, String consequent) {
 
+        ResultSet rs = null;
+        Dataset dataset = DatasetStore.create(sdbUtilities.getStore());
+        Query query = QueryFactory.create(queryString) ;
+        ArrayList<String> triple = new ArrayList<String>();
+        try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
+            rs = qe.execSelect() ;
+
+            while(rs.hasNext()) {
+                QuerySolution q = rs.next();
+                triple.add(q.get(consequent).toString());
+            }
+        }
+        return triple;
+    }
     /*
      * This method uses a hard coded SPARQL query and returns all the nodes
      * Each of the nodes, also termed as class in OWL can be queried and retrieved using this method

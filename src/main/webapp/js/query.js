@@ -2,6 +2,7 @@
 var classes=[];
 var propertis=[];
 var query=[];
+var subject,predicate,object,other;
 // var result=[["mohit","studies","ds603"],["parth","teaches","ds603"]];
 var api = "webapi/Rule/getNode";
 $.get(api,function(create,status) {
@@ -38,16 +39,18 @@ function node() {
 
 function go(){
     query = [];
+    subject="";predicate="";object="";other="";
     $('.loader').show();
-    var subject,predicate,object;
     if($('#subject').val()=== "other"){
         subject=$("#s1").val();
+        other="sub";
     }
     else
         subject=$('#subject').val();
     predicate=$('#predicate').val();
     if($('#object').val()=== "other"){
         object=$("#o1").val();
+        other="obj";
     }
     else
         object=$('#object').val();
@@ -74,9 +77,20 @@ function go(){
 function showResult(result,predicate){
     $("#result").show();
    var str="";
-   for(var i=0;i<result.length;i++) {
-       str += `<div class="row mt-1"><div class="col-lg-4"><p>`+result[i][0]+`</p></div><div class="col-lg-4"><p>`+predicate+`</p></div><div class="col-lg-4">
-                            <p>`+result[i][1]+`</p></div></div>`;
+   if(other==="") {
+       for (var i = 0; i < result.length; i++) {
+           str += `<div class="row mt-1"><div class="col-lg-4"><p>` + result[i][0] + `</p></div><div class="col-lg-4"><p>` + predicate + `</p></div><div class="col-lg-4"><p>` + result[i][1] + `</p></div></div>`;
+       }
+   }
+   else if(other==="sub"){
+       for (var i = 0; i < result.length; i++) {
+           str += `<div class="row mt-1"><div class="col-lg-4"><p>` + subject+ `</p></div><div class="col-lg-4"><p>` + predicate + `</p></div><div class="col-lg-4"><p>` + result[i]+ `</p></div></div>`;
+       }
+   }
+   else{
+       for (var i = 0; i < result.length; i++) {
+           str += `<div class="row mt-1"><div class="col-lg-4"><p>` + result[i]+ `</p></div><div class="col-lg-4"><p>` + predicate + `</p></div><div class="col-lg-4"><p>` + object + `</p></div></div>`;
+       }
    }
     $('.loader').hide();
    $("#showresult").html(str);

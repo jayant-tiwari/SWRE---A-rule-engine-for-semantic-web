@@ -93,6 +93,8 @@ public class Test {
 //		for(String a:predicate)
 //			System.out.print(a+ " ");
 //		System.out.println();
+
+
 		System.out.println("Done");
 //		sdbUtilities.DBclose();
 	}

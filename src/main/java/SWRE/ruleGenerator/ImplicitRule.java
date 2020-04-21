@@ -64,9 +64,11 @@ public class ImplicitRule {
                 consequent[0] = "?x"; consequent[1] = predicate; consequent[2] = "?z";
                 ruleBox.addRule(antecedent, consequent);
             }
-            else if(property == "ReflexiveProperty"){
-
-                System.out.println();
+            else if(property.equalsIgnoreCase("ReflexiveProperty")){
+                antecedent = new String[3]; consequent = new String[3];
+                antecedent[0] = "?x"; antecedent[1] = predicate ; antecedent[2] = "?y";
+                consequent[0] = "?x"; consequent[1] = predicate ; consequent[2] = "?x";
+                ruleBox.addRule(antecedent,consequent);
             }
         }
 

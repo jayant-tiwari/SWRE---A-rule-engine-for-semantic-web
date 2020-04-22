@@ -19,15 +19,17 @@ $.get(api,function(create,status) {
 });
 function node() {
     var str = "";
-    str += `<div class="row mt-1"> <div class="col-lg-4 text-center"><select class="form-control" id= "subject" onchange="checkValues(this.value,1)">`;
+    str += `<div class="row mt-1"><div class="col-lg-1 text-center mt-2"><h5>Subject :</h5></div> <div class="col-lg-3 text-center"><select class="form-control" style="border-radius: 50px;"id= "subject" onchange="checkValues(this.value,1)">`;
     for (var i = 0; i < classes.length; i++) {
         str += `<option value="` + classes[i] + `">` + classes[i] + `</option>`;
     }
-    str += `<option value="other">Other</option></select><input type="text" id="s1" placeholder="Enter Subject" class="form-control hide"></div><div class="col-lg-4 text-center"><select class="form-control" id="predicate">`;
+    str += `<option value="other">Other</option></select><input type="text" id="s1" placeholder="Enter Subject" class="form-control hide"></div> <div class="col-lg-1 text-center mt-2"><h5>Predicate :</h5>
+                        </div><div class="col-lg-3 text-center"><select class="form-control" style="border-radius: 50px;" id="predicate">`;
     for (var i = 0; i < propertis.length; i++) {
-        str += `<option value="` + propertis[i] + `">` + propertis[i] + `</option>`;
+        str += `<option value="` + propertis[i] + `"
+>` + propertis[i] + `</option>`;
     }
-    str += `</select></div><div class="col-lg-4 text-center"><select class="form-control" id="object" onchange="checkValueo(this.value,1)">`;
+    str += `</select></div><div class="col-lg-1 text-center mt-2"><h5>Object :</h5></div><div class="col-lg-3 text-center"><select class="form-control" style="border-radius: 50px;" id="object" onchange="checkValueo(this.value,1)">`;
 
     for (var i = 0; i < classes.length; i++) {
         str += `<option value="` + classes[i] + `">` + classes[i] + `</option>`;
@@ -76,24 +78,24 @@ function go(){
 
 function showResult(result,predicate){
     $("#result").show();
-   var str="";
-   if(other==="") {
-       for (var i = 0; i < result.length; i++) {
-           str += `<div class="row mt-1"><div class="col-lg-4"><p>` + result[i][0] + `</p></div><div class="col-lg-4"><p>` + predicate + `</p></div><div class="col-lg-4"><p>` + result[i][1] + `</p></div></div>`;
-       }
-   }
-   else if(other==="sub"){
-       for (var i = 0; i < result.length; i++) {
-           str += `<div class="row mt-1"><div class="col-lg-4"><p>` + subject+ `</p></div><div class="col-lg-4"><p>` + predicate + `</p></div><div class="col-lg-4"><p>` + result[i]+ `</p></div></div>`;
-       }
-   }
-   else{
-       for (var i = 0; i < result.length; i++) {
-           str += `<div class="row mt-1"><div class="col-lg-4"><p>` + result[i]+ `</p></div><div class="col-lg-4"><p>` + predicate + `</p></div><div class="col-lg-4"><p>` + object + `</p></div></div>`;
-       }
-   }
+    var str="";
+    if(other==="") {
+        for (var i = 0; i < result.length; i++) {
+            str += `<div class="row mt-1"><div class="col-lg-4"><p>` + result[i][0] + `</p></div><div class="col-lg-4"><p>` + predicate + `</p></div><div class="col-lg-4"><p>` + result[i][1] + `</p></div></div>`;
+        }
+    }
+    else if(other==="sub"){
+        for (var i = 0; i < result.length; i++) {
+            str += `<div class="row mt-1"><div class="col-lg-4"><p>` + subject+ `</p></div><div class="col-lg-4"><p>` + predicate + `</p></div><div class="col-lg-4"><p>` + result[i]+ `</p></div></div>`;
+        }
+    }
+    else{
+        for (var i = 0; i < result.length; i++) {
+            str += `<div class="row mt-1"><div class="col-lg-4"><p>` + result[i]+ `</p></div><div class="col-lg-4"><p>` + predicate + `</p></div><div class="col-lg-4"><p>` + object + `</p></div></div>`;
+        }
+    }
     $('.loader').hide();
-   $("#showresult").html(str);
+    $("#showresult").html(str);
 
 }
 function checkValues(val,id) {

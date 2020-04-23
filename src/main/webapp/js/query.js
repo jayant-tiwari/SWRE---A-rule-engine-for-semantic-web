@@ -23,8 +23,8 @@ function node() {
     for (var i = 0; i < classes.length; i++) {
         str += `<option value="` + classes[i] + `">` + classes[i] + `</option>`;
     }
-    str += `<option value="other">Other</option></select><input type="text" id="s1" placeholder="Enter Subject" class="form-control hide"></div> <div class="col-lg-1 text-center mt-2"><h5>Predicate :</h5>
-                        </div><div class="col-lg-3 text-center"><select class="form-control" style="border-radius: 50px;" id="predicate">`;
+    str += `<option value="other">Other</option></select><input type="text" id="s1" placeholder="Enter Subject" class="form-control hide"></div> <div class="col-lg-1 text-center mt-2"><h5>Predicate:</h5>
+                       </div><div class="col-lg-3 text-center"><select class="form-control" style="border-radius: 50px;" id="predicate">`;
     for (var i = 0; i < propertis.length; i++) {
         str += `<option value="` + propertis[i] + `"
 >` + propertis[i] + `</option>`;

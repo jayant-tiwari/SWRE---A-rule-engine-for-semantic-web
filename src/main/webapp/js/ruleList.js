@@ -131,11 +131,15 @@ function submitE(){
         contentType: 'application/json',
         cache: false,
         async: true,
-        timeout: 60000,
+        timeout: 300000,
         success: function (rule,status) {
             alert(rule);
             $('.loader').hide();
             window.location.assign("/SWRE_war_exploded/workon.html");
+        },
+        error: function () {
+            alert("timeout");
+            $('.loader').hide();
         }
 
     });
@@ -158,7 +162,7 @@ function submit(){
         contentType: 'application/json',
         cache: false,
         async: true,
-        timeout: 600000,
+        timeout: 6000,
         success: function (rule,status) {
             $('.loader').hide();
             location.reload(true);

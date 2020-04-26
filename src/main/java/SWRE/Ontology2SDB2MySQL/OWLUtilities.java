@@ -177,6 +177,28 @@ public class OWLUtilities {
         }
         return triple;
     }
+
+    public static ArrayList<ArrayList<String>> SDBQuery(String queryString,ArrayList<String> selectPart)
+    {
+        ResultSet rs = null;
+        Dataset dataset = DatasetStore.create(sdbUtilities.getStore());
+        Query query = QueryFactory.create(queryString) ;
+        ArrayList<ArrayList<String> > triple = new ArrayList<ArrayList<String> >();
+        try ( QueryExecution qe = QueryExecutionFactory.create(query, dataset) ) {
+            rs = qe.execSelect() ;
+
+            while(rs.hasNext()) {
+                ArrayList<String> temp = new ArrayList<String>();
+                QuerySolution q = rs.next();
+                for(int loop=0;loop<selectPart.size();loop++) {
+                    temp.add(q.get(selectPart.get(loop)).toString());
+                }
+                triple.add(temp);
+            }
+        }
+        return triple;
+    } 
+
     /*
      * This method uses a hard coded SPARQL query and returns all the nodes
      * Each of the nodes, also termed as class in OWL can be queried and retrieved using this method
@@ -236,5 +258,73 @@ public class OWLUtilities {
 	    objectProperty.add("subClassOf");
         objectProperty.add("subPropertyOf");
         return objectProperty;
+    }
+    
+    public static ArrayList<ArrayList<String>> executeUserQuery(ArrayList<String> queryPart,ArrayList<String> selectPart)
+    {
+        Hashtable<String, Integer> hash_table = new Hashtable<String, Integer>();
+        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+        int index,loop=0;
+        int len = queryPart.size();
+        String query = "";
+        String left = "";
+        String right = "";
+        String prefix = "http://www.iiitb.org/university#";
+        for(int loopIn=0;loopIn<queryPart.size();loopIn++)
+        {
+            if(queryPart.get(loopIn).charAt(0)=='?' && !(hash_table.containsKey(queryPart.get(loopIn)))) {
+                selectPart.add(queryPart.get(loopIn));
+                hash_table.put(queryPart.get(loopIn),10);
+            }
+        }
+        query = query + "Select ";
+        for(int loopIn=0;loopIn<selectPart.size();loopIn++)
+        {
+            query = query + selectPart.get(loopIn) +" ";
+        }
+        query = query + "{ ";
+        if(queryPart.get(0).charAt(0)=='?')
+            left=queryPart.get(0);
+        else
+            left = " <" + prefix + queryPart.get(0) +"> ";
+        left = left + " <" + prefix + queryPart.get(1) + "> " ;
+        if(queryPart.get(2).charAt(0)=='?')
+            left = left + queryPart.get(2) + " ";
+        else
+            left = left + "<" + prefix + queryPart.get(2) + "> ";
+        //index refer to the index of connector being considered currently
+        index=(3*(loop+1))+loop;
+        while(index<len)
+        {
+            loop++;
+            //right holds the subject,predicate,object present immediately after the connector
+            if(queryPart.get(index+1).charAt(0)=='?')
+                right = queryPart.get(index+1) ;
+            else
+                right = " <" + prefix + queryPart.get(index+1) + "> " ;
+            right = right + " <" + prefix + queryPart.get(index+2) + "> " ;
+            if(queryPart.get(index+3).charAt(0)=='?')
+                right = right + queryPart.get(index+3) + " ";
+            else
+                right = right + "<" + prefix + queryPart.get(index+3) + "> ";
+
+            //left holds entire query before the present connector
+
+
+            if((queryPart.get(index)).equals("OR"))
+            {
+                left = "{ " + left + " }" + " UNION " + "{ " + right + " }";
+            }
+            else if((queryPart.get(index)).equals("AND"))
+            {
+                left = left + " . " + right;
+            }
+            //updating index to get to next connector
+            index=(3*(loop+1))+loop;
+        }
+        query = query + left + " }";
+        System.out.println(query);
+        result = OWLUtilities.SDBQuery(query,selectPart);
+        return result;
     }
 }

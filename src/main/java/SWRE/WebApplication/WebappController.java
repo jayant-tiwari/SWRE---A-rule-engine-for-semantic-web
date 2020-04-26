@@ -168,7 +168,9 @@ public class WebappController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
     public Response getQuery( RuleJson re) throws Exception {
-
+        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+        ArrayList<String> queryPart = new ArrayList<String>();
+        ArrayList<String> selectPart = new ArrayList<String>();
 //	String prefix = "";
 //        String subject = re.getRules().get(0);
 //        String predicate = re.getRules().get(1);
@@ -197,10 +199,21 @@ public class WebappController {
 //        }
         for(int i=0;i<re.getRules().size();i++){
             System.out.print(re.getRules().get(i)+" ");
+            queryPart.add(re.getRules().get(i));
+        }
+        //queryPart=re.getRules();
+        System.out.println(" ");
+        result = OWLUtilities.executeUserQuery(queryPart,selectPart);
+        for(int loop=0;loop<result.size();loop++)
+        {
+            for(int inner_loop=0;inner_loop<result.get(loop).size();inner_loop++)
+            {
+                System.out.print(result.get(loop).get(inner_loop)+" ");
+            }
+            System.out.println(" ");
         }
         return Response.ok().build();
     }
-
 
 }
 

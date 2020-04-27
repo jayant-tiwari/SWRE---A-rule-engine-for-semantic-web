@@ -204,15 +204,15 @@ public class WebappController {
         //queryPart=re.getRules();
         System.out.println(" ");
         result = OWLUtilities.executeUserQuery(queryPart,selectPart);
-        for(int loop=0;loop<result.size();loop++)
-        {
-            for(int inner_loop=0;inner_loop<result.get(loop).size();inner_loop++)
-            {
-                System.out.print(result.get(loop).get(inner_loop)+" ");
-            }
-            System.out.println(" ");
-        }
-        return Response.ok().build();
+//        for(int loop=0;loop<result.size();loop++)
+//        {
+//            for(int inner_loop=0;inner_loop<result.get(loop).size();inner_loop++)
+//            {
+//                System.out.print(result.get(loop).get(inner_loop)+" ");
+//            }
+//            System.out.println(" ");
+//        }
+        return Response.ok().entity(result).build();
     }
 
 }

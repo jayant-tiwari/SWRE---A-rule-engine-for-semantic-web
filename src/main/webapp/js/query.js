@@ -138,10 +138,23 @@ function go(){
         timeout: 60000,
         success: function (result,status) {
             alert(result);
-            //showResult(result,predicate);
+            showResult(result);
         }
 
     });
+}
+function showResult(result){
+    $("#result").show();
+    var str="";
+    for(var i=0;i<result.length;i++){
+        str+=`<p>`;
+        for(var j=0;j<result[i].length;j++){
+            str+=result[i][j]+` `;
+        }
+        str+=`</p>`;
+    }
+    $("#showresult").html(str);
+
 }
 function checkValues(val,id) {
     if(val==="other"){

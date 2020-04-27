@@ -12,6 +12,7 @@ import org.apache.jena.sdb.SDBFactory;
 import org.apache.jena.sdb.store.DatasetStore;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class OWLUtilities {
 
@@ -240,7 +241,7 @@ public class OWLUtilities {
         String queryString =    "PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>" +
                                 "PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
                                 "PREFIX owl:<http://www.w3.org/2002/07/owl#>"+
-                                "SELECT distinct ?p WHERE { ?x ?p ?q . ?p rdf:type owl:ObjectProperty .}";
+                                "SELECT distinct ?p WHERE { ?p rdf:type owl:ObjectProperty .}";
 
         String outputColumnHeader = "p";
         Query query = QueryFactory.create(queryString) ;
@@ -259,7 +260,9 @@ public class OWLUtilities {
         objectProperty.add("subPropertyOf");
         return objectProperty;
     }
-    
+    /*
+    * join query function
+     */
     public static ArrayList<ArrayList<String>> executeUserQuery(ArrayList<String> queryPart,ArrayList<String> selectPart)
     {
         Hashtable<String, Integer> hash_table = new Hashtable<String, Integer>();
@@ -270,6 +273,7 @@ public class OWLUtilities {
         String left = "";
         String right = "";
         String prefix = "http://www.iiitb.org/university#";
+        String prefixofSubclass="http://www.w3.org/2000/01/rdf-schema#";
         for(int loopIn=0;loopIn<queryPart.size();loopIn++)
         {
             if(queryPart.get(loopIn).charAt(0)=='?' && !(hash_table.containsKey(queryPart.get(loopIn)))) {
@@ -287,7 +291,10 @@ public class OWLUtilities {
             left=queryPart.get(0);
         else
             left = " <" + prefix + queryPart.get(0) +"> ";
-        left = left + " <" + prefix + queryPart.get(1) + "> " ;
+        if(queryPart.get(1).equals("subClassOf") || queryPart.get(1).equals("subPropertyOf"))
+            left = left + " <" + prefixofSubclass + queryPart.get(1) + "> " ;
+        else
+            left = left + " <" + prefix + queryPart.get(1) + "> " ;
         if(queryPart.get(2).charAt(0)=='?')
             left = left + queryPart.get(2) + " ";
         else

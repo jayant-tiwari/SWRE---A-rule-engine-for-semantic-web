@@ -173,7 +173,6 @@ function submit(){
 }
 //function for show input field for other option
 function checkValues(val,id) {
-    console.log(id);
     if(val==="other"){
         $("#s"+id).show();
     }

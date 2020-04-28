@@ -168,35 +168,52 @@ public class WebappController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
     public Response getQuery( RuleJson re) throws Exception {
-
-	String prefix = "";
-        String subject = re.getRules().get(0);
-        String predicate = re.getRules().get(1);
-        String object = re.getRules().get(2);
-        String query="";
-        OWLUtilities owlUtilities = new OWLUtilities();
-	if(predicate.equals("subClassOf") || predicate.equals("subPropertyOf") )
-		prefix="http://www.w3.org/2000/01/rdf-schema#";
-	else
-		prefix="http://www.iiitb.org/university#";
-
-        if(subject.charAt(0)!='?') {
-            query = "SELECT " +  object + "{ <http://www.iiitb.org/university#" + subject + "> <" + prefix + predicate + "> " + object + "}";
-            ArrayList<String>result = owlUtilities.SDBQuery(query,object);
-            return Response.ok().entity(result).build();
+        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+        ArrayList<String> queryPart = new ArrayList<String>();
+        ArrayList<String> selectPart = new ArrayList<String>();
+//	String prefix = "";
+//        String subject = re.getRules().get(0);
+//        String predicate = re.getRules().get(1);
+//        String object = re.getRules().get(2);
+//        String query="";
+//        OWLUtilities owlUtilities = new OWLUtilities();
+//	if(predicate.equals("subClassOf") || predicate.equals("subPropertyOf") )
+//		prefix="http://www.w3.org/2000/01/rdf-schema#";
+//	else
+//		prefix="http://www.iiitb.org/university#";
+//
+//        if(subject.charAt(0)!='?') {
+//            query = "SELECT " +  object + "{ <http://www.iiitb.org/university#" + subject + "> <" + prefix + predicate + "> " + object + "}";
+//            ArrayList<String>result = owlUtilities.SDBQuery(query,object);
+//            return Response.ok().entity(result).build();
+//        }
+//        else if(object.charAt(0)!='?'){
+//            query = "SELECT " + subject + "{ " + subject + " <" + prefix + predicate + "> <http://www.iiitb.org/university#" + object + ">}";
+//            ArrayList<String> result = owlUtilities.SDBQuery(query,subject);
+//            return Response.ok().entity(result).build();
+//        }
+//        else{
+//            query = "SELECT " + subject + " " + object + "{ " + subject + " <"+ prefix + predicate + "> " + object + "}";
+//            ArrayList<ArrayList<String>> result = owlUtilities.SDBQuery(query,subject,object);
+//            return Response.ok().entity(result).build();
+//        }
+        for(int i=0;i<re.getRules().size();i++){
+            System.out.print(re.getRules().get(i)+" ");
+            queryPart.add(re.getRules().get(i));
         }
-        else if(object.charAt(0)!='?'){
-            query = "SELECT " + subject + "{ " + subject + " <" + prefix + predicate + "> <http://www.iiitb.org/university#" + object + ">}";
-            ArrayList<String> result = owlUtilities.SDBQuery(query,subject);
-            return Response.ok().entity(result).build();
-        }
-        else{
-            query = "SELECT " + subject + " " + object + "{ " + subject + " <"+ prefix + predicate + "> " + object + "}";
-            ArrayList<ArrayList<String>> result = owlUtilities.SDBQuery(query,subject,object);
-            return Response.ok().entity(result).build();
-        }
+        //queryPart=re.getRules();
+        System.out.println(" ");
+        result = OWLUtilities.executeUserQuery(queryPart,selectPart);
+//        for(int loop=0;loop<result.size();loop++)
+//        {
+//            for(int inner_loop=0;inner_loop<result.get(loop).size();inner_loop++)
+//            {
+//                System.out.print(result.get(loop).get(inner_loop)+" ");
+//            }
+//            System.out.println(" ");
+//        }
+        return Response.ok().entity(result).build();
     }
-
 
 }
 

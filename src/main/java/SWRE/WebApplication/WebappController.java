@@ -1,18 +1,15 @@
 package SWRE.WebApplication;
 
 import SWRE.Ontology2SDB2MySQL.OWLUtilities;
-import SWRE.Ontology2SDB2MySQL.SDBUtilities;
-import SWRE.ruleChaining.Chaining;
+import SWRE.ruleChaining.ForwardChaining;
 import SWRE.ruleGenerator.CreateRule;
 import SWRE.ruleGenerator.RuleBox;
 import SWRE.ruleGenerator.RuleJson;
-import org.apache.jena.base.Sys;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,37 +27,6 @@ import java.util.ArrayList;
 @Path("/Rule")
 public class WebappController {
 
-    /*
-     * Method to load ontology via uploading a file
-     */
-    @POST
-    @Path("/fileUpload")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(
-            @FormDataParam("dbname") String database,
-            @FormDataParam("prefixname") String prefix,
-            @FormDataParam("file") InputStream uploadedInputStream,
-            @FormDataParam("file") FormDataContentDisposition fileDetail) {
-        
-        String fileLocation = "/home/mohit/Music/SWRE---A-rule-engine-for-semantic-web/" + fileDetail.getFileName();
-        System.out.println(database);
-        System.out.println(prefix);
-        System.out.println(fileLocation);
-        try {
-            FileOutputStream out ;
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            out = new FileOutputStream(new File(fileLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            out.flush();
-            out.close();
-        } catch (IOException e) {e.printStackTrace();}
-        String output = "File successfully uploaded to : " + fileLocation;
-        System.out.println(output);
-        return Response.ok().entity(output).build();
-    }
     /*
      * For each run, certain rules get stored in the cache i.e. rules selected by the user for one run
      */
@@ -112,11 +78,11 @@ public class WebappController {
             ruleCache.add(rules.get(idx));
         }
         System.out.println("\t\t\t*****************FORWARD CHAINING*****************");
-        Chaining.ForwardChaining(ruleCache);
+        ForwardChaining.ForwardChaining(ruleCache);
         System.out.println("\t\t\t######Selected Explicit Rules Parsed######");
         ruleBox.init(false);
         ruleCache = ruleBox.getRules();
-        Chaining.ForwardChaining(ruleCache);
+        ForwardChaining.ForwardChaining(ruleCache);
         System.out.println("\t\t\t######Implicit Rules Parsed######");
         return Response.ok().build();
     }

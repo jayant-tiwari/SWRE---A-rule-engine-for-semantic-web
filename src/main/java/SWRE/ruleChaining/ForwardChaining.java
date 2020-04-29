@@ -6,7 +6,7 @@ import org.apache.jena.base.Sys;
 
 import java.util.ArrayList;
 
-public class Chaining {
+public class ForwardChaining {
 
     /*
      * RIGHT NOW, QUERY WITH EITHER ALL ANDS (or) ALL ORS ARE ONLY SUPPORTED

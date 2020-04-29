@@ -1,14 +1,26 @@
-import java.util.ArrayList;
-
-import SWRE.ruleChaining.Chaining;
-import SWRE.ruleGenerator.ImplicitRule;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.jena.query.ResultSet;
 
 import SWRE.Ontology2SDB2MySQL.*;
-import SWRE.ruleGenerator.RuleBox;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 
 public class Test {
 	public static void main(String args[]) throws Exception {
+
+		try {
+			PropertiesConfiguration properties = new PropertiesConfiguration("dbconfig.properties");
+			//System.out.println(properties.getProperties("ONTOLOGY_NAMESPACE"));
+			properties.setProperty("ONTOLOGY_NAMESPACE", "PARTH");
+			properties.save();
+			System.out.println("config.properties updated Successfully!!");
+		} catch (ConfigurationException e) {
+			e.printStackTrace();
+		}
+
 //		SDBUtilities sdbUtilities = new SDBUtilities();
 //		sdbUtilities.DBinit();
 //		String status = sdbUtilities.ont2SDB2SQL();
@@ -21,10 +33,10 @@ public class Test {
 //		ArrayList<ArrayList<String>> ruleList = ruleBox.getRules();
 //		Chaining.ForwardChaining(ruleList);
 
-		//String query = "SELECT ?Student ?Faculty { ?Faculty <http://www.iiitb.org/university#teaches> ?Course . ?Student <http://www.iiitb.org/university#opts> ?Course }";
-//		String query = "SELECT ?Student1 ?Student2 { ?Student1 <http://www.iiitb.org/university#isFriendOf> ?Student2} order by ?Student1";
+//		String query = "SELECT ?s ?p ?o { ?s ?p ?o }";
+////		String query = "SELECT ?Student1 ?Student2 { ?Student1 <http://www.iiitb.org/university#isFriendOf> ?Student2} order by ?Student1";
 //		OWLUtilities owlUtilities = new OWLUtilities();
-//		ResultSet rs = OWLUtilities.SDBQuery(query);
+//		ResultSet rs = owlUtilities.SDBQuery(query);
 //		System.out.println(rs);
 
 //

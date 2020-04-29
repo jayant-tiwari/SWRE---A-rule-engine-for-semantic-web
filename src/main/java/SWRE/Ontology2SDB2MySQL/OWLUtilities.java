@@ -56,8 +56,8 @@ public class OWLUtilities {
         query = "SELECT ?asymmetric {?asymmetric <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AsymmetricProperty>}";
         asymmetric = OWLUtilities.SDBQuery(query,"asymmetric");
 
-        /* to check if predicate is irreflexive and if it is does subject and object of triple to be inserted are same
-         * if same don't insert
+        /* This method is to check if predicate is irreflexive and if it is does subject and object of triple to be
+         * inserted are same if same don't insert
          */
         for(int i=0;i<irreflexive.size();i++) {
             if (irreflexive.get(i).equals(predicate)) {
@@ -68,7 +68,7 @@ public class OWLUtilities {
             }
         }
 
-        // similar thing as above for asymmetric (logic of asymmetric applies)
+        // Similar thing as above for asymmetric (logic of asymmetric applies)
         if(!dontAdd) {
             for (int i = 0; i < asymmetric.size(); i++) {
                 if (asymmetric.get(i).equals(predicate)) {
@@ -160,7 +160,7 @@ public class OWLUtilities {
         return triple;
     }
     /*
-    * THis method take a SPARQL string query, a plausible consequent and it is used for literals query.
+     * This method take a SPARQL string query, a plausible consequent and it is used for literals query.
      */
     public static ArrayList<String> SDBQuery(String queryString, String consequent) {
 
@@ -178,7 +178,10 @@ public class OWLUtilities {
         }
         return triple;
     }
-
+    /*
+     * Generic query paradigm where any SPARQL can be triggered. The select variables of the query should be passed as
+     * the argument arraylist.
+     */
     public static ArrayList<ArrayList<String>> SDBQuery(String queryString,ArrayList<String> selectPart)
     {
         ResultSet rs = null;
@@ -261,9 +264,9 @@ public class OWLUtilities {
         return objectProperty;
     }
     /*
-    * join query function
+     * join query function
      */
-    public static ArrayList<ArrayList<String>> executeUserQuery(ArrayList<String> queryPart,ArrayList<String> selectPart)
+    public static ArrayList<ArrayList<String>> executeUserQuery(ArrayList<String> queryPart, ArrayList<String> selectPart)
     {
         Hashtable<String, Integer> hash_table = new Hashtable<String, Integer>();
         ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();

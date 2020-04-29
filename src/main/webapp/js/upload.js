@@ -5,7 +5,7 @@ function uploadfile() {
     console.log(data);
     $.ajax({
         type: "POST",
-        url: 'webapi/Rule/fileUpload',
+        url: 'webapi/DataLoader/NewOntology',
         enctype: 'multipart/form-data',
         data: data,
         processData: false,
@@ -18,4 +18,13 @@ function uploadfile() {
             alert(ontology);
         }
     });
+}
+
+function triggerUniversityOntology() {
+
+    api = "webapi/DataLoader/University";
+    $.get(api,function() {
+        alert(api);
+    });
+    window.location.assign("/SWRE_war_exploded/workon.html");
 }

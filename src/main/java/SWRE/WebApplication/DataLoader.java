@@ -8,8 +8,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import java.io.IOException;
 import java.nio.file.*;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -42,6 +41,7 @@ public class DataLoader {
     @POST
     @Path("/NewOntology")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     public Response loadNewOntology(
             @FormDataParam("dbname") String database,
             @FormDataParam("prefixname") String prefix,
@@ -108,9 +108,11 @@ public class DataLoader {
      * Sets the path variables and other required variable as per the default University ontology
      * (COMMENT THE FUNCTION FOR NORMAL USE ELSE RULES AND DATABASE WILL BE CREATED, SLOWING THE SYSTEM)
      */
+    @GET
     @Path("/University")
     public void loadUniversityOntology() throws Exception {
 
+        System.out.println("I am here, check for updates!");
         InputStream inputStream = SDBUtilities.class.getClassLoader().getResourceAsStream("dbconfig.properties");
         Properties property = new Properties();
         property.load(inputStream);
@@ -142,11 +144,11 @@ public class DataLoader {
             updatedProperties.setProperty("ONTOLOGY_NAMESPACE", defaultOntologyNamespace);
             updatedProperties.setProperty("ONTOLOGY_PREFIX", defaultOntologyPrefix);
             updatedProperties.save();
+            System.out.println("I am here, check for updates");
         }
         catch (ConfigurationException e) {
             e.printStackTrace();
         }
-
         /*
          * Uncomment the below for regularily refreshing with new database
          */

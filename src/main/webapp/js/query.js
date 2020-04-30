@@ -12,7 +12,7 @@ $.get(api,function(create,status) {
             classes.push(create[0][i]);
         for (var j = 0; j< create[1].length; j++)
             propertis.push(create[1][j]);
-       newNode();
+        newNode();
     }
     else
         alert("fail");
@@ -37,11 +37,11 @@ function row(){
     for(var i=0;i<classes.length;i++){
         str+=`<option value="`+classes[i]+`">`+classes[i]+`</option>`;
     }
-    str+=`<option value="other">Other</option></select><input type="text" id="s6" placeholder="Enter Subject" class="form-control hide" style="border-radius: 50px"></div><div class="col-lg-4 text-center"><select class="form-control predicate1" style="border-radius: 50px">`;
+    str+=`<option value="other">Other</option></select><input type="text" id="s6" placeholder="Enter Subject" class="form-control hide" style="border-radius: 50px"></div><div class="col-lg-4 text-center"><select class="form-control predicate1" style="border-radius: 50px"onchange=" checkValuep(this.value,6)">`;
     for(var i=0;i<propertis.length;i++){
         str+=`<option value="`+propertis[i]+`">`+propertis[i]+`</option>`;
     }
-    str+=`</select></div><div class="col-lg-4 text-center"><select class="form-control object1" style="border-radius: 50px" onchange="checkValueo(this.value,6)">`;
+    str+=`<option value="other">Other</option></select><input type="text" id="p6" placeholder="Enter Subject" class="form-control hide" style="border-radius: 50px"></div><div class="col-lg-4 text-center"><select class="form-control object1" style="border-radius: 50px" onchange="checkValueo(this.value,6)">`;
 
     for(var i=0;i<classes.length;i++){
         str+=`<option value="`+classes[i]+`">`+classes[i]+`</option>`;
@@ -67,7 +67,7 @@ function newNode() {
     }
     str+=`<option value="other">Other</option></select><input type="text" id="o`+count+`" placeholder="Enter Object" class="form-control hide" style="border-radius: 50px"></div><div class="col-lg-3 text-center"><select class="form-control and" style="border-radius: 50px"><option value="AND">AND</option><option value="OR">OR</option></select></div></div>`;
     if(count===0)
-     $('#node').html(str);
+        $('#node').html(str);
     else
         $('#node').append(str);
     count++;
@@ -136,7 +136,12 @@ function backwardgo(){
             query.push(subject[i].value);
         }
 
-        query.push(predicate[i].value);
+        if(predicate[i].value==="other") {
+            query.push($("#p6").val());
+        }
+        else {
+            query.push(predicate[i].value);
+        }
 
         if(object[i].value==="other") {
             query.push($("#o6").val());
@@ -190,4 +195,11 @@ function checkValueo(val,id) {
     }
     else
         $("#o"+id).hide();
+}
+function checkValuep(val,id) {
+    if(val==="other"){
+        $("#p"+id).show();
+    }
+    else
+        $("#p"+id).hide();
 }

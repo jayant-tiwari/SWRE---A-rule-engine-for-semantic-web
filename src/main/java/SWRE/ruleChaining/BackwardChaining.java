@@ -35,7 +35,7 @@ public class BackwardChaining {
             }
         }
     }
-    public static void backwardChaining(String subject, String predicate, String object) throws Exception {
+    public static boolean backwardChaining(String subject, String predicate, String object) throws Exception {
 
         ArrayList<ArrayList<String>> possibleTargetValues = new ArrayList<ArrayList<String>>();
         ArrayList<ArrayList<String>> rulesToExecute = new ArrayList<ArrayList<String>>();
@@ -87,5 +87,6 @@ public class BackwardChaining {
             currentIteartionPredicates.clear();
         }
         System.out.println("The result of the query by Backward Chaining is :" + found );
+        return found;
     }
 }

@@ -1,10 +1,13 @@
 package SWRE.WebApplication;
 
 import SWRE.Ontology2SDB2MySQL.OWLUtilities;
+import SWRE.Ontology2SDB2MySQL.SDBUtilities;
+import SWRE.ruleChaining.BackwardChaining;
 import SWRE.ruleChaining.ForwardChaining;
 import SWRE.ruleGenerator.CreateRule;
 import SWRE.ruleGenerator.RuleBox;
 import SWRE.ruleGenerator.RuleJson;
+import org.apache.jena.base.Sys;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import javax.ws.rs.*;
@@ -183,14 +186,21 @@ public class WebappController {
     @POST
     @Path("/backwardQuery")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response backQuery( RuleJson re) throws Exception {
+    @Produces({MediaType.TEXT_PLAIN})
+    public String backQuery( RuleJson re) throws Exception {
 
-        for(int i=0;i<re.getRules().size();i++){
-            System.out.print(re.getRules().get(i)+" ");
 
-        }
-        return Response.ok().entity("done").build();
+        String subject = re.getRules().get(0);
+        String predicate = re.getRules().get(1);
+        String object = re.getRules().get(2);
+
+        System.out.println(predicate);
+
+        boolean result = BackwardChaining.backwardChaining(subject, predicate, object);
+        if(result == true)
+            return "true";
+        else
+            return "false";
     }
 
 }

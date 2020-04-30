@@ -2,6 +2,8 @@ package SWRE.Ontology2SDB2MySQL;
 
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.sdb.SDBFactory;
 import org.apache.jena.sdb.Store;
@@ -66,13 +68,21 @@ public class SDBUtilities {
 		InputStream inputStream = SDBUtilities.class.getClassLoader().getResourceAsStream("dbconfig.properties");
 		Properties property = new Properties();
 		property.load(inputStream);
-		jdbcURL = (String)property.get("SDB_URL");
-		dbusername = (String)property.get("SDB_USERNAME");
-		dbpassword = (String)property.get("SDB_PASSWORD");
-		setJdbcDriver((String)property.get("JDBC_DRIVER"));
-		ontology = property.getProperty("ONTOLOGY");
-		ontologyPrefix = property.getProperty("ONTOLOGY_PREFIX");
-		ontologyNamespace = property.getProperty("ONTOLOGY_NAMESPACE");
+		String targetPath = property.getProperty("TARGET_PATH");
+		inputStream.close();
+
+		String newConfigPath = targetPath + "dbconfig.properties";
+//		System.out.println("SDBUtilities"+" "+newConfigPath);
+		PropertiesConfiguration updatedProperties = new PropertiesConfiguration(newConfigPath);
+
+		jdbcURL = updatedProperties.getString("SDB_URL");
+		dbusername = updatedProperties.getString("SDB_USERNAME");
+		dbpassword = updatedProperties.getString("SDB_PASSWORD");
+		setJdbcDriver(updatedProperties.getString("JDBC_DRIVER"));
+		ontology = updatedProperties.getString("ONTOLOGY");
+		ontologyPrefix = updatedProperties.getString("ONTOLOGY_PREFIX");
+		ontologyNamespace = updatedProperties.getString("ONTOLOGY_NAMESPACE");
+		System.out.println(ontology+" "+ontologyPrefix+" "+ontologyNamespace);
 		/* Creates a storage description for the MySQL Database, here TripleNodeHash means that each node in the RDF/XML file
 		 * will be provided a hash and the triples table will consists all the hashes.
 		 * The specified database is MySQL
@@ -101,6 +111,7 @@ public class SDBUtilities {
 	 */
 	public static String ont2SDB2SQL() {
 
+		System.out.println(ontology+" "+ontologyPrefix+" "+ontologyNamespace);
 		// One time operation. Formats the tables in database namely, Nodes, Triples, Prefix and Quads
 		store.getTableFormatter().create();
 		// These models are provided by Jena. Use GraphDB if you want to store graphical data in relational format
@@ -108,7 +119,6 @@ public class SDBUtilities {
 		model.setNsPrefix(ontologyNamespace,ontologyPrefix);
 		model.read(ontology);
 		model.commit();
-
 		return "success";
 	}
 	

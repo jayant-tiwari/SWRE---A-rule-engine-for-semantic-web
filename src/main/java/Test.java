@@ -11,15 +11,15 @@ import java.util.Properties;
 public class Test {
 	public static void main(String args[]) throws Exception {
 
-		try {
-			PropertiesConfiguration properties = new PropertiesConfiguration("dbconfig.properties");
-			//System.out.println(properties.getProperties("ONTOLOGY_NAMESPACE"));
-			properties.setProperty("ONTOLOGY_NAMESPACE", "PARTH");
-			properties.save();
-			System.out.println("config.properties updated Successfully!!");
-		} catch (ConfigurationException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			PropertiesConfiguration properties = new PropertiesConfiguration("dbconfig.properties");
+//			//System.out.println(properties.getProperties("ONTOLOGY_NAMESPACE"));
+//			properties.setProperty("TEST", "PARTH");
+//			properties.save();
+//			System.out.println("config.properties updated Successfully!!");
+//		} catch (ConfigurationException e) {
+//			e.printStackTrace();
+//		}
 
 //		SDBUtilities sdbUtilities = new SDBUtilities();
 //		sdbUtilities.DBinit();
@@ -33,11 +33,11 @@ public class Test {
 //		ArrayList<ArrayList<String>> ruleList = ruleBox.getRules();
 //		Chaining.ForwardChaining(ruleList);
 
-//		String query = "SELECT ?s ?p ?o { ?s ?p ?o }";
-////		String query = "SELECT ?Student1 ?Student2 { ?Student1 <http://www.iiitb.org/university#isFriendOf> ?Student2} order by ?Student1";
-//		OWLUtilities owlUtilities = new OWLUtilities();
-//		ResultSet rs = owlUtilities.SDBQuery(query);
-//		System.out.println(rs);
+		String query = "Select ?Actors ?Movie { ?Actors <http://www.iiitb.ac.in/MovieOntology#Acted_In> ?Movie  }";
+//		String query = "SELECT ?Student1 ?Student2 { ?Student1 <http://www.iiitb.org/university#isFriendOf> ?Student2} order by ?Student1";
+		OWLUtilities owlUtilities = new OWLUtilities();
+		ResultSet rs = owlUtilities.SDBQuery(query);
+		System.out.println(rs);
 
 //
 //		RuleBox ruleBox = new RuleBox();

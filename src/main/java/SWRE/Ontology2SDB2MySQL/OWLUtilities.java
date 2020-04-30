@@ -275,7 +275,7 @@ public class OWLUtilities {
         String query = "";
         String left = "";
         String right = "";
-        String prefix = "http://www.iiitb.org/university#";
+        String prefix = sdbUtilities.getOntologyPrefix();
         String prefixofSubclass="http://www.w3.org/2000/01/rdf-schema#";
         for(int loopIn=0;loopIn<queryPart.size();loopIn++)
         {

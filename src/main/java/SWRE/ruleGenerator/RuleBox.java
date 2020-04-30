@@ -14,6 +14,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import SWRE.Ontology2SDB2MySQL.SDBUtilities;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,20 +44,24 @@ public class RuleBox {
 	 * Initializes the XML Rule files i.e. the explicit (user given) and implicit (present in OWL Ontology) rules
 	 */
 	public void init(boolean isExplicit) throws Exception {
-		
-		// Reading rules file of XML from dbconfig
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dbconfig.properties");
+
+		InputStream inputStream = SDBUtilities.class.getClassLoader().getResourceAsStream("dbconfig.properties");
 		Properties property = new Properties();
 		property.load(inputStream);
+		String targetPath = property.getProperty("TARGET_PATH");
+		inputStream.close();
 
+		String newConfigPath = targetPath + "dbconfig.properties";
+//		System.out.println("SDBUtilities"+" "+newConfigPath);
+		PropertiesConfiguration updatedProperties = new PropertiesConfiguration(newConfigPath);
 		/*
 		 * isExplicit = True when the object is to be initialised with explicit rule xml file
 		 * isExplicit = False when the object is to be initialised with implicit rule xml file (Rules existing in the ontology)
 		 */
 		if(isExplicit == true)
-			xmlFilename = (String)property.get("EXPLICIT_RULE_STORE");
+			xmlFilename = updatedProperties.getString("EXPLICIT_RULE_STORE");
 		else
-			xmlFilename = (String)property.get("IMPLICIT_RULE_STORE");
+			xmlFilename = updatedProperties.getString("IMPLICIT_RULE_STORE");
 		System.out.println(xmlFilename);
 
 		try {

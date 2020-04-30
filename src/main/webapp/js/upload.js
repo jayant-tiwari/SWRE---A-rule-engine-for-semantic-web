@@ -23,8 +23,9 @@ function uploadfile() {
 function triggerUniversityOntology() {
 
     api = "webapi/DataLoader/University";
-    $.get(api,function() {
-        alert(api);
+    $.get(api,function(status) {
+        if(status==="success")
+            alert(api);
+        window.location.assign("/SWRE_war_exploded/workon.html");
     });
-    window.location.assign("/SWRE_war_exploded/workon.html");
 }

@@ -180,6 +180,18 @@ public class WebappController {
 //        }
         return Response.ok().entity(result).build();
     }
+    @POST
+    @Path("/backwardQuery")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response backQuery( RuleJson re) throws Exception {
+
+        for(int i=0;i<re.getRules().size();i++){
+            System.out.print(re.getRules().get(i)+" ");
+
+        }
+        return Response.ok().entity("done").build();
+    }
 
 }
 

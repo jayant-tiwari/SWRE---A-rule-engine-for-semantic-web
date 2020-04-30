@@ -12,11 +12,9 @@ function uploadfile() {
         contentType:false,
         cache: false,
         async: true,
-        timeout: 600000,
-        success: function (ontology) {
-            document.getElementById("ontologyfile").reset();
-            console.log("here");
-            alert(ontology);
+        timeout: 60000,
+        success: function (status) {
+            window.location.assign("/SWRE_war_exploded/workon.html");
         }
     });
 }

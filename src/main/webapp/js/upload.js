@@ -13,9 +13,8 @@ function uploadfile() {
         cache: false,
         async: true,
         timeout: 60000,
-        success: function (ontology) {
-            document.getElementById("ontologyfile").reset();
-            alert(ontology);
+        success: function (status) {
+            window.location.assign("/SWRE_war_exploded/workon.html");
         }
     });
 }

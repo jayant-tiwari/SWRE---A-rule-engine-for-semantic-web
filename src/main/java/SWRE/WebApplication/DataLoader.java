@@ -109,7 +109,7 @@ public class DataLoader {
         // Setting the database
         setDatabase();
 
-        return Response.ok().entity(output).build();
+        return Response.ok().build();
     }
 
     /*

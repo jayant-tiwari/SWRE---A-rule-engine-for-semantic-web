@@ -12,9 +12,10 @@ function uploadfile() {
         contentType:false,
         cache: false,
         async: true,
-        timeout: 60000,
+        timeout: 600000,
         success: function (ontology) {
             document.getElementById("ontologyfile").reset();
+            console.log("here");
             alert(ontology);
         }
     });

@@ -171,15 +171,16 @@ function backwardgo(){
 }
 function showResult(result){
     $("#result").show();
-    var str="";
+    var str="<table>";
     for(var i=0;i<result.length;i++){
-        str+=`<p>`;
+        str+=`<tr>`;
         for(var j=0;j<result[i].length;j++){
-            str+=result[i][j]+` `;
+            str+=`<td>`+result[i][j]+`</td>`;
         }
-        str+=`</p>`;
+        str+=`</tr>`;
     }
-    $("#showresult").html(str);
+    str+=`</table>`
+    $("#showResult").html(str);
 
 }
 function checkValues(val,id) {

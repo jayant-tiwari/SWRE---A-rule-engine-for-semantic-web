@@ -18,6 +18,7 @@ public class ForwardChaining {
     	    String left="";
     	    String right="";
             String query = "";
+            String ontologyPrefix = prefix;
 	    String rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	    String owl = "http://www.w3.org/2002/07/owl#";
 	    int len = Rule.size();
@@ -28,52 +29,84 @@ public class ForwardChaining {
 	     * This is done to add a new "PREDICATE" in the fact table. Later, with that fact table, we can add triples accordingly
 	     */
 
-	    owlUtilities.insertTriples(rdf, owl, Rule.get(len-2),"type", "ObjectProperty");
+       owlUtilities.insertTriples(rdf, owl, Rule.get(len-2),"type", "ObjectProperty");
 
-	    query=query + "SELECT " + Rule.get(len-3) + " " + Rule.get(len-1) + " { ";
-	    if(Rule.get(0).charAt(0)=='?')
-	    left=Rule.get(0);
-	    else
-	    left = " <" + prefix + Rule.get(0) +"> ";
-	    left = left + " <" + prefix + Rule.get(1) + "> " ;
-	    if(Rule.get(2).charAt(0)=='?')
-	    left = left + Rule.get(2) + " ";
-	    else
-	    left = left + "<" + prefix + Rule.get(2) + "> ";
+    	    query=query + "SELECT " + Rule.get(len-3) + " " + Rule.get(len-1) + " { ";
+    	    if(Rule.get(0).charAt(0)=='?')
+    	    left=Rule.get(0);
+    	    else
+    	    left = " <" + prefix + Rule.get(0) +"> ";
+            //if-else conditions for checking what prefix to apply to predicate
+            if (Rule.get(1).equalsIgnoreCase("subClassOf") || Rule.get(1).equalsIgnoreCase("subPropertyOf") || Rule.get(1).equalsIgnoreCase("domain") || Rule.get(1).equalsIgnoreCase("range")) {
+                prefix = "http://www.w3.org/2000/01/rdf-schema#";
+                left = left + " <" + prefix + Rule.get(1) + "> ";
+            } else if (Rule.get(1).equalsIgnoreCase("type")) {
+                prefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+                left = left + " <" + prefix + Rule.get(1) + "> ";
+            } else if (Rule.get(1).equalsIgnoreCase("inverseOf")) {
+                prefix = "http://www.w3.org/2002/07/owl#";
+                left = left + " <" + prefix + Rule.get(1) + "> ";
+            } else       //Here we can have one more else if condition for owl prefix
+                left = left + " <" + prefix + Rule.get(1) + "> ";
+            prefix = ontologyPrefix;
 
-	    // Index refer to the index of connector being considered currently
+            //if charAt(0)='  it means we hava data of data type property so no need to apply prefix
+            if (Rule.get(2).charAt(0) == '?' || Rule.get(2).charAt(0) == '\'')
+                left = left + Rule.get(2) + " ";
+            else if (Rule.get(2).equalsIgnoreCase("Ontology") || Rule.get(2).equalsIgnoreCase("Thing") || Rule.get(2).equalsIgnoreCase("Class") || Rule.get(2).equalsIgnoreCase("ObjectProperty") || Rule.get(2).equalsIgnoreCase("NamedIndividual") || Rule.get(2).equalsIgnoreCase("DatatypeProperty") || Rule.get(2).equalsIgnoreCase("SymmetricProperty") || Rule.get(2).equalsIgnoreCase("TransitiveProperty") || Rule.get(2).equalsIgnoreCase("ReflexiveProperty") || Rule.get(2).equalsIgnoreCase("IrreflexiveProperty") || Rule.get(2).equalsIgnoreCase("AsymmetricProperty") || Rule.get(2).equalsIgnoreCase("FunctionalProperty") || Rule.get(2).equalsIgnoreCase("InverseFunctionalProperty")) {
+                prefix = "http://www.w3.org/2002/07/owl#";
+                left = left + "<" + prefix + Rule.get(2) + "> ";
+            } else
+                left = left + "<" + prefix + Rule.get(2) + "> ";
+            prefix = ontologyPrefix;
+    	    //index refer to the index of connector being considered currently
+    	    index=(3*(loop+1))+loop;
+    	    while(index<len-3)
+    	    {
+    	    	loop++;
+    	    	//right holds the subject,predicate,object present immediately after the connector
+    	    	if(Rule.get(index+1).charAt(0)=='?')
+    	    	right = Rule.get(index+1) ;
+    	    	else
+    	    	right = " <" + prefix + Rule.get(index+1) + "> " ;
+                if (Rule.get(index + 2).equalsIgnoreCase("subClassOf") || Rule.get(index + 2).equalsIgnoreCase("subPropertyOf") || Rule.get(index + 2).equalsIgnoreCase("range") || Rule.get(index + 2).equalsIgnoreCase("domain")) {
+                    prefix = "http://www.w3.org/2000/01/rdf-schema#";
+                    right = right + " <" + prefix + Rule.get(index + 2) + "> ";
+                } else if (Rule.get(index + 2).equalsIgnoreCase("type")) {
+                    prefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+                    right = right + " <" + prefix + Rule.get(index + 2) + "> ";
+                } else if (Rule.get(index + 2).equalsIgnoreCase("inverseOf")) {
+                    prefix = "http://www.w3.org/2002/07/owl#";
+                    right = right + " <" + prefix + Rule.get(index + 2) + "> ";
+                } else
+                    right = right + " <" + prefix + Rule.get(index + 2) + "> ";
+                prefix = ontologyPrefix;
+                //right = right + " <" + prefix + queryPart.get(index+2) + "> " ;
+                if (Rule.get(index + 3).charAt(0) == '?' || Rule.get(index + 3).charAt(0) == '\'')
+                    right = right + Rule.get(index + 3) + " ";
+                else if (Rule.get(index + 3).equalsIgnoreCase("Ontology") || Rule.get(index + 3).equalsIgnoreCase("Thing") || Rule.get(index + 3).equalsIgnoreCase("Class") || Rule.get(index + 3).equalsIgnoreCase("ObjectProperty") || Rule.get(index + 3).equalsIgnoreCase("NamedIndividual") || Rule.get(index + 3).equalsIgnoreCase("DatatypeProperty") || Rule.get(index + 3).equalsIgnoreCase("SymmetricProperty") || Rule.get(index + 3).equalsIgnoreCase("TransitiveProperty") || Rule.get(index + 3).equalsIgnoreCase("ReflexiveProperty") || Rule.get(index + 3).equalsIgnoreCase("IrreflexiveProperty") || Rule.get(index + 3).equalsIgnoreCase("AsymmetricProperty") || Rule.get(index + 3).equalsIgnoreCase("FunctionalProperty") || Rule.get(index + 3).equalsIgnoreCase("InverseFunctionalProperty")) {
+                    prefix = "http://www.w3.org/2002/07/owl#";
+                    right = right + "<" + prefix + Rule.get(index + 3) + "> ";
+                } else
+                    right = right + "<" + prefix + Rule.get(index + 3) + "> ";
+                prefix = ontologyPrefix;
+                //left holds entire query before the present connector
 
-        index=(3*(loop+1))+loop;
-	    while(index<len-3)
-	    {
-	    	loop++;
-	    	// Variable "right" holds the {subject, predicate, object} present immediately after the connector
-	    	if(Rule.get(index+1).charAt(0)=='?')
-	    	right = Rule.get(index+1) ;
-	    	else
-	    	right = " <" + prefix + Rule.get(index+1) + "> " ;
-	    	right = right + " <" + prefix + Rule.get(index+2) + "> " ;
-	    	if(Rule.get(index+3).charAt(0)=='?')
-	    	right = right + Rule.get(index+3) + " ";
-	    	else
-	    	right = right + "<" + prefix + Rule.get(index+3) + "> ";
-	    	
-	    	//Variable "left" holds entire query before the present connector
 
-	    	if((Rule.get(index)).equals("OR"))
-	    	{
-	    		left = "{ " + left + " }" + " UNION " + "{ " + right + " }";
-	    	}
-	    	else if((Rule.get(index)).equals("AND"))
-	    	{
-	    		left = left + " . " + right;
-	    	}
-	    	//updating index to get to next connector
-	    	index=(3*(loop+1))+loop;
-	    }
-	    query = query + left + " }";
+    	    	if((Rule.get(index)).equals("OR"))
+    	    	{
+    	    		left = "{ " + left + " }" + " UNION " + "{ " + right + " }";
+    	    	}
+    	    	else if((Rule.get(index)).equals("AND"))
+    	    	{
+    	    		left = left + " . " + right;
+    	    	}
+    	    	//updating index to get to next connector
+    	    	index=(3*(loop+1))+loop;
+    	    }
+    	    query = query + left + " }";
 
-        return query;
+            return query;
     }
 
     /*
@@ -117,7 +150,7 @@ public class ForwardChaining {
                 // Extract each rule from the rule
                 ArrayList<String> Rule = ruleList.get(loop);
                 // Create query for the current rule
-                String query = createQuery(Rule, owlUtilities, sdbUtilities.getOntologyPrefix());
+                String query = createQuery(Rule, owlUtilities,sdbUtilities.getOntologyPrefix());
                 System.out.println("Query generated by rule " + loop + " is " + query);
                 // Obtaing triples due to the above query
                 int ruleLength = Rule.size();

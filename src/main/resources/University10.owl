@@ -70,18 +70,6 @@
     
 
 
-    <!-- http://www.iiitb.org/university#isFriendOf -->
-
-    <owl:ObjectProperty rdf:about="http://www.iiitb.org/university#isFriendOf">
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
-        <rdfs:domain rdf:resource="http://www.iiitb.org/university#Student"/>
-        <rdfs:range rdf:resource="http://www.iiitb.org/university#Student"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://www.iiitb.org/university#isMadeOf -->
 
     <owl:ObjectProperty rdf:about="http://www.iiitb.org/university#isMadeOf">
@@ -217,6 +205,14 @@
     <!-- http://www.iiitb.org/university#Exam_Qualified -->
 
     <owl:DatatypeProperty rdf:about="http://www.iiitb.org/university#Exam_Qualified">
+        <rdfs:subPropertyOf rdf:resource="http://www.iiitb.org/university#Student_Details"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.iiitb.org/university#Exam_Qualified_Discipline -->
+
+    <owl:DatatypeProperty rdf:about="http://www.iiitb.org/university#Exam_Qualified_Discipline">
         <rdfs:subPropertyOf rdf:resource="http://www.iiitb.org/university#Student_Details"/>
     </owl:DatatypeProperty>
     
@@ -470,6 +466,7 @@
         <opts rdf:resource="http://www.iiitb.org/university#DS817"/>
         <opts rdf:resource="http://www.iiitb.org/university#SP823"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">JEE-MAINS</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ECE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yarchit</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sompal</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mr.</Name_Prefix>
@@ -483,12 +480,12 @@
     <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#IMT2019100">
         <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
         <isBatchmateOf rdf:resource="http://www.iiitb.org/university#IMT2019028"/>
-        <isFriendOf rdf:resource="http://www.iiitb.org/university#IMT2019028"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS511"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS816"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS603"/>
         <opts rdf:resource="http://www.iiitb.org/university#SP823"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">JEE-Main</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CSE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shashank</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Agarwal</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mr.</Name_Prefix>
@@ -520,26 +517,16 @@
     
 
 
-    <!-- http://www.iiitb.org/university#Jayant -->
-
-    <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#Jayant">
-        <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
-        <owl:sameAs rdf:resource="http://www.iiitb.org/university#MT2019048"/>
-        <opts rdf:resource="http://www.iiitb.org/university#EC201"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://www.iiitb.org/university#MS2017032 -->
 
     <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#MS2017032">
         <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
-        <isFriendOf rdf:resource="http://www.iiitb.org/university#IMT2019100"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS511"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS816"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS603"/>
         <opts rdf:resource="http://www.iiitb.org/university#SP823"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GATE</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ECE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tripti</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aggarwal</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ms.</Name_Prefix>
@@ -552,11 +539,11 @@
 
     <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#MS2019001">
         <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
-        <isFriendOf rdf:resource="http://www.iiitb.org/university#MS2017032"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS511"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS816"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS603"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GATE</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CSE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shubham</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aggarwal</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mr.</Name_Prefix>
@@ -570,12 +557,12 @@
     <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#MT2017098">
         <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
         <isBatchmateOf rdf:resource="http://www.iiitb.org/university#MS2017032"/>
-        <isFriendOf rdf:resource="http://www.iiitb.org/university#MS2019001"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS511"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS816"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS603"/>
         <opts rdf:resource="http://www.iiitb.org/university#SP823"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GATE</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ECE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Rajat</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Aggarwal</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mr.</Name_Prefix>
@@ -588,12 +575,12 @@
 
     <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#MT2018065">
         <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
-        <isFriendOf rdf:resource="http://www.iiitb.org/university#MT2017098"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS511"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS816"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS603"/>
         <opts rdf:resource="http://www.iiitb.org/university#SP823"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GATE</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ECE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mudit</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mittal</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mr.</Name_Prefix>
@@ -606,12 +593,12 @@
 
     <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#MT2019022">
         <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
-        <isFriendOf rdf:resource="http://www.iiitb.org/university#MT2018065"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS511"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS816"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS603"/>
         <opts rdf:resource="http://www.iiitb.org/university#SP823"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GATE</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ECE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ankita</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bisht</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ms.</Name_Prefix>
@@ -625,13 +612,13 @@
     <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#MT2019048">
         <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
         <isBatchmateOf rdf:resource="http://www.iiitb.org/university#MT2019022"/>
-        <isFriendOf rdf:resource="http://www.iiitb.org/university#MT2019022"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS511"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS816"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS603"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS817"/>
         <opts rdf:resource="http://www.iiitb.org/university#SP823"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GATE</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CSE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jayant</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tiwari</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mr.</Name_Prefix>
@@ -645,12 +632,12 @@
     <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#MT2019074">
         <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
         <isBatchmateOf rdf:resource="http://www.iiitb.org/university#MT2019048"/>
-        <isFriendOf rdf:resource="http://www.iiitb.org/university#MT2019048"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS511"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS816"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS603"/>
         <opts rdf:resource="http://www.iiitb.org/university#SP823"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GATE</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CSE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Parth</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trehan</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mr.</Name_Prefix>
@@ -664,13 +651,13 @@
     <owl:NamedIndividual rdf:about="http://www.iiitb.org/university#PHD2019065">
         <rdf:type rdf:resource="http://www.iiitb.org/university#Student"/>
         <isBatchmateOf rdf:resource="http://www.iiitb.org/university#MS2017032"/>
-        <isFriendOf rdf:resource="http://www.iiitb.org/university#MT2019074"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS511"/>
         <opts rdf:resource="http://www.iiitb.org/university#CS816"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS603"/>
         <opts rdf:resource="http://www.iiitb.org/university#DS817"/>
         <opts rdf:resource="http://www.iiitb.org/university#SP823"/>
         <Exam_Qualified rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GATE</Exam_Qualified>
+        <Exam_Qualified_Discipline rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CSE</Exam_Qualified_Discipline>
         <First_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mohit</First_Name>
         <Last_Name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bansal</Last_Name>
         <Name_Prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mr.</Name_Prefix>

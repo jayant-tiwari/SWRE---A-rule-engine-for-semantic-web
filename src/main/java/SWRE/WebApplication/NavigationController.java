@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 
 @Path("/Rule")
-public class WebappController {
+public class NavigationController {
 
     /*
      * For each run, certain rules get stored in the cache i.e. rules selected by the user for one run
@@ -59,36 +59,7 @@ public class WebappController {
         return Response.ok().entity(existingRule).build();
     }
 
-    /*
-     *
-     */
-    @POST
-    @Path("/existingRules")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public Response updateDetails(RuleJson ruleIndex) throws Exception {
 
-        System.out.println("Existing Rules");
-        int len = ruleIndex.getRules().size();
-        ruleCache = new ArrayList<>();
-
-        RuleBox ruleBox = new RuleBox();
-        ruleBox.init(true);
-        ArrayList<ArrayList<String>> rules = ruleBox.getRules();
-
-        for(int i=0;i<len;i++){
-            int idx = Integer.parseInt(ruleIndex.getRules().get(i));
-            ruleCache.add(rules.get(idx));
-        }
-        System.out.println("\t\t\t*****************FORWARD CHAINING*****************");
-        ForwardChaining.ForwardChaining(ruleCache);
-        System.out.println("\t\t\t######Selected Explicit Rules Parsed######");
-        ruleBox.init(false);
-        ruleCache = ruleBox.getRules();
-        ForwardChaining.ForwardChaining(ruleCache);
-        System.out.println("\t\t\t######Implicit Rules Parsed######");
-        return Response.ok().build();
-    }
 
     @Path("/getNode")
     @GET
@@ -184,25 +155,5 @@ public class WebappController {
 //        }
         return Response.ok().entity(result).build();
     }
-    @POST
-    @Path("/backwardQuery")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces({MediaType.TEXT_PLAIN})
-    public String backQuery( RuleJson re) throws Exception {
-
-
-        String subject = re.getRules().get(0);
-        String predicate = re.getRules().get(1);
-        String object = re.getRules().get(2);
-
-        System.out.println(predicate);
-
-        boolean result = BackwardChaining.backwardChaining(subject, predicate, object);
-        if(result == true)
-            return "true";
-        else
-            return "false";
-    }
-
 }
 

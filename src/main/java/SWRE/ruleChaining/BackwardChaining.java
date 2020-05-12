@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class BackwardChaining {
 
     public static void executeRules(String prefix, ArrayList<ArrayList<String> > rulesToExecute) throws Exception {
-        
+
         String query = "";
         String subject = "";
         String object = "";

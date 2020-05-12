@@ -154,7 +154,7 @@ function backwardgo(){
     console.log(query);
     var data=JSON.stringify({rules:query});
     $.ajax({
-        url: 'webapi/Rule/backwardQuery',
+        url: 'webapi/chaining/backwardChaining',
         type: "POST",
         data: data,
         processData: false,

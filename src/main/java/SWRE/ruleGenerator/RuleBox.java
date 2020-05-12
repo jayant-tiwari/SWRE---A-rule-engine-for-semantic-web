@@ -45,6 +45,11 @@ public class RuleBox {
 	 */
 	public void init(boolean isExplicit) throws Exception {
 
+		/*
+		 * The dbconfig.properties file is read twice as it dymically changes the filepath as per the newly inserted
+		 * ontology. Initially the ontology file is uploaded with temporary values and later updated with required values.
+		 */
+
 		InputStream inputStream = SDBUtilities.class.getClassLoader().getResourceAsStream("dbconfig.properties");
 		Properties property = new Properties();
 		property.load(inputStream);
@@ -52,12 +57,14 @@ public class RuleBox {
 		inputStream.close();
 
 		String newConfigPath = targetPath + "dbconfig.properties";
-//		System.out.println("SDBUtilities"+" "+newConfigPath);
+
 		PropertiesConfiguration updatedProperties = new PropertiesConfiguration(newConfigPath);
+
 		/*
 		 * isExplicit = True when the object is to be initialised with explicit rule xml file
 		 * isExplicit = False when the object is to be initialised with implicit rule xml file (Rules existing in the ontology)
 		 */
+
 		if(isExplicit == true)
 			xmlFilename = updatedProperties.getString("EXPLICIT_RULE_STORE");
 		else

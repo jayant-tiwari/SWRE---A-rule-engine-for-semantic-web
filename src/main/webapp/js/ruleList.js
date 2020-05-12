@@ -123,7 +123,7 @@ function submitE(){
     console.log(JSON.stringify(existing_rules));
     var data=JSON.stringify({rules:existing_rules});
     $.ajax({
-        url: 'webapi/Rule/existingRules',
+        url: 'webapi/chaining/forwardChaining',
         type: "POST",
         data: data,
         //enctype:'multipart/form-data',

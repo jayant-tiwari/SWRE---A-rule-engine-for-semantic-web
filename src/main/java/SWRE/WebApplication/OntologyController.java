@@ -26,7 +26,7 @@ import java.util.Properties;
  */
 
 @Path("/DataLoader")
-public class DataLoader {
+public class OntologyController {
 
     private void setDatabase() throws Exception {
 

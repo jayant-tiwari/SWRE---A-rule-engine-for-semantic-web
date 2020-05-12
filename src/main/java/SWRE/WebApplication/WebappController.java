@@ -94,6 +94,7 @@ public class WebappController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response fetchClasses() throws Exception {
+
         System.out.println("Fetching Class and ObjectProperty");
         OWLUtilities owlUtilities = new OWLUtilities();
         ArrayList<String>classname= owlUtilities.getNode();

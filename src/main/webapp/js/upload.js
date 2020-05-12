@@ -1,8 +1,6 @@
 function uploadfile() {
     var form = $('#ontologyfile')[0];
     var data = new FormData(form);
-    console.log("hello");
-    console.log(data);
     $.ajax({
         type: "POST",
         url: 'webapi/DataLoader/NewOntology',
@@ -24,7 +22,6 @@ function triggerUniversityOntology() {
     api = "webapi/DataLoader/University";
     $.get(api,function(status) {
         if(status==="success")
-            alert(api);
         window.location.assign("/SWRE_war_exploded/workon.html");
     });
 }

@@ -65,6 +65,12 @@ public class SDBUtilities {
 
 	// Reads the configuration file and updates JDBC variables 
 	public static void DBinit() throws Exception{
+
+		/*
+		 * The dbconfig.properties file is read twice as it dymically changes the filepath as per the newly inserted
+		 * ontology. Initially the ontology file is uploaded with temporary values and later updated with required values.
+		 */
+
 		InputStream inputStream = SDBUtilities.class.getClassLoader().getResourceAsStream("dbconfig.properties");
 		Properties property = new Properties();
 		property.load(inputStream);
@@ -72,7 +78,6 @@ public class SDBUtilities {
 		inputStream.close();
 
 		String newConfigPath = targetPath + "dbconfig.properties";
-//		System.out.println("SDBUtilities"+" "+newConfigPath);
 		PropertiesConfiguration updatedProperties = new PropertiesConfiguration(newConfigPath);
 
 		jdbcURL = updatedProperties.getString("SDB_URL");
@@ -83,10 +88,12 @@ public class SDBUtilities {
 		ontologyPrefix = updatedProperties.getString("ONTOLOGY_PREFIX");
 		ontologyNamespace = updatedProperties.getString("ONTOLOGY_NAMESPACE");
 		System.out.println(ontology+" "+ontologyPrefix+" "+ontologyNamespace);
+
 		/* Creates a storage description for the MySQL Database, here TripleNodeHash means that each node in the RDF/XML file
 		 * will be provided a hash and the triples table will consists all the hashes.
 		 * The specified database is MySQL
 		 */
+
 		storeDesc = new StoreDesc(LayoutType.LayoutTripleNodesHash, DatabaseType.MySQL);
 		JDBC.loadDriverMySQL();
 		// Connecting SDB to JDBC

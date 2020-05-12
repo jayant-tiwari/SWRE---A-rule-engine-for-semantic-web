@@ -6,14 +6,14 @@ import SWRE.ruleGenerator.RuleBox;
 
 import java.util.ArrayList;
 public class BackwardChaining {
-    public static void executeRules(ArrayList<ArrayList<String> > rulesToExecute) throws Exception
-    {
+
+    public static void executeRules(String prefix, ArrayList<ArrayList<String> > rulesToExecute) throws Exception {
+        
         String query = "";
         String subject = "";
         String object = "";
         String predicate = "";
         int tripleLength;
-        String prefix = "http://www.iiitb.org/university#";
         ArrayList<String> rule =new ArrayList<String>();
 
         OWLUtilities owlUtilities =new OWLUtilities();
@@ -41,20 +41,18 @@ public class BackwardChaining {
         ArrayList<ArrayList<String>> rulesToExecute = new ArrayList<ArrayList<String>>();
         ArrayList<String> lastIterationPredicates = new ArrayList<String>();
         ArrayList<String> currentIteartionPredicates = new ArrayList<String>();
-//        ArrayList<String> checkrule = new ArrayList<String>();
         lastIterationPredicates.add(predicate);
         String query="";
         String currentPredicate="";
-        String prefix = "http://www.iiitb.org/university#";
+        SDBUtilities sdbUtilities = new SDBUtilities();
+        sdbUtilities.DBinit();
+        String prefix = sdbUtilities.getOntologyPrefix();
         subject = prefix + subject;
         object = prefix + object;
         boolean found = false;
-        SDBUtilities sdbUtilities = new SDBUtilities();
-        sdbUtilities.DBinit();
         RuleBox ruleBox = new RuleBox();
         ruleBox.init(true);
         ArrayList<ArrayList<String>> ruleList = ruleBox.getRules();
-        System.out.println(ruleList.size());
         while(!lastIterationPredicates.isEmpty() && !found){
             query = "Select ?x ?y {?x " + "<" + prefix + predicate +"> ?y}";
             possibleTargetValues = OWLUtilities.SDBQuery(query,"x","y");
@@ -77,7 +75,7 @@ public class BackwardChaining {
                         for(int antecedentPredicateIndex=1;antecedentPredicateIndex<((ruleList.get(loop).size()) - 3);antecedentPredicateIndex=antecedentPredicateIndex+4) {
                             currentIteartionPredicates.add(ruleList.get(loop).get(antecedentPredicateIndex));
                         }
-                        executeRules(rulesToExecute);
+                        executeRules(prefix, rulesToExecute);
                     }
                 }
             }

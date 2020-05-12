@@ -29,9 +29,11 @@ public class OWLUtilities {
 
     /*
      * This method, creates a new resource for the predicate if the predicate is missing and if not, inserts the triple into the database
+     * The method also checks for various properties of different predicates and inserts the triple iff the properties are not being violated
      */
 
     public static void insertTriples(String subject, String predicate, String object) {
+
         //flag to deicide whether to insert the triples or not
         boolean dontAdd = false;
         String query = "";
@@ -46,17 +48,13 @@ public class OWLUtilities {
         org.apache.jena.rdf.model.Resource Object = model.createResource(object);
 
         predicate = sdbUtilities.getOntologyPrefix() + predicate;
-        /* Major Doubt:
-        Should we store all irreflexive and asymmetric properties in a database
-        Moreover for asymmetric properties we can store the result of all triples with that property in database , so that
-        we have to only loop to check here and not query at every call of insert triples
-         */
         query = "SELECT ?irreflexive {?irreflexive <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#IrreflexiveProperty>}";
         irreflexive = OWLUtilities.SDBQuery(query, "irreflexive");
         query = "SELECT ?asymmetric {?asymmetric <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AsymmetricProperty>}";
         asymmetric = OWLUtilities.SDBQuery(query, "asymmetric");
 
-        /* This method is to check if predicate is irreflexive and if it is does subject and object of triple to be
+        /*
+         * This method is to check if predicate is irreflexive and if it is does subject and object of triple to be
          * inserted are same if same don't insert
          */
         for (int i = 0; i < irreflexive.size(); i++) {
@@ -271,7 +269,7 @@ public class OWLUtilities {
     }
 
     /*
-     * join query function
+     * Create the query as per the query and select mechanism. Executes the query created
      */
     public static ArrayList<ArrayList<String>> executeUserQuery(ArrayList<String> queryPart, ArrayList<String> selectPart) {
         Hashtable<String, Integer> hash_table = new Hashtable<String, Integer>();

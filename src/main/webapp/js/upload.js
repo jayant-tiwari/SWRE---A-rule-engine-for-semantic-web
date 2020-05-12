@@ -21,7 +21,7 @@ function triggerUniversityOntology() {
 
     api = "webapi/DataLoader/University";
     $.get(api,function(status) {
-        if(status==="success")
+
         window.location.assign("/SWRE_war_exploded/workon.html");
     });
 }

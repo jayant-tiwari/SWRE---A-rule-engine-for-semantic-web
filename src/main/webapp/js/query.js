@@ -7,7 +7,6 @@ var value=0;
 var api = "webapi/Rule/getNode";
 $.get(api,function(create,status) {
     if (status === "success") {
-        //alert(create);
         for (var i = 0; i<create[0].length; i++)
             classes.push(create[0][i]);
         for (var j = 0; j< create[1].length; j++)
@@ -31,6 +30,7 @@ function togle() {
         newNode();
     }
 }
+//add single row in backward chaining
 function row(){
     var str="";
     str+=`<div class="row mt-1"> <div class="col-lg-4 text-center"><select class="form-control subject1" style="border-radius: 50px" onchange="checkValues(this.value,6)">`;
@@ -50,6 +50,7 @@ function row(){
     $('#backwordnode').html(str);
 
 }
+//add new row in query
 function newNode() {
     var str="";
     str+=`<div class="row mt-1"> <div class="col-lg-3 text-center"><select class="form-control subject" style="border-radius: 50px" onchange="checkValues(this.value,`+count+`)">`;
@@ -115,7 +116,6 @@ function go(){
         async: true,
         timeout: 60000,
         success: function (result,status) {
-            alert(result);
             showResult(result);
         }
 

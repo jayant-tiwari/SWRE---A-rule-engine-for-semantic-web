@@ -10,7 +10,6 @@ $.get(api,function(rule,status){
 
     if(status === "success"){
         var str="";
-        alert(rule);
         var l = rule.length;
         for(var i=0;i<l;i++){
             str+=`<div class="form-group"><label class="form-check-label"><input type="checkbox" class="form-check-input existing" value="${i}">${rule[i]}</label></div>`;
@@ -27,7 +26,6 @@ function createRule(){
     var api = "webapi/Rule/getNode";
     $.get(api,function(create,status) {
         if (status === "success") {
-           alert(create);
             for (var i = 0; i<create[0].length; i++)
                 classes.push(create[0][i]);
             for (var j = 0; j< create[1].length; j++)
@@ -133,7 +131,6 @@ function submitE(){
         async: true,
         timeout: 300000,
         success: function (rule,status) {
-            alert(rule);
             $('.loader').hide();
             window.location.assign("/SWRE_war_exploded/workon.html");
         },
@@ -153,7 +150,6 @@ function submit(){
     then_rules.push($('#then_object').val());
     console.log(then_rules);
     var data=JSON.stringify({antecedent:if_rules,consequent:then_rules});
-    console.log(data);
     $.ajax({
         url: 'webapi/Rule/newRule',
         type: "POST",
@@ -166,9 +162,7 @@ function submit(){
         success: function (rule,status) {
             $('.loader').hide();
             location.reload(true);
-           
-            alert(rule);
-        }
+         }
     });
 }
 //function for show input field for other option

@@ -20,11 +20,13 @@ function togle() {
     count=0;
     value=!value;
     if(value){
+        $("#result").hide();
         $("#backward").show();
         $("#plainquery").hide();
         row();
     }
     else{
+        $("#result").hide();
         $("#backward").hide();
         $("#plainquery").show();
         newNode();

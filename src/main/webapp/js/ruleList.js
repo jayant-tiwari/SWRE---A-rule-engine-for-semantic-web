@@ -42,20 +42,20 @@ function createRule(){
 //function for adding new row in if rule
 function addRule(){
     var str="";
-    str+=`<div class="row mt-1"> <div class="col-lg-3 text-center"><select class="form-control subject" onchange="checkValues(this.value,`+count+`)">`;
+    str+=`<div class="row mt-1"> <div class="col-sm-3 col-lg-3 text-center"><select class="form-control subject" onchange="checkValues(this.value,`+count+`)">`;
     for(var i=0;i<classes.length;i++){
         str+=`<option value="`+classes[i]+`">`+classes[i]+`</option>`;
     }
-    str+=`<option value="other">Other</option></select><input type="text" id="s`+count+`" placeholder="Enter Subject" class="form-control hide"></div><div class="col-lg-3 text-center"><select class="form-control predicate">`;
+    str+=`<option value="other">Other</option></select><input type="text" id="s`+count+`" placeholder="Enter Subject" class="form-control hide"></div><div class="col-sm-3 col-lg-3 text-center"><select class="form-control predicate">`;
     for(var i=0;i<propertis.length;i++){
         str+=`<option value="`+propertis[i]+`">`+propertis[i]+`</option>`;
     }
-    str+=`</select></div><div class="col-lg-3 text-center"><select class="form-control object" onchange="checkValueo(this.value,`+count+`)">`;
+    str+=`</select></div><div class=" col-sm-3 col-lg-3 text-center"><select class="form-control object" onchange="checkValueo(this.value,`+count+`)">`;
 
     for(var i=0;i<classes.length;i++){
         str+=`<option value="`+classes[i]+`">`+classes[i]+`</option>`;
     }
-    str+=`<option value="other">Other</option></select><input type="text" id="o`+count+`" placeholder="Enter Object" class="form-control hide"></div><div class="col-lg-3 text-center"><select class="form-control and"><option value="AND">AND</option><option value="OR">OR</option> </select></div></div>`;
+    str+=`<option value="other">Other</option></select><input type="text" id="o`+count+`" placeholder="Enter Object" class="form-control hide"></div><div class="col-sm-3 col-lg-3 text-center"><select class="form-control and"><option value="AND">AND</option><option value="OR">OR</option> </select></div></div>`;
     $('#ifrules').append(str);
     count++;
 }
@@ -92,15 +92,15 @@ function done(){
         }
 
         if(i<subject.length-1)
-        if_rules.push(and[i].value);
+            if_rules.push(and[i].value);
     }
     var union= [...new Set([...s, ...o])];
     var str="";
-    str+=`<div class="row"><div class="col-lg-4 text-center"><select class="form-control" id="then_subject">`;
+    str+=`<div class="row"><div class="col-sm-4 col-lg-4 text-center"><select class="form-control" id="then_subject">`;
     for(var i=0;i<union.length;i++){
         str+=`<option value="`+union[i]+`">`+union[i]+`</option>`;
     }
-    str+=`</select></div><div class="col-lg-4 text-center"><input type="text" id="then_predicate" placeholder="Enter Value" class="form-control"></div> <div class="col-lg-4 text-center"><select class="form-control" id="then_object">`;
+    str+=`</select></div><div class="col-sm-4 col-lg-4 text-center"><input type="text" id="then_predicate" placeholder="Enter Value" class="form-control"></div> <div class=" col-sm-4 col-lg-4 text-center"><select class="form-control" id="then_object">`;
     for(var i=0;i<union.length;i++){
         str+=`<option value="`+union[i]+`">`+union[i]+`</option>`;
     }
@@ -129,7 +129,7 @@ function submitE(){
         contentType: 'application/json',
         cache: false,
         async: true,
-        timeout: 300000,
+        timeout: 1200000,
         success: function (rule,status) {
             $('.loader').hide();
             window.location.assign("/SWRE_war_exploded/workon.html");
@@ -162,7 +162,7 @@ function submit(){
         success: function (rule,status) {
             $('.loader').hide();
             location.reload(true);
-         }
+        }
     });
 }
 //function for show input field for other option

@@ -70,7 +70,8 @@
                 <div class="col-lg-6 col-xl-6">
                     <div class="banner_text">
                         <div class="banner_text_iner">
-                            <h5>University Ontology</h5>
+
+                            <h3 id="nameontology">University Ontology</h3>
                             <h1>A sample ontology built on IIIT-B data</h1>
                             <p>University Ontology tries to capture a basic structure of information about a university.There are 8 classes ,12 object properties and individuals (instances of class).Some of the object properties incorporates characteristics such as Reflexive,Symmetric,Transitive and inverseOf. In addition to this, there are also Data Properties pertaining to each individual that stores more information about that individual. </p>
                                 <a href="query.html" class="btn_1">Query</a>
@@ -85,6 +86,14 @@
     <script src="js/jquery-1.12.1.min.js"></script>
     <!-- bootstrap js -->
     <script src="js/bootstrap.min.js"></script>
+<script>
+    var val=sessionStorage.getItem("content");
+    if(val==="university"){
+        $('#nameontology').html( "Default "+val+" ontology");
+    }
+    else
+        $('#nameontology').html( "Current Ontology prefix :"+val);
+</script>
 </body>
 
 </html>

@@ -19,6 +19,11 @@
     <!-- style CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/about.css">
+    <style>
+        .chain{
+            list-style: circle;font-family: Roboto, sans-serif;line-height: 1.929;font-size: 14px;margin-bottom: 0px;color: #888888;
+        }
+    </style>
 </head>
 
 
@@ -86,6 +91,64 @@
 <section class="feature_part single_feature_padding">
     <div class="container">
         <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                <h3>Tutorial</h3>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 border p-3">
+                <div class="col-lg-12 col-md-12 col-sm-12 ">
+                    <h4>This section deals in getting a new user started with the rule engine.</h4><p> Please follow the compact jobs below to achieve some meaningful results using the rule engine.</p>
+
+                    <details ontoggle>
+                        <summary><b>Job: Forward Chaining</b></summary>
+                        <p> This section deals in implementing forward chaining. Follow the steps below to attain the required results:
+                            In the default university ontology provided, if a ?Student opts for a ?Course and a ?Faculty teaches a ?Course,
+                            we could add a consequent that the ?Student is a student of ?Faculty.<br><b>Steps: </b><br>
+                        </p>
+                        <ul class="chain">
+                            <li>
+                                Toggle to <a href="rule.html"><b>Create Rule</b></a> and press the button "Create New Rule"
+                            </li>
+                            <li> Add the antecedent part</li>
+                            <li>?Student opts ?Course AND ?Faculty teaches ?Course</li>
+                            <li>Add the consequent part </li>
+                            <li>?Student isStudentOf ?Faculty</li>
+                            <li>Click on "Done"</li>
+                            <li>Select the newly created rule and hit sumbit, you should see the loading screen. (If this is the first run for the ontology, it might take some time)</li>
+                            <li> Head to the <a href="query.html"><b>Query</b></a> tab and toggle for the query</li>
+                            <li> ?Student isStudentOf ?Faculty</li>
+                            <li>You should see the tabulated result below</li>
+                        </ul>
+                    </details>
+
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 ">
+                    <details ontoggle>
+                        <summary><b>Job: Backward Chaining</b></summary>
+                        <p> This sections deals with the implementation shown by the backward chaining.
+                            Please complete the steps in the above section before heading below.<br><b>Steps: </b><br>
+                        </p>
+                        <ul class="chain">
+                            <li>
+                                Toggle to <a href="rule.html"><b>Create Rule</b></a> and press the button "Create New Rule"
+                            </li>
+                            <li> Add the antecedent part</li>
+                            <li>?Student isStudentOf ?Faculty</li>
+                            <li>Add the consequent part </li>
+                            <li>?Faculty isTeacherOf ?Student</li>
+                            <li>Click on "Done"</li>
+                            <li> Head to the <a href="query.html"><b>Query</b></a> tab and hit backward chaining button</li>
+                            <li>In the "Subject", select "Other" and input 'ProfChandrashekarRamanathan' (Without quotes)</li>
+                            <li> In the "Predicate", browse from the list "isFacultyOf" and select it</li>
+                            <li>In the "Object", select "Other" and input 'MT2019074' (Without quotes)</li>
+                            <li>Hit "Go" and  Wait for the result via alert</li>
+                        </ul>
+                        <p>Note: Backward chaining also processes a query but the time taken is less than processing the forward chaining.</p>
+
+                    </details>
+                </div>
+                <br> <br>
+            </div>
+
             <div class="col-lg-12">
                 <div class="single_feature_text text-center">
                     <h2>Project Guide</h2>
@@ -178,35 +241,7 @@
 </section>
 <!-- upcoming_event part start-->
 
-<!-- learning part start-->
-<section class="learning_part">
-    <div class="container">
-        <div class="row align-items-sm-center align-items-lg-stretch">
-            <div class="col-md-7 col-lg-7">
-                <div class="learning_img">
-                    <img src="img/learning_img.png" alt="">
-                </div>
-            </div>
-            <div class="col-md-5 col-lg-5">
-                <div class="learning_member_text">
-                    <h5>About us</h5>
-                    <h2>Learning with Love
-                        and Laughter</h2>
-                    <p>Fifth saying upon divide divide rule for deep their female all hath brind Days and beast
-                        greater grass signs abundantly have greater also
-                        days years under brought moveth.</p>
-                    <ul>
-                        <li><span class="ti-pencil-alt"></span>Him lights given i heaven second yielding seas
-                            gathered wear</li>
-                        <li><span class="ti-ruler-pencil"></span>Fly female them whales fly them day deep given
-                            night.</li>
-                    </ul>
-                    <a href="#" class="btn_1">Read More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 
 

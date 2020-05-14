@@ -34,84 +34,82 @@ public class OWLUtilities {
 
     public static void insertTriples(String subject, String predicate, String object) {
 
-      //flag to deicide whether to insert the triples or not
-boolean dontAdd = false;
-String query = "";
-//pre holds the prefix that is to be used with the predicate
-String pre="";
+        //flag to deicide whether to insert the triples or not
+        boolean dontAdd = false;
+        String query = "";
+        //pre holds the prefix that is to be used with the predicate
+        String pre="";
 
-//obj_pre holds the prefix that is to be used with the object
-String obj_pre="";
-ArrayList<String> irreflexive = new ArrayList<String>();
-ArrayList<String> asymmetric = new ArrayList<String>();
-Model model = SDBFactory.connectDefaultModel(sdbUtilities.getStore());
-model.setNsPrefix(sdbUtilities.getOntologyNamespace(), sdbUtilities.getOntologyPrefix());
-model.read(sdbUtilities.getOntology());
-//create new triples
-org.apache.jena.rdf.model.Resource Subject = model.createResource(subject);
-if (predicate.equalsIgnoreCase("subClassOf") || predicate.equalsIgnoreCase("subPropertyOf") || predicate.equalsIgnoreCase("domain") || predicate.equalsIgnoreCase("range")) {
-  pre = "http://www.w3.org/2000/01/rdf-schema#";
-}
-else if (predicate.equalsIgnoreCase("type")) {
-  pre = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-}
-else if (predicate.equalsIgnoreCase("inverseOf")) {
-  pre = "http://www.w3.org/2002/07/owl#";
-}
-else {       //Here we can have one more else if condition for owl prefix
-  pre = sdbUtilities.getOntologyPrefix();
-}
+        //obj_pre holds the prefix that is to be used with the object
+        String obj_pre="";
+        ArrayList<String> irreflexive = new ArrayList<String>();
+        ArrayList<String> asymmetric = new ArrayList<String>();
+        Model model = SDBFactory.connectDefaultModel(sdbUtilities.getStore());
+        model.setNsPrefix(sdbUtilities.getOntologyNamespace(), sdbUtilities.getOntologyPrefix());
+        model.read(sdbUtilities.getOntology());
+        //create new triples
+        org.apache.jena.rdf.model.Resource Subject = model.createResource(subject);
+        if (predicate.equalsIgnoreCase("subClassOf") || predicate.equalsIgnoreCase("subPropertyOf") || predicate.equalsIgnoreCase("domain") || predicate.equalsIgnoreCase("range")) {
+            pre = "http://www.w3.org/2000/01/rdf-schema#";
+        }
+        else if (predicate.equalsIgnoreCase("type")) {
+            pre = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+        }
+        else if (predicate.equalsIgnoreCase("inverseOf")) {
+            pre = "http://www.w3.org/2002/07/owl#";
+        }
+        else {       //Here we can have one more else if condition for owl prefix
+        pre = sdbUtilities.getOntologyPrefix();
+        }
 
+        Property Predicate = model.createProperty(pre + predicate);
+        org.apache.jena.rdf.model.Resource Object = model.createResource(object);
+        predicate = pre + predicate;
+        /* Major Doubt:
+        Should we store all irreflexive and asymmetric properties in a database
+        Moreover for asymmetric properties we can store the result of all triples with that property in database , so that
+        we have to only loop to check here and not query at every call of insert triples
+        */
+        query = "SELECT ?irreflexive {?irreflexive <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#IrreflexiveProperty>}";
+        irreflexive = OWLUtilities.SDBQuery(query, "irreflexive");
+        query = "SELECT ?asymmetric {?asymmetric <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AsymmetricProperty>}";
+        asymmetric = OWLUtilities.SDBQuery(query, "asymmetric");
 
-Property Predicate = model.createProperty(pre + predicate);
-org.apache.jena.rdf.model.Resource Object = model.createResource(object);
-predicate = pre + predicate;
-/* Major Doubt:
-Should we store all irreflexive and asymmetric properties in a database
-Moreover for asymmetric properties we can store the result of all triples with that property in database , so that
-we have to only loop to check here and not query at every call of insert triples
-*/
-query = "SELECT ?irreflexive {?irreflexive <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#IrreflexiveProperty>}";
-irreflexive = OWLUtilities.SDBQuery(query, "irreflexive");
-query = "SELECT ?asymmetric {?asymmetric <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AsymmetricProperty>}";
-asymmetric = OWLUtilities.SDBQuery(query, "asymmetric");
+        /* This method is to check if predicate is irreflexive and if it is does subject and object of triple to be
+         * inserted are same if same don't insert
+         */
+        for (int i = 0; i < irreflexive.size(); i++) {
+            if (irreflexive.get(i).equals(predicate)) {
+                if (subject.equals(object)) {
+                    dontAdd = true;
+                    break;
+                }
+            }
+        }
 
-/* This method is to check if predicate is irreflexive and if it is does subject and object of triple to be
-* inserted are same if same don't insert
-*/
-for (int i = 0; i < irreflexive.size(); i++) {
-  if (irreflexive.get(i).equals(predicate)) {
-      if (subject.equals(object)) {
-          dontAdd = true;
-          break;
-      }
-  }
-}
-
-// Similar thing as above for asymmetric (logic of asymmetric applies)
-if (!dontAdd) {
-  for (int i = 0; i < asymmetric.size(); i++) {
-      if (asymmetric.get(i).equals(predicate)) {
-          ArrayList<ArrayList<String>> queryResult = new ArrayList<ArrayList<String>>();
-          query = "SELECT ?object ?subject {?subject <" + predicate + "> ?object}";
-          queryResult = OWLUtilities.SDBQuery(query, "object", "subject");
-          for (int j = 0; j < queryResult.size(); j++) {
-              if (subject.equals(queryResult.get(i).get(0)) && object.equals(queryResult.get(i).get(1))) {
-                  dontAdd = true;
-                  break;
-              }
-          }
-          if (dontAdd)
-              break;
-      }
-  }
-}
-
-if (!dontAdd) {
-  //add triples in data base
-  model.add(Subject, Predicate, Object);
-  model.commit();
-}
+        // Similar thing as above for asymmetric (logic of asymmetric applies)
+        if (!dontAdd) {
+            for (int i = 0; i < asymmetric.size(); i++) {
+                if (asymmetric.get(i).equals(predicate)) {
+                    ArrayList<ArrayList<String>> queryResult = new ArrayList<ArrayList<String>>();
+                    query = "SELECT ?object ?subject {?subject <" + predicate + "> ?object}";
+                    queryResult = OWLUtilities.SDBQuery(query, "object", "subject");
+                for (int j = 0; j < queryResult.size(); j++) {
+                    if (subject.equals(queryResult.get(i).get(0)) && object.equals(queryResult.get(i).get(1))) {
+                        dontAdd = true;
+                        break;
+                    }
+                }
+            if (dontAdd)
+                break;
+            }
+        }
+    }
+    if (!dontAdd) {
+        //add triples in data base
+        model.add(Subject, Predicate, Object);
+        model.commit();
+        }
     }
 
     /*

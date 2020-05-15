@@ -38,10 +38,10 @@ public class OWLUtilities {
         boolean dontAdd = false;
         String query = "";
         //pre holds the prefix that is to be used with the predicate
-        String pre="";
+        String pre = "";
 
         //obj_pre holds the prefix that is to be used with the object
-        String obj_pre="";
+        String obj_pre = "";
         ArrayList<String> irreflexive = new ArrayList<String>();
         ArrayList<String> asymmetric = new ArrayList<String>();
         Model model = SDBFactory.connectDefaultModel(sdbUtilities.getStore());
@@ -51,15 +51,12 @@ public class OWLUtilities {
         org.apache.jena.rdf.model.Resource Subject = model.createResource(subject);
         if (predicate.equalsIgnoreCase("subClassOf") || predicate.equalsIgnoreCase("subPropertyOf") || predicate.equalsIgnoreCase("domain") || predicate.equalsIgnoreCase("range")) {
             pre = "http://www.w3.org/2000/01/rdf-schema#";
-        }
-        else if (predicate.equalsIgnoreCase("type")) {
+        } else if (predicate.equalsIgnoreCase("type")) {
             pre = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-        }
-        else if (predicate.equalsIgnoreCase("inverseOf")) {
+        } else if (predicate.equalsIgnoreCase("inverseOf")) {
             pre = "http://www.w3.org/2002/07/owl#";
-        }
-        else {       //Here we can have one more else if condition for owl prefix
-        pre = sdbUtilities.getOntologyPrefix();
+        } else {       //Here we can have one more else if condition for owl prefix
+            pre = sdbUtilities.getOntologyPrefix();
         }
 
         Property Predicate = model.createProperty(pre + predicate);
@@ -94,21 +91,21 @@ public class OWLUtilities {
                     ArrayList<ArrayList<String>> queryResult = new ArrayList<ArrayList<String>>();
                     query = "SELECT ?object ?subject {?subject <" + predicate + "> ?object}";
                     queryResult = OWLUtilities.SDBQuery(query, "object", "subject");
-                for (int j = 0; j < queryResult.size(); j++) {
-                    if (subject.equals(queryResult.get(i).get(0)) && object.equals(queryResult.get(i).get(1))) {
-                        dontAdd = true;
-                        break;
+                    for (int j = 0; j < queryResult.size(); j++) {
+                        if (subject.equals(queryResult.get(i).get(0)) && object.equals(queryResult.get(i).get(1))) {
+                            dontAdd = true;
+                            break;
+                        }
                     }
+                    if (dontAdd)
+                        break;
                 }
-            if (dontAdd)
-                break;
             }
         }
-    }
-    if (!dontAdd) {
-        //add triples in data base
-        model.add(Subject, Predicate, Object);
-        model.commit();
+        if (!dontAdd) {
+            //add triples in data base
+            model.add(Subject, Predicate, Object);
+            model.commit();
         }
     }
 
@@ -301,17 +298,38 @@ public class OWLUtilities {
         String right = "";
         String prefix = sdbUtilities.getOntologyPrefix();
         System.out.println(prefix);
+
+        /* from the entire query part , put parts with '?' into selectPart ArrayList
+         * this will become the variables that we get as output, hash table is used to ensure every variable
+         * appears only once in ouput
+         */
         for (int loopIn = 0; loopIn < queryPart.size(); loopIn++) {
             if (queryPart.get(loopIn).charAt(0) == '?' && !(hash_table.containsKey(queryPart.get(loopIn)))) {
                 selectPart.add(queryPart.get(loopIn));
                 hash_table.put(queryPart.get(loopIn), 10);
             }
         }
+
+        /* Start creating the query by putting all the entries in select Part
+         *
+         */
         query = query + "Select ";
         for (int loopIn = 0; loopIn < selectPart.size(); loopIn++) {
             query = query + selectPart.get(loopIn) + " ";
         }
+
+
         query = query + "{ ";
+
+        /*
+         * For the subject , predicate and object before the first connector make them as string that would
+         * appear in the query and store in "left"
+         */
+
+        /*
+         *  if ? then it is a variable and no need to apply prefix else apply the relevant prefix
+         * since for subject prefix can be only ontology prefix so no for if-else conditions
+         * */
         if (queryPart.get(0).charAt(0) == '?')
             left = queryPart.get(0);
         else
@@ -375,6 +393,7 @@ public class OWLUtilities {
 
 
             if ((queryPart.get(index)).equals("OR")) {
+                //For Union both LHS and RHS must be in { }
                 left = "{ " + left + " }" + " UNION " + "{ " + right + " }";
             } else if ((queryPart.get(index)).equals("AND")) {
                 left = left + " . " + right;

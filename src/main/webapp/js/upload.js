@@ -12,7 +12,7 @@ function uploadfile() {
         async: true,
         timeout: 60000,
         success: function (status) {
-            sessionStorage.setItem("content",document.getElementById("ontologyfile").elements.namedItem("prefixname").value);
+            sessionStorage.setItem("content",document.getElementById("ontologyfile").elements.namedItem("dbname").value);
             window.location.assign("/SWRE_war_exploded/workon.html");
         }
     });
@@ -22,7 +22,7 @@ function triggerUniversityOntology() {
 
     api = "webapi/DataLoader/University";
     $.get(api,function(status) {
-        sessionStorage.setItem("content","university");
+        sessionStorage.setItem("content","University");
         window.location.assign("/SWRE_war_exploded/workon.html");
     });
 }
